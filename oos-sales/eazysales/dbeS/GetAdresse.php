@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetAdresse.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: GetAdresse.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,7 +32,7 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.02 / 05.07.06
 */
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 if (auth())

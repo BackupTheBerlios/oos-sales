@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: getArtikel.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,7 +32,7 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.02 / 03.07.06
 */
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $Response="";
 $return = 3;
@@ -169,7 +169,7 @@ function get_attribute($product)
 		$status = mysql_fetch_object($cur_query);
 		if (strlen($status->shipping_status_name)>0)
 		{
-			//Attribut hinzufügen
+			//Attribut hinzufgen
 			$attribute.=CSVkonform("T").";".			
 				CSVkonform("Lieferstatus").";".
 				CSVkonform($status->shipping_status_name).";\n";			
@@ -178,7 +178,7 @@ function get_attribute($product)
 	//Herstellerlink gesetzt?
 	if (strlen($product->products_url)>0)
 	{
-		//Attribut hinzufügen
+		//Attribut hinzufgen
 		$attribute.=CSVkonform("T").";".			
 			CSVkonform("Herstellerlink").";".
 			CSVkonform($product->products_url).";\n";	
@@ -187,7 +187,7 @@ function get_attribute($product)
 	//ist vpe gesetzt?
 	if ($product->products_vpe_value>0)
 	{
-		//Attribut hinzufügen
+		//Attribut hinzufgen
 		$attribute.=CSVkonform("T").";".			
 			CSVkonform("VPE Wert").";".
 			CSVkonform($product->products_vpe_value).";\n";
@@ -210,7 +210,7 @@ function get_attribute($product)
 	//FSK 18?
 	if ($product->products_fsk18>0)
 	{
-		//Attribut hinzufügen
+		//Attribut hinzufgen
 		$attribute.=CSVkonform("T").";".			
 			CSVkonform("FSK 18").";".
 			CSVkonform("ja").";\n";
@@ -252,7 +252,7 @@ function get_attribute($product)
 function get_variationswerte($products_id,$options_id)
 {
 	$variationswerte="";
-	//existieren Variationen für diesen Artikel?
+	//existieren Variationen fr diesen Artikel?
 	$cur_query = eS_execute_query("select * from products_attributes where options_id=".$options_id." and products_id=".$products_id);
 	while ($variation = mysql_fetch_object($cur_query))
 	{
@@ -333,7 +333,7 @@ function get_staffelpreise($products_id, $endkunde)
 	
 	if ($staffelpreiseDa)
 	{
-		//existieren Staffelprese für diesen Artikel?
+		//existieren Staffelprese fr diesen Artikel?
 		$cur_query = eS_execute_query("select * from ".$table." where products_id=".$products_id." and quantity>1 order by quantity asc limit 5");
 		while ($staffelpreise = mysql_fetch_object($cur_query))
 		{

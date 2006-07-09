@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: SetBestellung.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,7 +34,7 @@
  * @version v1.0 / 16.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 $return=3;
 if (auth())
 {
@@ -43,7 +43,7 @@ if (auth())
 	if (intval($_POST["action"]) == 6 && intval($_POST['KeyBestellung']))
 	{
 		$return = 0;
-		//setze orders_status auf gewählte Option bei eS Versadnt
+		//setze orders_status auf gewï¿½lte Option bei eS Versadnt
 		//hole einstellungen
 		$cur_query = eS_execute_query("select StatusVersendet from eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
@@ -52,7 +52,7 @@ if (auth())
 		if ($einstellungen->StatusVersendet>0)
 		{
 			eS_execute_query("update orders set orders_status=".$einstellungen->StatusVersendet." where orders_id=".intval($_POST['KeyBestellung']));
-			//füge history hinzu
+			//fge history hinzu
 			$VersandInfo = realEscape($_POST["VersandInfo"]);
 			$VersandDatum = realEscape($_POST["VersandDatum"]);
 			$Tracking = realEscape($_POST["Tracking"]);
@@ -65,7 +65,7 @@ if (auth())
 	if (intval($_POST["action"]) == 5 && intval($_POST['KeyBestellung']))
 	{
 		$return = 0;
-		//setze orders_status auf gewählte Option bei eS Abholung
+		//setze orders_status auf gewï¿½lte Option bei eS Abholung
 		//hole einstellungen
 		$cur_query = eS_execute_query("select StatusAbgeholt from eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
@@ -74,8 +74,8 @@ if (auth())
 		if ($einstellungen->StatusAbgeholt>0)
 		{
 			eS_execute_query("update orders set orders_status=".$einstellungen->StatusAbgeholt." where orders_id=".intval($_POST['KeyBestellung']));
-			//füge history hinzu
-			$kommentar = "Erfolgreich in eazySales übernommen";
+			//fge history hinzu
+			$kommentar = "Erfolgreich in eazySales bernommen";
 			eS_execute_query("insert into orders_status_history (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusAbgeholt.", now(), \"".$kommentar."\")");
 		}
 		

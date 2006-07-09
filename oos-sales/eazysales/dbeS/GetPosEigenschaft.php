@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetPosEigenschaft.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: GetPosEigenschaft.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 15.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 if (auth())
@@ -49,7 +49,7 @@ if (auth())
 		//hole orders_products_id
 		$orders_products_id = getFremdBestellPos(intval($_POST['KeyBestellPos']));
 			
-		//hole alle Eigenschaften, die ausgewählt wurden zu dieser bestellung
+		//hole alle Eigenschaften, die ausgewï¿½lt wurden zu dieser bestellung
 		$cur_query = eS_execute_query("select orders_products_attributes.*, orders_products.products_tax, orders_products.products_id from orders_products_attributes, orders_products where orders_products_attributes.orders_products_id=".$orders_products_id." and orders_products.orders_products_id=orders_products_attributes.orders_products_id order by orders_products_attributes.orders_products_id");
 		while ($WarenkorbPosEigenschaft = mysql_fetch_object($cur_query))
 		{

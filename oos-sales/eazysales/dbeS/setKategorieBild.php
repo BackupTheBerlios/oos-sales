@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setKategorieBild.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: setKategorieBild.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 20.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 $_POST['userID'] = $_POST['euser'];
@@ -41,7 +41,7 @@ $_POST['userPWD'] = $_POST['epass'];
 if (auth())
 {
 	$return=0;
-	//nur BildNr 1 wird berücksichtigt
+	//nur BildNr 1 wird bercksichtigt
 	if (intval($_POST['kArtikelBild'])>0 && intval($_POST['nNr'])==1 && $_FILES['bild'])
 	{
 		//hol categories_id

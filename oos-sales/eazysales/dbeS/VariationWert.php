@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: VariationWert.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,7 +34,7 @@
  * @version v1.0 / 16.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 if (auth())
@@ -55,7 +55,7 @@ if (auth())
 		$products_options_id = getFremdEigenschaft($EigenschaftWert->kEigenschaft);
 		if ($products_options_id>0)
 		{
-			//schaue, ob dieser EigenschaftsWert bereits global existiert für diese Eigenschaft!!
+			//schaue, ob dieser EigenschaftsWert bereits global existiert fr diese Eigenschaft!!
 			$cur_query = eS_execute_query("select products_options_values.products_options_values_id from products_options_values, products_options_values_to_products_options where products_options_values_to_products_options.products_options_id=$products_options_id and products_options_values_to_products_options.products_options_values_id=products_options_values.products_options_values_id and products_options_values.language_id=$einstellungen->languages_id and products_options_values.products_options_values_name=\"$EigenschaftWert->cName\"");
 			$options_values = mysql_fetch_object($cur_query);
 			
@@ -68,7 +68,7 @@ if (auth())
 				$options_values->products_options_values_id = $max_id_arr[0]+1;
 				eS_execute_query("insert into products_options_values (products_options_values_id,language_id,products_options_values_name) values ($options_values->products_options_values_id,$einstellungen->languages_id,\"$EigenschaftWert->cName\")");			
 				
-				//erstelle verknüpfung zwischen wert und eig
+				//erstelle verknpfung zwischen wert und eig
 				eS_execute_query("insert into products_options_values_to_products_options (products_options_id,products_options_values_id) values($products_options_id,$options_values->products_options_values_id)");
 			}
 		

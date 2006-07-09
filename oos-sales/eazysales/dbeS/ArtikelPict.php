@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: ArtikelPict.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: ArtikelPict.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,7 +34,7 @@
  * @version v1.0 / 16.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 $picpath = "../produktbilder/";
 $return=3;
 if (auth())
@@ -53,10 +53,10 @@ if (auth())
 		else
 			$return = 1;
 
-		//gibt es alte Bilder zum löschen?
+		//gibt es alte Bilder zum lï¿½chen?
 		if ($oldArtikelPict->cPfad1 && !$ArtikelPict->cPfad1)
 		{
-			//bild nr 1 existiert nicht mehr. im fs löschen
+			//bild nr 1 existiert nicht mehr. im fs lï¿½chen
 			if (file_exists($picpath.$oldArtikelPict->cPfad1))
 			{
 				unlink($picpath.$oldArtikelPict->cPfad1);
@@ -68,7 +68,7 @@ if (auth())
 		}
 		if ($oldArtikelPict->cPfad2 && !$ArtikelPict->cPfad2)
 		{
-			//bild nr 2 existiert nicht mehr. im fs löschen
+			//bild nr 2 existiert nicht mehr. im fs lï¿½chen
 			if (file_exists($picpath.$oldArtikelPict->cPfad2))
 			{
 				unlink($picpath.$oldArtikelPict->cPfad2);
@@ -80,7 +80,7 @@ if (auth())
 		}
 		if ($oldArtikelPict->cPfad3 && !$ArtikelPict->cPfad3)
 		{
-			//bild nr 3 existiert nicht mehr. im fs löschen
+			//bild nr 3 existiert nicht mehr. im fs lï¿½chen
 			if (file_exists($picpath.$oldArtikelPict->cPfad3))
 			{
 				unlink($picpath.$oldArtikelPict->cPfad3);
@@ -115,8 +115,7 @@ if (auth())
 			imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 			imagejpeg($image_p, $picmedium, 80);
 
-			//groß
-			$new_width = 800;
+			//groï¿½			$new_width = 800;
 			$new_height = round (800 / $ratio);
 			if ($width>$new_width || $height>$new_height)
 			{

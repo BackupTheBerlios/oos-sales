@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: Artikel.php,v 1.3 2006/07/09 02:00:13 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.02 / 04.07.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 if (auth())
@@ -77,9 +77,9 @@ if (auth())
 		{
 			//update
 
-			//attribute löschen
+			//attribute lï¿½chen
 			eS_execute_query("delete from products_attributes where products_id=".$products_id);
-			//KategorieArtikel löschen
+			//KategorieArtikel lï¿½chen
 			eS_execute_query("delete from products_to_categories where products_id=".$products_id);
 			
 			//evtl. andere MwSt?
@@ -106,7 +106,7 @@ if (auth())
 			$products_id_arr = mysql_fetch_row($query);
 			if ($products_id_arr[0]>0)
 			{
-				//müssen Preise in spezielle tabellen?
+				//mssen Preise in spezielle tabellen?
 				$products_id=$products_id_arr[0];
 				insertPreise($products_id_arr[0]);
 				eS_execute_query("insert into products_description (products_id, products_name, products_description, products_short_description, language_id) values (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
@@ -131,7 +131,7 @@ if (auth())
 			}
 			else 
 			{
-				//füge neuen Shippingstatus ein
+				//fge neuen Shippingstatus ein
 				$cur_query = eS_execute_query("select max(products_vpe_id) from products_vpe");
 				$max_shipping_products_vpe_arr = mysql_fetch_row($cur_query);
 				$products_vpe_id = $max_shipping_products_vpe_arr[0]+1;
@@ -236,7 +236,7 @@ function holeSteuerId($MwSt)
 		eS_execute_query("insert into tax_class (tax_class_title, date_added) values (\"eazySales Steuerklasse ".$MwSt."%\", now())");
 		$query = eS_execute_query("select LAST_INSERT_ID()");
 		$tax_class_id_arr = mysql_fetch_row($query);
-		//füge diesen Steuersatz ein
+		//fge diesen Steuersatz ein
 		eS_execute_query("insert into tax_rates (tax_zone_id, tax_class_id, tax_priority, tax_rate, date_added) values (".$GLOBALS['einstellungen']->tax_zone_id.",".$tax_class_id_arr[0].", ".$GLOBALS['einstellungen']->tax_priority.", ".$MwSt.", now())");
 		return $tax_class_id_arr[0];
 	}

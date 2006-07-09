@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Attribute.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: Attribute.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.01 / 27.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 if (auth())
@@ -98,7 +98,7 @@ function attributBearbeiten ($Attribut)
 				}
 				else 
 				{
-					//füge neuen Shippingstatus ein
+					//fge neuen Shippingstatus ein
 					$cur_query = eS_execute_query("select max(shipping_status_id) from shipping_status");
 					$max_shipping_status_id_arr = mysql_fetch_row($cur_query);
 					$shipping_id = $max_shipping_status_id_arr[0]+1;

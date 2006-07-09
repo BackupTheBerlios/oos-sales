@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: mytest.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: mytest.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 16.06.06
 */
 
-require_once("syncinclude.php");
+require 'syncinclude.php';
 
 $return=3;
 $cName = $_POST["uID"];
