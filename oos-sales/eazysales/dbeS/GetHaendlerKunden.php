@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetHaendlerKunden.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: GetHaendlerKunden.php,v 1.4 2006/07/09 15:36:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 15.06.06
 */
 
-require 'syncinclude.php';
-echo('0');
-mysql_close();
+  require 'syncinclude.php';
+
+  echo('0');
 ?>
