@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Attribute.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
+   $Id: Attribute.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
 
    wawi - osis online shop
 
@@ -67,25 +67,25 @@ function attributBearbeiten ($Attribut)
 		switch (strtolower($Attribut->name))
 		{
 			case 'reihung':
-				xtc_db_query("UPDATEproducts set products_sort=".intval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products SET products_sort=".intval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
 				break;
 			case 'reihung startseite':
-				xtc_db_query("UPDATEproducts set products_startpage_sort=".intval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products SET products_startpage_sort=".intval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
 				break;
 			case 'suchbegriffe':
-				xtc_db_query("UPDATEproducts_description set products_keywords=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products_description SET products_keywords=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
 				break;
 			case 'meta title':
-				xtc_db_query("UPDATEproducts_description set products_meta_title=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products_description SET products_meta_title=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
 				break;
 			case 'meta description':
-				xtc_db_query("UPDATEproducts_description set products_meta_description=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products_description SET products_meta_description=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
 				break;
 			case 'meta keywords':
-				xtc_db_query("UPDATEproducts_description set products_meta_keywords=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products_description SET products_meta_keywords=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
 				break;
 			case 'herstellerlink':
-				xtc_db_query("UPDATEproducts_description set products_url=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products_description SET products_url=\"".realEscape($Attribut->content)."\" WHERE language_id=".$einstellungen->languages_id." AND products_id=".$Attribut->products_id);
 				break;
 			case 'lieferstatus':
 				$shipping_id=0;
@@ -104,25 +104,25 @@ function attributBearbeiten ($Attribut)
 					$shipping_id = $max_shipping_status_id_arr[0]+1;
 					xtc_db_query("INSERT INTO shipping_status (shipping_status_id, language_id, shipping_status_name) values ($shipping_id, $einstellungen->languages_id, \"$Attribut->content\")");
 				}
-				xtc_db_query("UPDATEproducts set products_shippingtime=".$shipping_id." WHERE products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products SET products_shippingtime=".$shipping_id." WHERE products_id=".$Attribut->products_id);
 				break;
 			case 'fsk 18':
 				if ($Attribut->content=="ja")
 				{
-					xtc_db_query("UPDATEproducts set products_fsk18=1 WHERE products_id=".$Attribut->products_id);
+					xtc_db_query("UPDATE products SET products_fsk18=1 WHERE products_id=".$Attribut->products_id);
 				}
 				break;
 			case 'vpe wert':
-				xtc_db_query("UPDATEproducts set products_vpe_value=".floatval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
+				xtc_db_query("UPDATE products SET products_vpe_value=".floatval($Attribut->content)." WHERE products_id=".$Attribut->products_id);
 				break;
 			case 'vpe anzeigen':
 				if ($Attribut->content=="ja")
 				{
-					xtc_db_query("UPDATEproducts set products_vpe_status=1 WHERE products_id=".$Attribut->products_id);
+					xtc_db_query("UPDATE products SET products_vpe_status=1 WHERE products_id=".$Attribut->products_id);
 				}
 				elseif ($Attribut->content=="nein") 
 				{
-					xtc_db_query("UPDATEproducts set products_vpe_status=0 WHERE products_id=".$Attribut->products_id);
+					xtc_db_query("UPDATE products SET products_vpe_status=0 WHERE products_id=".$Attribut->products_id);
 				}
 				break;
 		}

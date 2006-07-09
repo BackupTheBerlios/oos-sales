@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
+   $Id: SetBestellung.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
 
    wawi - osis online shop
 
@@ -51,7 +51,7 @@ if (auth())
 		//setze status der Bestellung
 		if ($einstellungen->StatusVersendet>0)
 		{
-			xtc_db_query("UPDATEorders set orders_status=".$einstellungen->StatusVersendet." WHERE orders_id=".intval($_POST['KeyBestellung']));
+			xtc_db_query("UPDATE orders SET orders_status=".$einstellungen->StatusVersendet." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$VersandInfo = realEscape($_POST["VersandInfo"]);
 			$VersandDatum = realEscape($_POST["VersandDatum"]);
@@ -73,7 +73,7 @@ if (auth())
 		//setze status der Bestellung
 		if ($einstellungen->StatusAbgeholt>0)
 		{
-			xtc_db_query("UPDATEorders set orders_status=".$einstellungen->StatusAbgeholt." WHERE orders_id=".intval($_POST['KeyBestellung']));
+			xtc_db_query("UPDATE orders SET orders_status=".$einstellungen->StatusAbgeholt." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$kommentar = "Erfolgreich in eazySales bernommen";
 			xtc_db_query("INSERT INTO orders_status_history (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusAbgeholt.", now(), \"".$kommentar."\")");

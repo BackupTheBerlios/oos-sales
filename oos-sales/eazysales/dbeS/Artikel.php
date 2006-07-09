@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
+   $Id: Artikel.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
 
    wawi - osis online shop
 
@@ -77,19 +77,21 @@ if (auth())
 		{
 			//update
 
-			//attribute l�chen
-			xtc_db_query("DELETE FROM products_attributes WHERE products_id=".$products_id);
-			//KategorieArtikel l�chen
-			xtc_db_query("DELETE FROM products_to_categories WHERE products_id=".$products_id);
+                  $products_attributestable = $oostable['products_attributes'];
+			xtc_db_query("DELETE FROM $products_attributestable WHERE products_id=".$products_id);
+                  $products_to_categoriestable = $oostable['products_to_categories'];
+			xtc_db_query("DELETE FROM $products_to_categoriestable WHERE products_id=".$products_id);
 			
 			//evtl. andere MwSt?
 			$products_tax_class_id = holeSteuerId($artikel->fMwSt);
 			//evtl. neuer Hersteller?
 			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
-			//update products
-			xtc_db_query("UPDATEproducts set products_fsk18=0, products_shippingtime=$shipping_status, products_startpage=$startseite, products_model=\"$artikel->cArtNr\", products_price=\"$artikel->fVKNetto\", products_tax_class_id=\"$products_tax_class_id\", products_quantity=\"$artikel->nLagerbestand\", products_ean=\"$artikel->cBarcode\", products_weight=\"$artikel->fGewicht\", manufacturers_id=\"$manufacturers_id\", products_status=1 WHERE products_id=".$products_id);
-			//update products_description
-			xtc_db_query("UPDATEproducts_description set products_name=\"$artikel->cName\", products_description=\"$artikel->cBeschreibung\", products_short_description=\"$artikel->cKurzBeschreibung\", products_keywords=\"\", products_meta_title=\"\", products_meta_description=\"\", products_meta_keywords=\"\", products_url=\"\" WHERE products_id=".$products_id." AND language_id=".$einstellungen->languages_id);
+
+                  $productstable = $oostable['products'];
+			xtc_db_query("UPDATE $productstable SET products_fsk18=0, products_shippingtime=$shipping_status, products_startpage=$startseite, products_model=\"$artikel->cArtNr\", products_price=\"$artikel->fVKNetto\", products_tax_class_id=\"$products_tax_class_id\", products_quantity=\"$artikel->nLagerbestand\", products_ean=\"$artikel->cBarcode\", products_weight=\"$artikel->fGewicht\", manufacturers_id=\"$manufacturers_id\", products_status=1 WHERE products_id=".$products_id);
+
+                  $products_descriptiontable = $oostable['products_description'];
+			xtc_db_query("UPDATE $products_descriptiontable SET products_name=\"$artikel->cName\", products_description=\"$artikel->cBeschreibung\", products_short_description=\"$artikel->cKurzBeschreibung\", products_keywords=\"\", products_meta_title=\"\", products_meta_description=\"\", products_meta_keywords=\"\", products_url=\"\" WHERE products_id=".$products_id." AND language_id=".$einstellungen->languages_id);
 			//kundengrp preise
 			insertPreise($products_id);
 		}
@@ -99,8 +101,10 @@ if (auth())
 			//hole Mwst classId
 			$products_tax_class_id = holeSteuerId($artikel->fMwSt);
 			//setze Hersteller, falls es ihn noch nicht gibt
-			$manufacturers_id = holeHerstellerId($artikel->cHersteller);			
-			xtc_db_query("INSERT INTO products (products_shippingtime, products_startpage, products_model, products_price, products_tax_class_id, products_quantity, products_ean, products_weight, manufacturers_id, product_template, options_template, products_status) values ($shipping_status,$startseite,\"".$artikel->cArtNr."\",$artikel->fVKNetto,$products_tax_class_id,$artikel->nLagerbestand,\"".$artikel->cBarcode."\",$artikel->fGewicht,$manufacturers_id,\"".$einstellungen->prod_product_template."\",\"".$einstellungen->prod_options_template."\",1)");
+			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
+
+                  $productstable = $oostable['products'];
+			xtc_db_query("INSERT INTO $productstable (products_shippingtime, products_startpage, products_model, products_price, products_tax_class_id, products_quantity, products_ean, products_weight, manufacturers_id, product_template, options_template, products_status) values ($shipping_status,$startseite,\"".$artikel->cArtNr."\",$artikel->fVKNetto,$products_tax_class_id,$artikel->nLagerbestand,\"".$artikel->cBarcode."\",$artikel->fGewicht,$manufacturers_id,\"".$einstellungen->prod_product_template."\",\"".$einstellungen->prod_options_template."\",1)");
 			//hole id
 			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 			$products_id_arr = mysql_fetch_row($query);
@@ -109,7 +113,10 @@ if (auth())
 				//mssen Preise in spezielle tabellen?
 				$products_id=$products_id_arr[0];
 				insertPreise($products_id_arr[0]);
-				xtc_db_query("INSERT INTO products_description (products_id, products_name, products_description, products_short_description, language_id) values (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
+
+                  $products_descriptiontable = $oostable['products_description'];
+
+				xtc_db_query("INSERT INTO $products_descriptiontable (products_id, products_name, products_description, products_short_description, language_id) values (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
 				setMappingArtikel($artikel->kArtikel,$products_id_arr[0]);
 			}
 			else 
@@ -137,7 +144,8 @@ if (auth())
 				$products_vpe_id = $max_shipping_products_vpe_arr[0]+1;
 				xtc_db_query("INSERT INTO products_vpe (products_vpe_id, language_id, products_vpe_name) values ($products_vpe_id, $einstellungen->languages_id, \"$artikel->cEinheit\")");
 			}
-			xtc_db_query("UPDATEproducts set products_vpe=".$products_vpe_id." WHERE products_id=".$products_id);
+                  $productstable = $oostable['products'];
+			xtc_db_query("UPDATE $productstable SET products_vpe=".$products_vpe_id." WHERE products_id=".$products_id);
 		}
  	}
 	else
@@ -147,7 +155,9 @@ if (auth())
 	{
 		$products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
 		if ($products_id>0)
-			xtc_db_query("UPDATEproducts set products_status=0 WHERE products_id=".$products_id);
+
+                  $productstable = $oostable['products'];
+			xtc_db_query("UPDATE $productstable SET products_status=0 WHERE products_id=".$products_id);
 		$return = 0;
 	}
 }
@@ -157,6 +167,10 @@ logge($return);
 
 function insertPreise($products_id)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$personalOfferTable = "personal_offers_by_customers_status_";
 	$endKunden_arr = explode(";",$GLOBALS['einstellungen']->mappingEndkunde);
 	foreach ($endKunden_arr as $customers_status_id)
@@ -202,6 +216,11 @@ function insertPreise($products_id)
 
 function holeHerstellerId($cHersteller)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	if (strlen($cHersteller)>0)
 	{
 		//ex. dieser Hersteller?
@@ -224,19 +243,29 @@ function holeHerstellerId($cHersteller)
 
 function holeSteuerId($MwSt)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	//existiert so ein Steuersatz ?
-	$cur_query = xtc_db_query("SELECT tax_class_id FROM tax_rates WHERE tax_zone_id=".$GLOBALS['einstellungen']->tax_zone_id." AND tax_rate=".$MwSt);
+    $tax_ratestable = $oostable['tax_rates'];
+	$cur_query = xtc_db_query("SELECT tax_class_id
+                                   FROM $tax_ratestable
+                                   WHERE tax_zone_id=".$GLOBALS['einstellungen']->tax_zone_id."
+                                     AND tax_rate=".$MwSt);
 	$tax = mysql_fetch_object($cur_query);
 	if ($tax->tax_class_id>0)
 		return $tax->tax_class_id;
 	else 
 	{
-		//erstelle klasse
-		xtc_db_query("INSERT INTO tax_class (tax_class_title, date_added) values (\"eazySales Steuerklasse ".$MwSt."%\", now())");
+       $tax_classtable = $oostable['tax_class'];
+		xtc_db_query("INSERT INTO $tax_classtable (tax_class_title, date_added) values (\"eazySales Steuerklasse ".$MwSt."%\", now())");
 		$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 		$tax_class_id_arr = mysql_fetch_row($query);
-		//fge diesen Steuersatz ein
-		xtc_db_query("INSERT INTO tax_rates (tax_zone_id, tax_class_id, tax_priority, tax_rate, date_added) values (".$GLOBALS['einstellungen']->tax_zone_id.",".$tax_class_id_arr[0].", ".$GLOBALS['einstellungen']->tax_priority.", ".$MwSt.", now())");
+
+       $tax_ratestable = $oostable['tax_rates'];
+		xtc_db_query("INSERT INTO $tax_ratestable (tax_zone_id, tax_class_id, tax_priority, tax_rate, date_added) values (".$GLOBALS['einstellungen']->tax_zone_id.",".$tax_class_id_arr[0].", ".$GLOBALS['einstellungen']->tax_priority.", ".$MwSt.", now())");
 		return $tax_class_id_arr[0];
 	}
 }

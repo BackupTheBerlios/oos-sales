@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: AdminSession.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
+   $Id: AdminSession.php,v 1.5 2006/07/09 14:06:28 r23 Exp $
 
    wawi - osis online shop
 
@@ -67,7 +67,7 @@ class AdminSession {
 	   // if yes,
 	   if(mysql_num_rows($res)) {
 	       // ...update session-data
-	       mysql_query("UPDATE eazysales_adminsession
+	       mysql_query("UPDATE  eazysales_adminsession
 	                     SET nSessionExpires = '$newExp',
 	                     cSessionData = '$sessData'
 	                     WHERE  cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
