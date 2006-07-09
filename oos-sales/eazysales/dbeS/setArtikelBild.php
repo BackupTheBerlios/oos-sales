@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setArtikelBild.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
+   $Id: setArtikelBild.php,v 1.9 2006/07/09 14:41:41 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,7 +45,7 @@ if (auth())
 	if (intval($_POST['kArtikelBild'])>0 && intval($_POST['nNr'])==1 && $_FILES['bild'])
 	{
 		//hol products_id
-		$products_id = getFremdArtikel(intval($_POST['kArtikelBild']));		
+		$products_id = getFremdArtikel(intval($_POST['kArtikelBild']));
 		$bildname=$products_id."_".(intval($_POST['nNr'])-1).".jpg";
 		move_uploaded_file($_FILES['bild']['tmp_name'],DIR_FS_CATALOG_ORIGINAL_IMAGES.$bildname);
 		
@@ -57,7 +57,10 @@ if (auth())
 			$ratio = $width / $height;
 			
 			//thumbnail
-			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_THUMBNAIL_WIDTH\"");
+                        $configurationtable = $oostable['configuration'];
+			$cur_query = xtc_db_query("SELECT configuration_value
+                                                   FROM $configurationtable
+                                                   WHERE configuration_key=\"PRODUCT_IMAGE_THUMBNAIL_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 120;
 			if ($width_obj->configuration_value>0)
@@ -68,7 +71,10 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_THUMBNAIL_IMAGES.$bildname, 80);
 			
 			//info
-			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_INFO_WIDTH\"");
+                        $configurationtable = $oostable['configuration'];
+			$cur_query = xtc_db_query("SELECT configuration_value
+                                                   FROM $configurationtable
+                                                   WHERE configuration_key=\"PRODUCT_IMAGE_INFO_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 200;
 			if ($width_obj->configuration_value>0)
@@ -79,7 +85,10 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_INFO_IMAGES.$bildname, 80);
 						
 			//popup
-			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_POPUP_WIDTH\"");
+                        $configurationtable = $oostable['configuration'];
+			$cur_query = xtc_db_query("SELECT configuration_value
+                                                   FROM $configurationtable
+                                                   WHERE configuration_key=\"PRODUCT_IMAGE_POPUP_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 300;
 			if ($width_obj->configuration_value>0)
@@ -90,7 +99,8 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_POPUP_IMAGES.$bildname, 80);
 		
 			//updaten
-			xtc_db_query("UPDATE products SET products_image=\"$bildname\" WHERE products_id=".$products_id);
+                        $productstable = $oostable['products'];
+			xtc_db_query("UPDATE $productstable SET products_image=\"$bildname\" WHERE products_id=".$products_id);
 
 		}
 	}
