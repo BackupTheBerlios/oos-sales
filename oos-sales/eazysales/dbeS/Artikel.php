@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: Artikel.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
 
    wawi - osis online shop
 
@@ -87,9 +87,9 @@ if (auth())
 			//evtl. neuer Hersteller?
 			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
 			//update products
-			xtc_db_query("update products set products_fsk18=0, products_shippingtime=$shipping_status, products_startpage=$startseite, products_model=\"$artikel->cArtNr\", products_price=\"$artikel->fVKNetto\", products_tax_class_id=\"$products_tax_class_id\", products_quantity=\"$artikel->nLagerbestand\", products_ean=\"$artikel->cBarcode\", products_weight=\"$artikel->fGewicht\", manufacturers_id=\"$manufacturers_id\", products_status=1 WHERE products_id=".$products_id);
+			xtc_db_query("UPDATEproducts set products_fsk18=0, products_shippingtime=$shipping_status, products_startpage=$startseite, products_model=\"$artikel->cArtNr\", products_price=\"$artikel->fVKNetto\", products_tax_class_id=\"$products_tax_class_id\", products_quantity=\"$artikel->nLagerbestand\", products_ean=\"$artikel->cBarcode\", products_weight=\"$artikel->fGewicht\", manufacturers_id=\"$manufacturers_id\", products_status=1 WHERE products_id=".$products_id);
 			//update products_description
-			xtc_db_query("update products_description set products_name=\"$artikel->cName\", products_description=\"$artikel->cBeschreibung\", products_short_description=\"$artikel->cKurzBeschreibung\", products_keywords=\"\", products_meta_title=\"\", products_meta_description=\"\", products_meta_keywords=\"\", products_url=\"\" WHERE products_id=".$products_id." AND language_id=".$einstellungen->languages_id);
+			xtc_db_query("UPDATEproducts_description set products_name=\"$artikel->cName\", products_description=\"$artikel->cBeschreibung\", products_short_description=\"$artikel->cKurzBeschreibung\", products_keywords=\"\", products_meta_title=\"\", products_meta_description=\"\", products_meta_keywords=\"\", products_url=\"\" WHERE products_id=".$products_id." AND language_id=".$einstellungen->languages_id);
 			//kundengrp preise
 			insertPreise($products_id);
 		}
@@ -137,7 +137,7 @@ if (auth())
 				$products_vpe_id = $max_shipping_products_vpe_arr[0]+1;
 				xtc_db_query("INSERT INTO products_vpe (products_vpe_id, language_id, products_vpe_name) values ($products_vpe_id, $einstellungen->languages_id, \"$artikel->cEinheit\")");
 			}
-			xtc_db_query("update products set products_vpe=".$products_vpe_id." WHERE products_id=".$products_id);
+			xtc_db_query("UPDATEproducts set products_vpe=".$products_vpe_id." WHERE products_id=".$products_id);
 		}
  	}
 	else
@@ -147,7 +147,7 @@ if (auth())
 	{
 		$products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
 		if ($products_id>0)
-			xtc_db_query("update products set products_status=0 WHERE products_id=".$products_id);
+			xtc_db_query("UPDATEproducts set products_status=0 WHERE products_id=".$products_id);
 		$return = 0;
 	}
 }

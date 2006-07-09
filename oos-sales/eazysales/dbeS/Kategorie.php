@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: Kategorie.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
 
    wawi - osis online shop
 
@@ -73,8 +73,8 @@ if (auth())
 		if ($categories_id>0)
 		{
 			//update
-			xtc_db_query("update categories set parent_id=$Kategorie->parent_id, categories_status=1 WHERE categories_id=".$categories_id);
-			xtc_db_query("update categories_description set categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" WHERE categories_id=".$categories_id." AND language_id=".$einstellungen->languages_id);
+			xtc_db_query("UPDATEcategories set parent_id=$Kategorie->parent_id, categories_status=1 WHERE categories_id=".$categories_id);
+			xtc_db_query("UPDATEcategories_description set categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" WHERE categories_id=".$categories_id." AND language_id=".$einstellungen->languages_id);
 		}
 		else 
 		{
@@ -92,7 +92,7 @@ if (auth())
 		$return=0;
 		$cat = getFremdKategorie(intval($_POST['KeyKategorie']));
 		if ($cat>0)
-			xtc_db_query("update categories set categories_status=0 WHERE categories_id=".$cat);
+			xtc_db_query("UPDATEcategories set categories_status=0 WHERE categories_id=".$cat);
 	}
 }
 

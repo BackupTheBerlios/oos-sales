@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setArtikelBild.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: setArtikelBild.php,v 1.7 2006/07/09 13:52:03 r23 Exp $
 
    wawi - osis online shop
 
@@ -90,7 +90,7 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_POPUP_IMAGES.$bildname, 80);
 		
 			//updaten
-			xtc_db_query("update products set products_image=\"$bildname\" WHERE products_id=".$products_id);
+			xtc_db_query("UPDATEproducts set products_image=\"$bildname\" WHERE products_id=".$products_id);
 
 		}
 	}
