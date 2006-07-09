@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.7 2006/07/09 02:41:25 r23 Exp $
+   $Id: konfiguration.php,v 1.8 2006/07/09 03:18:58 r23 Exp $
 
    wawi - osis online shop
 
@@ -58,11 +58,16 @@ function zeigeKonfigForm()
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	//hole einstellungen
-	$cur_query = xtc_db_query("SELECT * FROM eazysales_einstellungen");
+    $cur_query = xtc_db_query("SELECT currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL,
+                                      tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,
+                                      cat_listing_template, cat_category_template, cat_sorting, cat_sorting2,
+                                      prod_product_template, prod_options_template, StatusAbgeholt, StatusVersendet
+                               FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);	
 	
-	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"CURRENT_TEMPLATE\"");
+	$cur_query = xtc_db_query("SELECT configuration_value
+                                   FROM configuration
+                                   WHERE configuration_key=\"CURRENT_TEMPLATE\"");
 	$cur_template = mysql_fetch_object($cur_query);
 	
 	//Templategeschichten
@@ -93,28 +98,36 @@ function zeigeKonfigForm()
 		$einstellungen->versandMwst = 16;
 	if (!$einstellungen->languages_id)
 	{
-		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_LANGUAGE\"");
+		$cur_query = xtc_db_query("SELECT configuration_value
+                                           FROM configuration
+                                           WHERE configuration_key=\"DEFAULT_LANGUAGE\"");
 		$def_lang = mysql_fetch_object($cur_query);
+
 		if ($def_lang->configuration_value)
 		{
-			$cur_query = xtc_db_query("SELECT languages_id FROM languages WHERE code=\"".$def_lang->configuration_value."\"");
-			$langID = mysql_fetch_object($cur_query);			
+			$cur_query = xtc_db_query("SELECT languages_id
+                                                   FROM languages
+                                                   WHERE code=\"".$def_lang->configuration_value."\"");
+			$langID = mysql_fetch_object($cur_query);
 			$einstellungen->languages_id = $langID->languages_id;
-		}
-		else 
-		{
+		} else {
 			//erstbeste Lang
 			$cur_query = xtc_db_query("SELECT languages_id FROM languages");
-			$langID = mysql_fetch_object($cur_query);			
+			$langID = mysql_fetch_object($cur_query);
 			$einstellungen->languages_id = $langID->languages_id;
 		}
 	}
 	if (!$einstellungen->mappingEndkunde)
 	{
-		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
+		$cur_query = xtc_db_query("SELECT configuration_value 
+                                           FROM configuration 
+                                           WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
 		$def_userstatus = mysql_fetch_object($cur_query);
 		$einstellungen->mappingEndkunde=$def_userstatus->configuration_value;
-		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
+
+		$cur_query = xtc_db_query("SELECT configuration_value 
+                                           FROM configuration 
+                                           WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
 		$def_userstatus_guest = mysql_fetch_object($cur_query);		
 		$einstellungen->mappingEndkunde.=";".$def_userstatus_guest->configuration_value;
 	}

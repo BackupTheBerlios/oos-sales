@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.6 2006/07/09 02:20:22 r23 Exp $
+   $Id: index.php,v 1.7 2006/07/09 03:18:58 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,23 +40,23 @@ require '../paths.php';
 //get DB Connecion
 // include server parameters
 require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
-require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
-require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! �erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
+// require  the database functions
+  $adodb_logsqltable = $oostable['adodb_logsql'];
+  if (!defined('ADODB_LOGSQL_TABLE')) {
+    define('ADODB_LOGSQL_TABLE', $adodb_logsqltable);
+  }
+  require  OOS_ADODB . 'adodb-errorhandler.inc.php';
+  require  OOS_ADODB . 'adodb.inc.php';
+  require  OOS_FUNCTIONS . 'function_db.php';
 
-$Con = 0;
-//checke connection zur db
-if ($_POST["DBhost"])
-	$Con = pruefeConnection();
+// make a connection to the database... now 
+  if (!oosDBInit()) {
+    die('Unable to connect to database server!');
+  }
 
-zeigeKopf();
-if (schritt1EingabenVollstaendig())
-	installiere();
-else
-	installSchritt1();
-
-zeigeFuss();
+  $dbconn =& oosDBGetConn();
+  oosDB_importTables($oostable);
 
 
 
@@ -125,6 +125,10 @@ function parse_mysql_dump($url) {
 
 function installSchritt1()
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	//konfig
 	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"CURRENT_TEMPLATE\"");
 	$cur_template = mysql_fetch_object($cur_query);
@@ -477,7 +481,13 @@ function schritt1EingabenVollstaendig()
 
 function installiere()
 {
-	$hinweis = parse_mysql_dump("eazySales_connector_DB.sql");
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
+
+# $hinweis = parse_mysql_dump("eazySales_connector_DB.sql");
 	//inserte syncuser
 	if (!mysql_query("INSERT INTO eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br>".mysql_error()." Nr: ".mysql_errno();
 	//inserte evtl. sentorder
@@ -611,9 +621,4 @@ function getTemplateArray($cur_template, $module)
 	return $files;
 }
 
-
-function xtc_db_query($query)
-{	
-	return mysql_query($query);
-}
 ?>
