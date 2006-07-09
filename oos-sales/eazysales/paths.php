@@ -1,7 +1,10 @@
 <?php
+
+
+
 /**
  * eazySales_Connector/index.php
- * AdminLogin für eazySales Connector
+ * AdminLogin fr eazySales Connector
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
