@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VersandArt.php,v 1.4 2006/07/09 03:29:07 r23 Exp $
+   $Id: VersandArt.php,v 1.5 2006/07/09 14:11:27 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,23 +34,21 @@
  * @version v1.0 / 16.06.06
 */
 
-require 'syncinclude.php';
-$return=3;
-if (auth())
-{
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyVersandArt']))
-	{
-		$return = 0;
- 	}
-	else
-		$return=5;
+  require 'syncinclude.php';
 
-	if (intval($_POST["action"]) == 3 && intval($_POST['KeyVersandArt']))
-	{
-		$return = 0;
-	}
-}
+  $return = 3;
 
-echo($return);
-//logge($return);
+  if (auth()) {
+    if (intval($_POST["action"]) == 1 && intval($_POST['KeyVersandArt'])) {
+      $return = 0;
+    } else {
+      $return = 5;
+
+     if (intval($_POST["action"]) == 3 && intval($_POST['KeyVersandArt'])) {
+       $return = 0;
+     }
+  }
+
+  echo($return);
+// logge($return);
 ?>
