@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: adminTemplates.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: adminTemplates.php,v 1.3 2006/07/09 16:38:38 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: adminTemplates.php,v 1.0 16.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software
@@ -24,7 +24,7 @@
 
 /**
  * eazySales_Connector/adminTemplates.php
- * AdminLogin für eazySales Connector
+ * AdminLogin fr eazySales Connector
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
@@ -86,7 +86,7 @@ function zeigeLogin()
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>Admin-Login</h3></td></tr>
 								<tr><td class="content" align="center"><br>
-									Bitte loggen Sie sich als Admin ein. Es gelten die Zugangsdaten für den bestehenden Administrationsbereich des Shops.
+									Bitte loggen Sie sich als Admin ein. Es gelten die Zugangsdaten fr den bestehenden Administrationsbereich des Shops.
 									<form name="login" method="post" action="index.php">
 									<input type="hidden" name="adminlogin" value="1">
 									<table cellspacing="0" cellpadding="10" width="300" style="border-width:1px;border-color:#222222;border-style:solid;">
@@ -115,7 +115,7 @@ function zeigeLoginBereich()
 								<tr><td class="content_header" align="center"><h3>Willkommen im Konfigurationsbereich vom eazySales Connector</h3></td></tr>
 								<tr><td class="content" align="center"><br>
 										Sie haben sich erfolgreich eingeloggt.<br>
-										Bitte benutzen Sie das Menü links zur Navigation.<br><br>
+										Bitte benutzen Sie das Men links zur Navigation.<br><br>
 								</td></tr>
 							</table><br>
 						</td>

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.7 2006/07/09 03:18:58 r23 Exp $
+   $Id: syncinclude.php,v 1.8 2006/07/09 16:38:39 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: syncinclude.php,v 1.0 14.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

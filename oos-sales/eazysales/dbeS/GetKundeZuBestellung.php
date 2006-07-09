@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetKundeZuBestellung.php,v 1.7 2006/07/09 15:35:14 r23 Exp $
+   $Id: GetKundeZuBestellung.php,v 1.8 2006/07/09 16:38:38 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: GetKundeZuBestellung.php,v1.02  04.07.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

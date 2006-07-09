@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: AnfangsNummern.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: AnfangsNummern.php,v 1.3 2006/07/09 16:38:38 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: AnfangsNummern.php,v1.0  15.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

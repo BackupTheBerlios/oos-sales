@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategorieArtikel.php,v 1.6 2006/07/09 15:21:05 r23 Exp $
+   $Id: KategorieArtikel.php,v 1.7 2006/07/09 16:38:39 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: KategorieArtikel.php,v1.01  16.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

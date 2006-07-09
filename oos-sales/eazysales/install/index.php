@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.8 2006/07/09 13:46:14 r23 Exp $
+   $Id: index.php,v 1.9 2006/07/09 16:38:39 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: index.php,v 1.01 14.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

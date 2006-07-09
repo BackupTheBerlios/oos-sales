@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetFirma.php,v 1.5 2006/07/09 14:29:30 r23 Exp $
+   $Id: SetFirma.php,v 1.6 2006/07/09 16:38:39 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: SetFirma.php,v 1.0 16.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

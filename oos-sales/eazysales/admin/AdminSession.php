@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: AdminSession.php,v 1.5 2006/07/09 14:06:28 r23 Exp $
+   $Id: AdminSession.php,v 1.6 2006/07/09 16:38:38 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: AdminSession.php,v 1.0 16.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software

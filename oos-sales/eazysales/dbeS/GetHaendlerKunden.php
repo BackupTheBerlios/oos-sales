@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetHaendlerKunden.php,v 1.4 2006/07/09 15:36:11 r23 Exp $
+   $Id: GetHaendlerKunden.php,v 1.5 2006/07/09 16:38:38 r23 Exp $
 
    wawi - osis online shop
 
@@ -11,7 +11,7 @@
    File: GetHaendlerKunden.php,v1.0  15.06.06
    ----------------------------------------------------------------------
 
-   eazySales_Connector
+   eazySales Connector
    http://www.jtl-software.de/eazysales.php
 
    Copyright (c) 2006, JTL-Software
