@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: index.php,v 1.3 2006/07/09 01:55:15 r23 Exp $
 
    wawi - osis online shop
 
@@ -24,7 +24,7 @@
 
 /**
  * eazySales_Connector/install/index.php
- * Datenbank installscript für eazySales Connector
+ * Datenbank installscript fr eazySales Connector
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
@@ -35,7 +35,7 @@
 */
 
 //hole pfad
-require_once("../paths.php");
+require '../paths.php';
 
 //get DB Connecion
 // include server parameters
@@ -43,7 +43,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
 require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! Überprüfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
+xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! ï¿½erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
 $Con = 0;
 //checke connection zur db
@@ -68,7 +68,7 @@ function zeigeKopf()
 		<meta http-equiv="content-type" content="text/html;charset=iso-8559-1">
 		<meta http-equiv="language" content="deutsch, de">
 		<meta name="author" content="JTL-Software, www.jtl-software.de">
-		<title>eazySales Connector für XT-Commerce Installation</title>
+		<title>eazySales Connector fr XT-Commerce Installation</title>
 		<link rel="stylesheet" type="text/css" href="../admin/eazySalesConnectorAdmin.css">
 	</head>
 	<body>
@@ -145,7 +145,7 @@ function installSchritt1()
 	$order_array2=array(array('id' => 'ASC','text'=>'Aufsteigend'),
 				array('id' => 'DESC','text'=>'Absteigend'));
 				
-	//Templatesachen für Produkte
+	//Templatesachen fr Produkte
 	
 				
 	//defaultwerte setzen
@@ -188,7 +188,7 @@ function installSchritt1()
 	
 	$hinweis="";
 	if ($_POST["installiereSchritt1"]==1)
-		$hinweis="Bitte alle Felder vollständig ausfüllen!";
+		$hinweis="Bitte alle Felder vollstï¿½dig ausfllen!";
 	srand();
 	$syncuser = generatePW(8);
 	sleep(1);
@@ -200,17 +200,17 @@ function installSchritt1()
 								<tr><td class="content" ><br>
 										Dieses Modul erlaubt es, Ihren xt:Commerce Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br><br>
 										Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br><br>
-										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprüche für evtl. entstandene Schäden werden nicht übernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br><br>
+										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprche fr evtl. entstandene Schï¿½en werden nicht bernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br><br>
 
 										<center>
-										Für den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, müssen einige Einstellungen als Standard gesetzt sein.<br><br>
+										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br><br>
 										<table cellspacing="0" cellpadding="0" width="580">
 											<tr>
 												<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
 											</tr>
 											<tr>
 												<td class="content" align="center">
-													Hilfe zu den einzelnen Einstellungmöglichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
+													Hilfe zu den einzelnen Einstellungmï¿½lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
 													<form action="index.php" method="post" name="konfig">
 													<input type="hidden" name="install" value="1">
 													<table cellspacing="0" cellpadding="10" width="100%">
@@ -218,7 +218,7 @@ function installSchritt1()
 															<td><b>Shop URL</b></td><td><input type="text" name="shopurl" size="50" class="konfig" value="'.$einstellungen->shopURL.'"></td>
 														</tr>
 														<tr>
-															<td><b>Standardwährung</b></td><td><select name="waehrung">
+															<td><b>Standardwï¿½rung</b></td><td><select name="waehrung">
 	');
 	$cur_query = xtc_db_query("select * from currencies");
 	while ($currency = mysql_fetch_object($cur_query))
@@ -279,16 +279,16 @@ function installSchritt1()
 															</td>
 														</tr>
 														<tr>
-															<td><b>Standard Steuersatzpriorität</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
+															<td><b>Standard Steuersatzprioritï¿½</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
 														</tr>
 														<tr>
-															<td><b>Steuersatz für Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
+															<td><b>Steuersatz fr Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
 														</tr>
 														<tr>
-															<td>Bestellstatusänderungen</td><td>&nbsp;</td>
+															<td>Bestellstatusï¿½derungen</td><td>&nbsp;</td>
 														</tr>
 														<tr>
-															<td><b>Sobald Bestellung erfolgreich in eazySales übernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ändern</option>
+															<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ï¿½dern</option>
 	');
 	$cur_query = xtc_db_query("select * from orders_status where language_id=".$einstellungen->languages_id." order by orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
@@ -300,7 +300,7 @@ function installSchritt1()
 															</td>
 														</tr>
 														<tr>
-															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ändern</option>
+															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ï¿½dern</option>
 	');
 	$cur_query = xtc_db_query("select * from orders_status where language_id=".$einstellungen->languages_id." order by orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
@@ -312,7 +312,7 @@ function installSchritt1()
 															</td>
 														</tr>
 													</table><br>
-													eazySales kennt nur die Kundengruppen Endkunde und Händerkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist für die korrekte Preiszuordnung unerlässlich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
+													eazySales kennt nur die Kundengruppen Endkunde und Hï¿½derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerlï¿½slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td valign="top"><b>eazySales Endkunde</b></td><td>
@@ -327,7 +327,7 @@ function installSchritt1()
 															</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>eazySales Händlerkunde</b></td><td>
+															<td valign="top"><b>eazySales Hï¿½dlerkunde</b></td><td>
 	');
 	$cur_query = xtc_db_query("select * from customers_status where language_id=".$einstellungen->languages_id." order by customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
@@ -339,13 +339,13 @@ function installSchritt1()
 															</td>
 														</tr>
 													</table><br>
-													Vorlagen für Kategorien und Artikel, die über eazySales eingestellt werden:
+													Vorlagen fr Kategorien und Artikel, die ber eazySales eingestellt werden:
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td>Kategorien</td><td>&nbsp;</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>Artikelübersicht in Kategorien</b></td><td><select name="cat_listing">
+															<td valign="top"><b>Artikelbersicht in Kategorien</b></td><td><select name="cat_listing">
 	');
 	if (is_array($product_listing_template_arr))
 	{	
@@ -359,7 +359,7 @@ function installSchritt1()
 															</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>Kategorieübersicht</b></td><td><select name="cat_template">
+															<td valign="top"><b>Kategoriebersicht</b></td><td><select name="cat_template">
 	');
 	if (is_array($category_listing_template_arr))
 	{	
@@ -429,7 +429,7 @@ function installSchritt1()
 														</tr>
 														<tr>
 															<td colspan="2">
-															Möchten Sie alle bisher eingegangenen Bestellungen samt Kundenadressen beim ersten Internetabgleich in eazySales erhalten? Falls nein, werden nur alle zukünftigen Bestellungen nach eazySales übertragen. <input type="radio" name="altebestellungen" value="1" checked>Ja / <input type="radio" name="altebestellungen" value="2">Nein
+															Mï¿½hten Sie alle bisher eingegangenen Bestellungen samt Kundenadressen beim ersten Internetabgleich in eazySales erhalten? Falls nein, werden nur alle zuknftigen Bestellungen nach eazySales bertragen. <input type="radio" name="altebestellungen" value="1" checked>Ja / <input type="radio" name="altebestellungen" value="2">Nein
 															
 															</td>
 														</tr>
@@ -443,7 +443,7 @@ function installSchritt1()
 											</tr>
 											<tr>
 												<td class="content">													
-													Für die Synchronisation zwischen eazySales und diesem wird ein Synchronisationsbenutzer benötigt. Bitte <b>notieren Sie sich</b> unbedingt <b>diese Angaben</b> und setzen sie einen starken kryptischen Benutzernamen und Passwort - oder übernehmen Sie die zufällig generierten Vorgaben. Diese Angaben werden einmalig in den eazySales Einstellungen eingetragen.
+													Fr die Synchronisation zwischen eazySales und diesem wird ein Synchronisationsbenutzer benï¿½igt. Bitte <b>notieren Sie sich</b> unbedingt <b>diese Angaben</b> und setzen sie einen starken kryptischen Benutzernamen und Passwort - oder bernehmen Sie die zufï¿½lig generierten Vorgaben. Diese Angaben werden einmalig in den eazySales Einstellungen eingetragen.
 													<br><br><br>
 													<center>
 													<table cellspacing="0" cellpadding="10" width="70%" style="border-width:1px;border-color:#222222;border-style:solid;">
@@ -534,7 +534,7 @@ function installiere()
 												</tr>
 												<tr>
 													<td class="content">
-	'.$hinweis.'<br><br><br>Lösungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
+	'.$hinweis.'<br><br><br>Lï¿½ungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
 													</td>
 												</tr>
 											</table>
@@ -554,13 +554,13 @@ function installiere()
 									<tr><td class="content" align="center"><br>
 											<table cellspacing="0" cellpadding="0" width="580">
 												<tr>
-													<td class="unter_content_header">&nbsp;<b>Die Datenbank für eazySales Connector wurde aufgesetzt</b></td>
+													<td class="unter_content_header">&nbsp;<b>Die Datenbank fr eazySales Connector wurde aufgesetzt</b></td>
 												</tr>
 												<tr>
 													<td class="content">
 														Die Installation ist serverseitig soweit abgeschlossen.<br><br>
-														Sie müssen nun eazySales im Menü Einstellungen -> Shop-Einstellungen konfigurieren.<br><br>
-														Folgende Einstellungen müssen Sie in eazySales eintragen:<br><br>
+														Sie mssen nun eazySales im Men Einstellungen -> Shop-Einstellungen konfigurieren.<br><br>
+														Folgende Einstellungen mssen Sie in eazySales eintragen:<br><br>
 														<table width="95%">
 														<tr><td><b>API-KEY</b>: </td><td>eazySales Connector</td></tr>
 														<tr><td><b>Web-Server</b>: </td><td>'.substr($url,0,strlen($url)-18).'</td></tr>
@@ -568,8 +568,8 @@ function installiere()
 														<tr><td><b>Passwort</b>: </td><td>'.$_POST['syncpass'].'</td></tr>
 														</table><br><br>
 														Setzen Sie einen Haken bei "Bilder per HTTP versenden".<br>
-														Bei den FTP-Einstellungen müssen Sie nichts eintragen.<br>
-														Wir wünschen Ihnen viel Erfolg mit Ihrem Shop!
+														Bei den FTP-Einstellungen mssen Sie nichts eintragen.<br>
+														Wir wnschen Ihnen viel Erfolg mit Ihrem Shop!
 													</td>
 												</tr>
 											</table>

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: syncinclude.php,v 1.3 2006/07/09 01:55:15 r23 Exp $
 
    wawi - osis online shop
 
@@ -23,7 +23,7 @@
 
 /**
  * eazySales_Connector/dbeS/syncinclude.php
- * Tools für Sync
+ * Tools fr Sync
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
@@ -33,7 +33,7 @@
  * @version v1.0 / 14.06.06
 */
 
-require_once("../paths.php");
+require '../paths.php';
 
 //get DB Connecion
 // include server parameters
@@ -41,7 +41,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
 require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! Überprüfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
+xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! ï¿½erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
 define ('ES_ENABLE_LOGGING',0);
 
@@ -69,12 +69,12 @@ function auth()
 }
 
 /**
- * Gibt einen vardump eines Objekts aus, der sich besser loggen lässt.
+ * Gibt einen vardump eines Objekts aus, der sich besser loggen lï¿½st.
  *
  * @param Object $vardump Objekt, das gedumpt werden soll
- * @param int $key Schlüssel
+ * @param int $key Schlssel
  * @param int $level Aktuellw Tiefe
- * @param String $return Rückgabestring
+ * @param String $return Rckgabestring
  * @return String verbesserten Vardump
  */
 function Dump($vardump)
@@ -100,10 +100,10 @@ function Dump($vardump)
 }
 
 /**
- * Fügt Anführungszeichen vorne und am Ende an, sobald die Variable nicht leer.
+ * Fgt Anfhrungszeichen vorne und am Ende an, sobald die Variable nicht leer.
  *
  * @param mixed $value
- * @return $value mit Anführungszeichen vorne und hinten. Falls $value leer, werden diese Zeichen nicht hinzugefügt.
+ * @return $value mit Anfhrungszeichen vorne und hinten. Falls $value leer, werden diese Zeichen nicht hinzugefgt.
  */
 function CSVkonform($value)
 {
@@ -282,7 +282,7 @@ function getEsEigenschaftsWert($mein_key, $kArtikel)
 /**
  * real mysql escape mysql escape
  * @access public
- * @param string $ausdruck Ausdruck, der escaped für mysql werden soll
+ * @param string $ausdruck Ausdruck, der escaped fr mysql werden soll
  * @return escaped expression
  */
 function realEscape ($ausdruck)

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: admininclude.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: admininclude.php,v 1.3 2006/07/09 01:55:15 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 16.06.06
 */
 
-require_once("../paths.php");
+require '../paths.php';
 require_once("AdminSession.php");
 
 //get DB Connecion
@@ -45,7 +45,7 @@ require_once (DOCROOT_XTC_PATH.'includes/configure.php');
 require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
 require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! Überprüfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
+xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! ï¿½erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
 function eS_execute_query($query)
 {	
@@ -55,7 +55,7 @@ function eS_execute_query($query)
 /**
  * real mysql escape mysql escape
  * @access public
- * @param string $ausdruck Ausdruck, der escaped für mysql werden soll
+ * @param string $ausdruck Ausdruck, der escaped fr mysql werden soll
  * @return escaped expression
  */
 function realEscape ($ausdruck)
