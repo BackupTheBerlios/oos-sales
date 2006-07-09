@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
+   $Id: SetBestellung.php,v 1.9 2006/07/09 14:32:40 r23 Exp $
 
    wawi - osis online shop
 
@@ -51,13 +51,17 @@ if (auth())
 		//setze status der Bestellung
 		if ($einstellungen->StatusVersendet>0)
 		{
-			xtc_db_query("UPDATE orders SET orders_status=".$einstellungen->StatusVersendet." WHERE orders_id=".intval($_POST['KeyBestellung']));
+
+                  $orderstable = $oostable['orders'];
+			xtc_db_query("UPDATE $orderstable SET orders_status=".$einstellungen->StatusVersendet." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$VersandInfo = realEscape($_POST["VersandInfo"]);
 			$VersandDatum = realEscape($_POST["VersandDatum"]);
 			$Tracking = realEscape($_POST["Tracking"]);
 			$kommentar = "Bestellung aus eazySales am $VersandDatum versandt.\n".$VersandInfo."\nIdentCode".$Tracking;
-			xtc_db_query("INSERT INTO orders_status_history (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusVersendet.", now(), \"".$kommentar."\")");
+
+                  $orders_status_historytable = $oostable['orders_status_history'];
+			xtc_db_query("INSERT INTO $orders_status_historytable (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusVersendet.", now(), \"".$kommentar."\")");
 		}
  	}
 
@@ -73,10 +77,14 @@ if (auth())
 		//setze status der Bestellung
 		if ($einstellungen->StatusAbgeholt>0)
 		{
-			xtc_db_query("UPDATE orders SET orders_status=".$einstellungen->StatusAbgeholt." WHERE orders_id=".intval($_POST['KeyBestellung']));
+
+                  $orderstable = $oostable['orders'];
+			xtc_db_query("UPDATE $orderstable SET orders_status=".$einstellungen->StatusAbgeholt." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$kommentar = "Erfolgreich in eazySales bernommen";
-			xtc_db_query("INSERT INTO orders_status_history (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusAbgeholt.", now(), \"".$kommentar."\")");
+
+                  $orders_status_historytable = $oostable['orders_status_history'];
+			xtc_db_query("INSERT INTO $orders_status_historytable (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusAbgeholt.", now(), \"".$kommentar."\")");
 		}
 		
 		//setze bestellung auf abgeholt
