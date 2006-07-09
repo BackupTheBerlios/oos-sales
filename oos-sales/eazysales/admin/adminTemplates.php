@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: adminTemplates.php,v 1.3 2006/07/09 16:38:38 r23 Exp $
+   $Id: adminTemplates.php,v 1.4 2006/07/09 22:46:16 r23 Exp $
 
    wawi - osis online shop
 
@@ -82,10 +82,10 @@ function zeigeFuss()
 function zeigeLogin()
 {
 	echo('
-						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center"><br>
+						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center"><br />
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>Admin-Login</h3></td></tr>
-								<tr><td class="content" align="center"><br>
+								<tr><td class="content" align="center"><br />
 									Bitte loggen Sie sich als Admin ein. Es gelten die Zugangsdaten fr den bestehenden Administrationsbereich des Shops.
 									<form name="login" method="post" action="index.php">
 									<input type="hidden" name="adminlogin" value="1">
@@ -97,12 +97,12 @@ function zeigeLogin()
 
 											<td><b>Passwort</b></td><td><input type="password" name="passwort" size="20" class="login"></td>
 										</tr>
-									</table><br><br>
+									</table><br /><br />
 										<input type="submit" value="eazySales Connector Login">
-										<br><br><br>
+										<br /><br /><br />
 									</form>
 								</td></tr>
-							</table><br>
+							</table><br />
 						</td>
 	');
 }
@@ -110,14 +110,14 @@ function zeigeLogin()
 function zeigeLoginBereich()
 {
 	echo('
-						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center" height="400"><br>
+						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center" height="400"><br />
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>Willkommen im Konfigurationsbereich vom eazySales Connector</h3></td></tr>
-								<tr><td class="content" align="center"><br>
-										Sie haben sich erfolgreich eingeloggt.<br>
-										Bitte benutzen Sie das Men links zur Navigation.<br><br>
+								<tr><td class="content" align="center"><br />
+										Sie haben sich erfolgreich eingeloggt.<br />
+										Bitte benutzen Sie das Men links zur Navigation.<br /><br />
 								</td></tr>
-							</table><br>
+							</table><br />
 						</td>
 	');
 }
@@ -127,10 +127,10 @@ function zeigeLinks($loggedIn)
 	if ($loggedIn==1)
 	{
 		echo('
-							<td width="140" bgcolor="#FAFAFA" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top"><br>
+							<td width="140" bgcolor="#FAFAFA" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top"><br />
 								<table cellspacing="0" cellpadding="0" width="100%">
-									<tr><td class="oberlink_gewaehlt" style="padding-left:5px;">eazySales Connector<br></td></tr>
-										<tr><td class="unterlink"><a class="innen_menu" href="konfiguration.php'.SID.'">Konfiguration</a><br></td></tr>
+									<tr><td class="oberlink_gewaehlt" style="padding-left:5px;">eazySales Connector<br /></td></tr>
+										<tr><td class="unterlink"><a class="innen_menu" href="konfiguration.php'.SID.'">Konfiguration</a><br /></td></tr>
 		');
 
 		switch(date(w))
@@ -146,7 +146,7 @@ function zeigeLinks($loggedIn)
 		}
 
 		echo('
-										<tr><td><br><br><br></td></tr>
+										<tr><td><br /><br /><br /></td></tr>
 										<tr><td class="user"><span class="small">&nbsp;'.$tag.', '.date("d.m.y H:i").'</span></td></tr>
 		');
 		echo('
@@ -157,9 +157,9 @@ function zeigeLinks($loggedIn)
 	else
 	{
 		echo('
-							<td width="140" bgcolor="#FAFAFA" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top"><br>
+							<td width="140" bgcolor="#FAFAFA" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top"><br />
 								<table cellspacing="0" cellpadding="0" width="100%">
-									<tr><td class="oberlink_gewaehlt"><a class="menu" href="">Login</a><br></td></tr>
+									<tr><td class="oberlink_gewaehlt"><a class="menu" href="">Login</a><br /></td></tr>
 								</table>
 							</td>
 		');

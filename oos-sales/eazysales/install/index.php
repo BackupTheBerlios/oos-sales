@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.11 2006/07/09 22:44:34 r23 Exp $
+   $Id: index.php,v 1.12 2006/07/09 22:46:16 r23 Exp $
 
    wawi - osis online shop
 
@@ -96,7 +96,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 			<td bgcolor="#542A11" height="48" align="center"><span class="small" style="color:#ffffff">&copy; 2004-2006 JTL-Software</span></td>
 		</tr>
 	</table>
-	<br>
+	<br />
 	<a href="htp://www.jtl-software.de/eazysales.php"><img src="../gfx/powered_by_eSales.gif"></a>
 	</center>
 	</body>
@@ -216,23 +216,23 @@ function installSchritt1() {
       $syncpass = generatePW(8);
 
       echo('
-						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br>
+						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
-								<tr><td class="content" ><br>
-										Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br><br>
-										Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br><br>
-										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprche fr evtl. entstandene Sch�en werden nicht bernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br><br>
+								<tr><td class="content" ><br />
+										Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br /><br />
+										Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br /><br />
+										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprche fr evtl. entstandene Sch�en werden nicht bernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br /><br />
 
 										<center>
-										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br><br>
+										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br /><br />
 										<table cellspacing="0" cellpadding="0" width="580">
 											<tr>
 												<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
 											</tr>
 											<tr>
 												<td class="content" align="center">
-													Hilfe zu den einzelnen Einstellungm�lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
+													Hilfe zu den einzelnen Einstellungm�lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br />
 													<form action="index.php" method="post" name="konfig">
 													<input type="hidden" name="install" value="1">
 													<table cellspacing="0" cellpadding="10" width="100%">
@@ -351,8 +351,8 @@ function installSchritt1() {
 															</select>														
 															</td>
 														</tr>
-													</table><br>
-													eazySales kennt nur die Kundengruppen Endkunde und H�derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerl�slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
+													</table><br />
+													eazySales kennt nur die Kundengruppen Endkunde und H�derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerl�slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td valign="top"><b>eazySales Endkunde</b></td><td>
@@ -365,7 +365,7 @@ function installSchritt1() {
                                    ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
-		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
+		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
 	}
 															
 	echo('
@@ -382,13 +382,13 @@ function installSchritt1() {
                                    ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
-		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
+		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
 	}
 															
 	echo('
 															</td>
 														</tr>
-													</table><br>
+													</table><br />
 													Vorlagen fr Kategorien und Artikel, die ber eazySales eingestellt werden:
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
@@ -483,10 +483,10 @@ function installSchritt1() {
 															
 															</td>
 														</tr>
-													</table><br>
+													</table><br />
 												</td>
 											</tr>
-										</table><br>
+										</table><br />
 										<table cellspacing="0" cellpadding="0" width="580">
 											<tr>
 												<td class="unter_content_header">&nbsp;<b>Synchronsations - Benutzerdaten</b></td>
@@ -494,7 +494,7 @@ function installSchritt1() {
 											<tr>
 												<td class="content">													
 													Fr die Synchronisation zwischen eazySales und diesem wird ein Synchronisationsbenutzer ben�igt. Bitte <b>notieren Sie sich</b> unbedingt <b>diese Angaben</b> und setzen sie einen starken kryptischen Benutzernamen und Passwort - oder bernehmen Sie die zuf�lig generierten Vorgaben. Diese Angaben werden einmalig in den eazySales Einstellungen eingetragen.
-													<br><br><br>
+													<br /><br /><br />
 													<center>
 													<table cellspacing="0" cellpadding="10" width="70%" style="border-width:1px;border-color:#222222;border-style:solid;">
 													<tr>
@@ -504,7 +504,7 @@ function installSchritt1() {
 														<td><b>Sync-Passwort</b></td><td><input type="text" name="syncpass" size="20" class="login" value="'.$syncpass.'"></td>
 													</tr>
 													</table>
-													<br><br>
+													<br /><br />
 													'.$hinweis.'
 													<input type="submit" value="Installation starten">
 													</form>
@@ -513,7 +513,7 @@ function installSchritt1() {
 											</tr>
 										</table>
 								</td></tr>
-							</table><br>
+							</table><br />
 						</td>
 	');
 }
@@ -535,7 +535,7 @@ function installiere()
 
 # $hinweis = parse_mysql_dump("eazySales_connector_DB.sql");
 	//inserte syncuser
-	if (!mysql_query("INSERT INTO eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br>".mysql_error()." Nr: ".mysql_errno();
+	if (!mysql_query("INSERT INTO eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br />".mysql_error()." Nr: ".mysql_errno();
 	//inserte evtl. sentorder
 	if ($_POST['altebestellungen']==2)
 	{
@@ -580,22 +580,22 @@ function installiere()
 	if (strlen($hinweis)>0)
 	{
 		echo('
-							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br>
+							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 								<table cellspacing="0" cellpadding="0" width="96%">
 									<tr><td class="content_header" align="center"><h3>eazySales Connector Datenbankeinrichtung fehlgeschlagen</h3></td></tr>
-									<tr><td class="content" align="center"><br>
+									<tr><td class="content" align="center"><br />
 											<table cellspacing="0" cellpadding="0" width="580">
 												<tr>
 													<td class="unter_content_header">&nbsp;<b>Bei der Datenbankeinrichtung sind folgende Fehler aufgetreten</b></td>
 												</tr>
 												<tr>
 													<td class="content">
-	'.$hinweis.'<br><br><br>L�ungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
+	'.$hinweis.'<br /><br /><br />L�ungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
 													</td>
 												</tr>
 											</table>
 									</td></tr>
-								</table><br>
+								</table><br />
 							</td>
 		');
 	}
@@ -604,33 +604,33 @@ function installiere()
 		//hole webserver
 		$url= "http://".$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
 		echo('
-							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br>
+							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 								<table cellspacing="0" cellpadding="0" width="96%">
 									<tr><td class="content_header" align="center"><h3>eazySales Connector Installation abgeschlossen</h3></td></tr>
-									<tr><td class="content" align="center"><br>
+									<tr><td class="content" align="center"><br />
 											<table cellspacing="0" cellpadding="0" width="580">
 												<tr>
 													<td class="unter_content_header">&nbsp;<b>Die Datenbank fr eazySales Connector wurde aufgesetzt</b></td>
 												</tr>
 												<tr>
 													<td class="content">
-														Die Installation ist serverseitig soweit abgeschlossen.<br><br>
-														Sie mssen nun eazySales im Men Einstellungen -> Shop-Einstellungen konfigurieren.<br><br>
-														Folgende Einstellungen mssen Sie in eazySales eintragen:<br><br>
+														Die Installation ist serverseitig soweit abgeschlossen.<br /><br />
+														Sie mssen nun eazySales im Men Einstellungen -> Shop-Einstellungen konfigurieren.<br /><br />
+														Folgende Einstellungen mssen Sie in eazySales eintragen:<br /><br />
 														<table width="95%">
 														<tr><td><b>API-KEY</b>: </td><td>eazySales Connector</td></tr>
 														<tr><td><b>Web-Server</b>: </td><td>'.substr($url,0,strlen($url)-18).'</td></tr>
 														<tr><td><b>Web-Benutzer</b>: </td><td>'.$_POST['syncuser'].'</td></tr>
 														<tr><td><b>Passwort</b>: </td><td>'.$_POST['syncpass'].'</td></tr>
-														</table><br><br>
-														Setzen Sie einen Haken bei "Bilder per HTTP versenden".<br>
-														Bei den FTP-Einstellungen mssen Sie nichts eintragen.<br>
+														</table><br /><br />
+														Setzen Sie einen Haken bei "Bilder per HTTP versenden".<br />
+														Bei den FTP-Einstellungen mssen Sie nichts eintragen.<br />
 														Wir wnschen Ihnen viel Erfolg mit Ihrem Shop!
 													</td>
 												</tr>
 											</table>
 									</td></tr>
-								</table><br>
+								</table><br />
 							</td>
 		');
 	}

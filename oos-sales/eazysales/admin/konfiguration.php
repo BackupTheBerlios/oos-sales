@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.10 2006/07/09 16:38:38 r23 Exp $
+   $Id: konfiguration.php,v 1.11 2006/07/09 22:46:16 r23 Exp $
 
    wawi - osis online shop
 
@@ -144,18 +144,18 @@ function zeigeKonfigForm()
 	$mappingHaendlerkunde_arr = explode (";",$einstellungen->mappingHaendlerkunde);
 	
 	echo('
-						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center" height="400"><br>
+						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px; border-left-width:0px;" valign="top" align="center" height="400"><br />
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>Konfiguration vom eazySales Connector</h3></td></tr>
-								<tr><td class="content" align="center"><br>
-										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br><br>
+								<tr><td class="content" align="center"><br />
+										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br /><br />
 										<table cellspacing="0" cellpadding="0" width="580">
 											<tr>
 												<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
 											</tr>
 											<tr>
 												<td class="content" align="center">
-													Hilfe zu den einzelnen Einstellungm�lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
+													Hilfe zu den einzelnen Einstellungm�lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br />
 													<form action="konfiguration.php" method="post" name="konfig">
 													<input type="hidden" name="update" value="1">
 													<table cellspacing="0" cellpadding="10" width="100%">
@@ -276,8 +276,8 @@ function zeigeKonfigForm()
 															</select>														
 															</td>
 														</tr>
-													</table><br>
-													eazySales kennt nur die Kundengruppen Endkunde und H�derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerl�slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
+													</table><br />
+													eazySales kennt nur die Kundengruppen Endkunde und H�derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerl�slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td valign="top"><b>eazySales Endkunde</b></td><td>
@@ -289,7 +289,7 @@ function zeigeKonfigForm()
                                    ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
-		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
+		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
 	}
 															
 	echo('
@@ -305,13 +305,13 @@ function zeigeKonfigForm()
                                    ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
-		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
+		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
 	}
 															
 	echo('
 															</td>
 														</tr>
-													</table><br>
+													</table><br />
 													Vorlagen fr Kategorien und Artikel, die ber eazySales eingestellt werden:
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
@@ -400,14 +400,14 @@ function zeigeKonfigForm()
 															</select>	
 															</td>
 														</tr>
-													</table><br>
+													</table><br />
 													<input type="submit" value="Einstellungen speichern">
 													</form>
 												</td>
 											</tr>
-										</table><br>
+										</table><br />
 								</td></tr>
-							</table><br>
+							</table><br />
 						</td>
 	');
 }
