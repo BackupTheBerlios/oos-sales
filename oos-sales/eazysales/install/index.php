@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.3 2006/07/09 01:55:15 r23 Exp $
+   $Id: index.php,v 1.4 2006/07/09 01:56:56 r23 Exp $
 
    wawi - osis online shop
 
@@ -68,7 +68,7 @@ function zeigeKopf()
 		<meta http-equiv="content-type" content="text/html;charset=iso-8559-1">
 		<meta http-equiv="language" content="deutsch, de">
 		<meta name="author" content="JTL-Software, www.jtl-software.de">
-		<title>eazySales Connector fr XT-Commerce Installation</title>
+		<title>eazySales Connector fr OOS [OSIS Online Shop] Installation</title>
 		<link rel="stylesheet" type="text/css" href="../admin/eazySalesConnectorAdmin.css">
 	</head>
 	<body>
