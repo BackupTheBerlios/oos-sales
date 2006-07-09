@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellungPos.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: GetBestellungPos.php,v 1.7 2006/07/09 15:42:44 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,12 +43,21 @@ if (auth())
 	{
 		$return = 0;		
 		//hole orderposes
-		$cur_query = xtc_db_query("SELECT * FROM orders_products WHERE orders_id=".intval($_POST['KeyBestellung'])." ORDER BY orders_products_id");
+                $orders_productstable = $oostable['orders_products'];
+		$cur_query = xtc_db_query("SELECT *
+                                           FROM $orders_productstable
+                                           WHERE orders_id=".intval($_POST['KeyBestellung'])."
+                                           ORDER BY orders_products_id");
 		while ($BestellungPos = mysql_fetch_object($cur_query))
 		{
 			//hole etl aufpreise
 			$aufpreis=0;
-			$aufpreise_query = xtc_db_query("SELECT options_values_price FROM orders_products_attributes WHERE orders_id=".$BestellungPos->orders_id." AND orders_products_id=".$BestellungPos->orders_products_id." AND options_values_price!=0");
+                  $orders_products_attributestable = $oostable['orders_products_attributes'];
+			$aufpreise_query = xtc_db_query("SELECT options_values_price 
+                                                         FROM $orders_products_attributestable
+                                                         WHERE orders_id=".$BestellungPos->orders_id."
+                                                         AND orders_products_id=".$BestellungPos->orders_products_id." 
+                                                         AND options_values_price!=0");
 			while ($aufpreis_arr = mysql_fetch_row($aufpreise_query))
 			{
 				$aufpreis+=($aufpreis_arr[0]*(100+$BestellungPos->products_tax))/100;
@@ -65,7 +74,11 @@ if (auth())
 			echo("\n");
 		}
 		//letzte Position Versand
-		$cur_query = xtc_db_query("SELECT * FROM orders_total WHERE class=\"ot_shipping\" AND orders_id=".intval($_POST['KeyBestellung']));
+                $orders_totaltable = $oostable['orders_total'];
+		$cur_query = xtc_db_query("SELECT *
+                                           FROM $orders_totaltable
+                                           WHERE class=\"ot_shipping\"
+                                             AND orders_id=".intval($_POST['KeyBestellung']));
 		if ($Versand = mysql_fetch_object($cur_query))
 		{
 			//mappe bestellpos

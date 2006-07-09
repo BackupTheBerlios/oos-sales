@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellung.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: GetBestellung.php,v 1.7 2006/07/09 15:44:46 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,7 +40,11 @@ if (auth())
 {
 	$return=0;	
 	//hole alle neuen order	
-	$cur_query = xtc_db_query("SELECT orders.payment_method, orders.orders_id, orders.customers_id, orders.comments, date_format(orders.date_purchased, \"%d.%m.%Y\") as ErstelltDatumF FROM orders LEFT JOIN eazysales_sentorders ON orders.orders_id=eazysales_sentorders.orders_id WHERE eazysales_sentorders.orders_id is NULL limit 1");
+        $orderstable = $oostable['orders'];
+	$cur_query = xtc_db_query("SELECT orders.payment_method, orders.orders_id, orders.customers_id, orders.comments, date_format(orders.date_purchased, \"%d.%m.%Y\") as ErstelltDatumF 
+                                   FROM $orderstable LEFT JOIN
+                                        eazysales_sentorders ON orders.orders_id=eazysales_sentorders.orders_id
+                                   WHERE eazysales_sentorders.orders_id is NULL limit 1");
 	if ($Bestellung = mysql_fetch_object($cur_query))
 	{
 		//falls kein kunde existiert, key muss irgendwo her!
@@ -87,7 +91,5 @@ if (auth())
 	}
 }
 
-
-mysql_close();
 logge($return);
 ?>
