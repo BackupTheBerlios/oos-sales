@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setArtikel.php,v 1.4 2006/07/09 03:29:07 r23 Exp $
+   $Id: setArtikel.php,v 1.5 2006/07/09 14:37:48 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,38 +32,40 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.0 / 15.06.06
 */
-require 'syncinclude.php';
-//Auth
-if (auth())
-{
-	$return=0;
-	//data da?
-	if ($_POST['data'])
-	{
-		$zeilen = explode("\n",$_POST['data']);
-		if (is_array($zeilen))
-		{
-			foreach ($zeilen as $zeile)
-			{
-				$werte = explode(";",$zeile);
-				switch ($werte[0])
-				{
-					case 'P':
-						setMappingArtikel($werte[1],$werte[2]);
-						break;
-					case 'K':
-						setMappingKategorie($werte[1],$werte[2]);
-						break;
-					case 'W':
-						setMappingEigenschaftsWert($werte[1],$werte[2],$werte[3]);
-						break;
-				}
-			}
-		}
-	}
-}
 
+  require 'syncinclude.php';
 
-echo($return);
-logge($return);
+  //Auth
+  if (auth()) {
+    $return = 0;
+
+    //data da?
+    if ($_POST['data']) {
+      $zeilen = explode("\n",$_POST['data']);
+
+      if (is_array($zeilen)) {
+        foreach ($zeilen as $zeile) {
+          $werte = explode(";",$zeile);
+
+          switch ($werte[0]) {
+             case 'P':
+                setMappingArtikel($werte[1],$werte[2]);
+                break;
+
+             case 'K':
+                setMappingKategorie($werte[1],$werte[2]);
+                break;
+
+             case 'W':
+                setMappingEigenschaftsWert($werte[1],$werte[2],$werte[3]);
+                break;
+           }
+
+        }
+      }
+    }
+  }
+
+  echo($return);
+  logge($return);
 ?>
