@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: mytest.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: mytest.php,v 1.7 2006/07/09 14:45:03 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,22 +33,22 @@
  * @version v1.0 / 16.06.06
 */
 
-require 'syncinclude.php';
+  require 'syncinclude.php';
 
-$return=3;
-$cName = $_POST["uID"];
-$cPass = $_POST["uPWD"];
+  $return = 3;
+  $cName = $_POST["uID"];
+  $cPass = $_POST["uPWD"];
 
-$_POST["uID"]="*";
-$_POST["uPWD"]="*";
+  $_POST["uID"]="*";
+  $_POST["uPWD"]="*";
 
-$cur_query = xtc_db_query("SELECT * FROM eazysales_sync");
-$loginDaten = mysql_fetch_object($cur_query);
-if ($cName == $loginDaten->cName && $cPass == $loginDaten->cPass)
-	$return=0;
+  $cur_query = xtc_db_query("SELECT * FROM eazysales_sync");
+  $loginDaten = mysql_fetch_object($cur_query);
+  if ($cName == $loginDaten->cName && $cPass == $loginDaten->cPass) {
+    $return = 0;
+  }
 
-
-echo($return.";XTC");
-//echo($return);
-logge($return);
+  echo($return.";XTC");
+  //echo($return);
+  logge($return);
 ?>
