@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: Variation.php,v 1.7 2006/07/09 14:23:23 r23 Exp $
 
    wawi - osis online shop
 
@@ -36,7 +36,7 @@
 
 require 'syncinclude.php';
 
-$return=3;
+$return = 3;
 if (auth())
 {
 	if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaft']))
@@ -54,16 +54,23 @@ if (auth())
 			$einstellungen = mysql_fetch_object($cur_query);
 			
 			//hol products_options_id
-			$cur_query = xtc_db_query("SELECT products_options_id FROM products_options WHERE language_id=".$einstellungen->languages_id." AND products_options_name=\"$Eigenschaft->cName\"");
+                        $products_optionstable = $oostable['products_options'];
+			$cur_query = xtc_db_query("SELECT products_options_id
+                                                   FROM $products_optionstable
+                                                   WHERE language_id=".$einstellungen->languages_id."
+                                                     AND products_options_name=\"$Eigenschaft->cName\"");
 			$options_id = mysql_fetch_object($cur_query);
 			if (!$options_id->products_options_id)
 			{
 				//erstelle eigenschaft
 				//hole max PK
-				$cur_query = xtc_db_query("SELECT max(products_options_id) FROM products_options");
+                          $products_optionstable = $oostable['products_options'];
+				$cur_query = xtc_db_query("SELECT max(products_options_id) FROM $products_optionstable");
 				$max_id_arr = mysql_fetch_row($cur_query);
 				$options_id->products_options_id = $max_id_arr[0]+1;
-				xtc_db_query("INSERT INTO products_options (products_options_id,language_id,products_options_name) values ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
+
+                          $products_optionstable = $oostable['products_options'];
+				xtc_db_query("INSERT INTO $products_optionstable (products_options_id,language_id,products_options_name) values ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
 			}
 			//mapping zu variation 
 			setMappingEigenschaft($Eigenschaft->kEigenschaft,$options_id->products_options_id,$Eigenschaft->kArtikel);
@@ -71,7 +78,7 @@ if (auth())
 		}
  	}
 	else
-		$return=5;
+		$return = 5;
 }
 
 echo($return);
