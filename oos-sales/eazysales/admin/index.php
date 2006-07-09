@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.5 2006/07/09 02:40:30 r23 Exp $
+   $Id: index.php,v 1.6 2006/07/09 02:41:25 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,7 +34,7 @@
 */
 
 require 'admininclude.php';
-require_once("adminTemplates.php");
+require 'adminTemplates.php';
 
 $adminsession = new AdminSession();
 
