@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.9 2006/07/09 16:38:39 r23 Exp $
+   $Id: index.php,v 1.10 2006/07/09 17:26:19 r23 Exp $
 
    wawi - osis online shop
 
@@ -25,17 +25,16 @@
 /**
  * eazySales_Connector/install/index.php
  * Datenbank installscript fr eazySales Connector
- * 
+ *
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
- * 
+ *
  * @author JTL-Software <thomas@jtl-software.de>
  * @copyright 2006, JTL-Software
  * @link http://jtl-software.de/eazyshop.php
  * @version v1.01 / 14.06.06
 */
 
-//hole pfad
-require '../paths.php';
+  require '../paths.php';
 
 //get DB Connecion
 // include server parameters
@@ -63,8 +62,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 
 
 
-function zeigeKopf()
-{
+  function zeigeKopf() {
 	echo('
 <html>
 	<head>
@@ -86,10 +84,9 @@ function zeigeKopf()
 					<tr>
 
 	');
-}
+  }
 
-function zeigeFuss()
-{
+  function zeigeFuss() {
 	echo('
 					</tr>
 				</table>
@@ -105,29 +102,32 @@ function zeigeFuss()
 	</body>
 </html>
 	');
-}
+  }
 
-function parse_mysql_dump($url) {
-	$file_content = file($url);
-	$errors="";
-	//print_r($file_content);
-	$query = "";
-	foreach($file_content as $i => $sql_line) {
-		$tsl = trim($sql_line);
-		if (($sql_line != "") && (substr($tsl, 0, 2) != "--") && (substr($tsl, 0, 1) != "#")) {
-			$query .= $sql_line;
-			if(preg_match("/;\s*$/", $sql_line)) {
-				$result = mysql_query($query);
-				if (!$result) $errors.="<br>".mysql_error()." Nr: ".mysql_errno()." in Zeile ".$i."<br>".$query."<br>";
-					$query = "";
-			}
-		}
-	}
-	return $errors;
-}
 
-function installSchritt1()
-{
+  function parse_mysql_dump($url) {
+
+    $file_content = file($url);
+    $errors = '';
+
+    //print_r($file_content);
+    $query = '';
+    foreach($file_content as $i => $sql_line) {
+      $tsl = trim($sql_line);
+      if (($sql_line != '') && (substr($tsl, 0, 2) != '--') && (substr($tsl, 0, 1) != '#')) {
+        $query .= $sql_line;
+        if (preg_match("/;\s*$/", $sql_line)) {
+           $result = mysql_query($query);
+           if (!$result) $errors.="<br />".mysql_error()." Nr: ".mysql_errno()." in Zeile ".$i."<br />".$query."<br />";
+           $query = '';
+        }
+      }
+    }
+    return $errors;
+  }
+
+function installSchritt1() {
+
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
@@ -144,7 +144,7 @@ function installSchritt1()
 	$productinfo_template_arr = getTemplateArray($cur_template, "product_info");
 	$productoptions_template_arr = getTemplateArray($cur_template, "product_options");
 	
-	$order_array=array(array('id' => 'p.products_price','text'=>'Artikelpreis'),
+	$order_array = array(array('id' => 'p.products_price','text'=>'Artikelpreis'),
 				array('id' => 'pd.products_name','text'=>'Artikelname'),
 				array('id' => 'p.products_ordered','text'=>'Bestellte Artikel'),
 				array('id' => 'p.products_sort','text'=>'Reihung'),
@@ -155,65 +155,67 @@ function installSchritt1()
 				array('id' => 'DESC','text'=>'Absteigend'));
 				
 	//Templatesachen fr Produkte
-	
-				
-	//defaultwerte setzen
-	if (!$einstellungen->shopURL)
-		$einstellungen->shopURL = HTTP_SERVER;
-	if (!$einstellungen->tax_priority)
-		$einstellungen->tax_priority = 1;
-	if (!$einstellungen->versandMwst)
-		$einstellungen->versandMwst = 16;
-	if (!$einstellungen->languages_id)
-	{
-          $configurationtable = $oostable['configuration'];
 
+
+    //defaultwerte setzen
+    if (!$einstellungen->shopURL) $einstellungen->shopURL = OOS_SHOP_SERVER . OOS_SHOP;
+    if (!$einstellungen->tax_priority) $einstellungen->tax_priority = 1;
+    if (!$einstellungen->versandMwst) $einstellungen->versandMwst = 16;
+
+    if (!$einstellungen->languages_id) {
+      $configurationtable = $oostable['configuration'];
 		$cur_query = xtc_db_query("SELECT configuration_value
                                            FROM $configurationtable
                                            WHERE configuration_key=\"DEFAULT_LANGUAGE\"");
-		$def_lang = mysql_fetch_object($cur_query);
-		if ($def_lang->configuration_value)
-		{
-			$cur_query = xtc_db_query("SELECT languages_id FROM languages WHERE code=\"".$def_lang->configuration_value."\"");
-			$langID = mysql_fetch_object($cur_query);			
+      $def_lang = mysql_fetch_object($cur_query);
+
+      if ($def_lang->configuration_value) {
+        $languagestable = $oostable['languages'];
+			$cur_query = xtc_db_query("SELECT languages_id
+                                                   FROM $languagestable
+                                                   WHERE code=\"".$def_lang->configuration_value."\"");
+			$langID = mysql_fetch_object($cur_query);
 			$einstellungen->languages_id = $langID->languages_id;
-		}
-		else 
-		{
-			//erstbeste Lang
-			$cur_query = xtc_db_query("SELECT languages_id FROM languages");
-			$langID = mysql_fetch_object($cur_query);			
+      } else {
+	//erstbeste Lang
+        $languagestable = $oostable['languages'];
+			$cur_query = xtc_db_query("SELECT languages_id
+                                                   FROM $languagestable");
+			$langID = mysql_fetch_object($cur_query);
 			$einstellungen->languages_id = $langID->languages_id;
-		}
-	}
-	if (!$einstellungen->mappingEndkunde)
-	{
-          $configurationtable = $oostable['configuration'];
+      }
+    }
+
+
+    if (!$einstellungen->mappingEndkunde) {
+      $configurationtable = $oostable['configuration'];
 		$cur_query = xtc_db_query("SELECT configuration_value
                                            FROM $configurationtable
                                            WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
 		$def_userstatus = mysql_fetch_object($cur_query);
 		$einstellungen->mappingEndkunde=$def_userstatus->configuration_value;
 
-          $configurationtable = $oostable['configuration'];
+      $configurationtable = $oostable['configuration'];
 		$cur_query = xtc_db_query("SELECT configuration_value
                                            FROM $configurationtable
                                            WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
 		$def_userstatus_guest = mysql_fetch_object($cur_query);		
 		$einstellungen->mappingEndkunde.=";".$def_userstatus_guest->configuration_value;
-	}
-	$mappingEndkunde_arr = explode (";",$einstellungen->mappingEndkunde);
-	$mappingHaendlerkunde_arr = explode (";",$einstellungen->mappingHaendlerkunde);
-	//ende konfig
-	
-	$hinweis="";
-	if ($_POST["installiereSchritt1"]==1)
-		$hinweis="Bitte alle Felder vollst�dig ausfllen!";
-	srand();
-	$syncuser = generatePW(8);
-	sleep(1);
-	$syncpass = generatePW(8);
-	echo('
+    }
+
+    $mappingEndkunde_arr = explode (";",$einstellungen->mappingEndkunde);
+    $mappingHaendlerkunde_arr = explode (";",$einstellungen->mappingHaendlerkunde);
+    //ende konfig
+
+    $hinweis = '';
+    if ($_POST['installiereSchritt1'] == 1)
+      $hinweis = 'Bitte alle Felder vollst&auml;ndig ausf&uuml;llen!';
+      srand();
+      $syncuser = generatePW(8);
+      sleep(1);
+      $syncpass = generatePW(8);
+
+      echo('
 						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br>
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
@@ -240,6 +242,8 @@ function installSchritt1()
 														<tr>
 															<td><b>Standardw�rung</b></td><td><select name="waehrung">
 	');
+
+    $geo_zonestable = $oostable['geo_zones'];
 	$cur_query = xtc_db_query("SELECT * FROM currencies");
 	while ($currency = mysql_fetch_object($cur_query))
 	{
@@ -277,7 +281,10 @@ function installSchritt1()
 														<tr>
 															<td><b>Standard Steuerzone</b></td><td><select name="steuerzone">
 	');
-	$cur_query = xtc_db_query("SELECT * FROM geo_zones");
+
+    $geo_zonestable = $oostable['geo_zones'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $geo_zonestable");
 	while ($zone = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$zone->geo_zone_id.'" ');if ($zone->geo_zone_id==$einstellungen->tax_zone_id) echo('selected'); echo('>'.$zone->geo_zone_name.'</option>');
@@ -289,7 +296,10 @@ function installSchritt1()
 														<tr>
 															<td><b>Standard Steuerklasse*</b></td><td><select name="steuerklasse">
 	');
-	$cur_query = xtc_db_query("SELECT * FROM tax_class");
+
+    $tax_classtable = $oostable['tax_class'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $tax_classtable");
 	while ($klasse = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$klasse->tax_class_id.'" ');if ($klasse->tax_class_id==$einstellungen->tax_class_id) echo('selected'); echo('>'.$klasse->tax_class_title.'</option>');
@@ -310,7 +320,12 @@ function installSchritt1()
 														<tr>
 															<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht �dern</option>
 	');
-	$cur_query = xtc_db_query("SELECT * FROM orders_status WHERE language_id=".$einstellungen->languages_id." ORDER BY orders_status_id");
+
+    $orders_statustable = $oostable['orders_status'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $orders_statustable
+                                   WHERE language_id=".$einstellungen->languages_id."
+                                   ORDER BY orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusAbgeholt) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
@@ -322,7 +337,12 @@ function installSchritt1()
 														<tr>
 															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht �dern</option>
 	');
-	$cur_query = xtc_db_query("SELECT * FROM orders_status WHERE language_id=".$einstellungen->languages_id." ORDER BY orders_status_id");
+
+    $orders_statustable = $oostable['orders_status'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $orders_statustable
+                                   WHERE language_id=".$einstellungen->languages_id."
+                                   ORDER BY orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusVersendet) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
@@ -337,7 +357,12 @@ function installSchritt1()
 														<tr>
 															<td valign="top"><b>eazySales Endkunde</b></td><td>
 	');
-	$cur_query = xtc_db_query("SELECT * FROM customers_status WHERE language_id=".$einstellungen->languages_id." ORDER BY customers_status_id");
+
+    $customers_statusstable = $oostable['customers_status'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $customers_statusstable
+                                   WHERE language_id=".$einstellungen->languages_id."
+                                   ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
 		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
@@ -349,7 +374,12 @@ function installSchritt1()
 														<tr>
 															<td valign="top"><b>eazySales H�dlerkunde</b></td><td>
 	');
-	$cur_query = xtc_db_query("SELECT * FROM customers_status WHERE language_id=".$einstellungen->languages_id." ORDER BY customers_status_id");
+
+    $customers_statusstable = $oostable['customers_status'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $customers_statusstable
+                                   WHERE language_id=".$einstellungen->languages_id."
+                                   ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
 		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
