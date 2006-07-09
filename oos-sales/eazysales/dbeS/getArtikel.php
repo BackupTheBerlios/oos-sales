@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
+   $Id: getArtikel.php,v 1.6 2006/07/09 15:47:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -160,6 +160,10 @@ function get_bildURL($product)
 
 function get_attribute($product)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$attribute="";
 	//Lieferstatus
 	if ($product->products_shippingtime>0)
@@ -251,6 +255,10 @@ function get_attribute($product)
 
 function get_variationswerte($products_id,$options_id)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$variationswerte="";
 	//existieren Variationen fr diesen Artikel?
 	$cur_query = xtc_db_query("SELECT * FROM products_attributes WHERE options_id=".$options_id." AND products_id=".$products_id);
@@ -279,6 +287,10 @@ function get_variationswerte($products_id,$options_id)
 
 function get_variationen($products_id)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$variationen="";
 	//existieren Variationen zu diesem Artikel?
 	$cur_query = xtc_db_query("SELECT * FROM products_attributes WHERE products_id=".$products_id." group by options_id");
@@ -359,7 +371,11 @@ function get_staffelpreise($products_id, $endkunde)
 }
 
 function get_preisEndkunde($product)
-{	
+{
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$endKunden_arr = explode(";",$GLOBALS['einstellungen']->mappingEndkunde);
 	if ($endKunden_arr[0]>0)
 	{
@@ -374,6 +390,9 @@ function get_preisEndkunde($product)
 
 function get_preisHaendlerKunde($product)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
 	$haendlerKunden_arr = explode(";",$GLOBALS['einstellungen']->mappingHaendlerkunde);
 	if ($haendlerKunden_arr[0]>0)
 	{
@@ -389,6 +408,10 @@ function get_preisHaendlerKunde($product)
 //get categroies 
 function get_cats($products_id)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$res ="";
 	//get cat_id
 	$glob_cat_query = xtc_db_query("SELECT * FROM products_to_categories WHERE products_id=".$products_id);
@@ -440,6 +463,10 @@ function get_cats($products_id)
 //get hersteller
 function getManufacturer($manufacturers_id)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$manu_query = xtc_db_query("SELECT * FROM manufacturers WHERE manufacturers_id=".$manufacturers_id);
 	$manu = mysql_fetch_object($manu_query);
 	return ($manu->manufacturers_name);	
