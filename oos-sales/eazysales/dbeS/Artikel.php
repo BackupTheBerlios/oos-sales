@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
+   $Id: Artikel.php,v 1.9 2006/07/09 14:08:43 r23 Exp $
 
    wawi - osis online shop
 
@@ -223,18 +223,20 @@ function holeHerstellerId($cHersteller)
 
 	if (strlen($cHersteller)>0)
 	{
-		//ex. dieser Hersteller?
-		$cur_query = xtc_db_query("SELECT manufacturers_id FROM manufacturers WHERE manufacturers_name=\"".$cHersteller."\"");
+       $manufacturerstable = $oostable['manufacturers'];
+		$cur_query = xtc_db_query("SELECT $manufacturerstable FROM manufacturers WHERE manufacturers_name=\"".$cHersteller."\"");
 		$manu = mysql_fetch_object($cur_query);
 		if ($manu->manufacturers_id>0)
 			return $manu->manufacturers_id;
 		else 
 		{
-			//erstelle diesen Hersteller
-			xtc_db_query("INSERT INTO manufacturers (manufacturers_name, date_added) values (\"".$cHersteller."\", now())");
+       $manufacturerstable = $oostable['manufacturers'];
+			xtc_db_query("INSERT INTO $manufacturerstable (manufacturers_name, date_added) values (\"".$cHersteller."\", now())");
 			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 			$manu_id_arr = mysql_fetch_row($query);
-			xtc_db_query("INSERT INTO manufacturers_info (manufacturers_id, languages_id) values (".$manu_id_arr[0].", ".$GLOBALS['einstellungen']->languages_id.")");
+
+       $manufacturers_infotable = $oostable['manufacturers_info'];
+			xtc_db_query("INSERT INTO $manufacturers_infotable (manufacturers_id, languages_id) values (".$manu_id_arr[0].", ".$GLOBALS['einstellungen']->languages_id.")");
 			return $manu_id_arr[0];
 		}
 	}
