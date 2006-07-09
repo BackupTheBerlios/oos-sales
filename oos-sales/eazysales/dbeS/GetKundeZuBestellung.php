@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetKundeZuBestellung.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: GetKundeZuBestellung.php,v 1.7 2006/07/09 15:35:14 r23 Exp $
 
    wawi - osis online shop
 
@@ -47,12 +47,21 @@ if (auth())
 		$einstellungen = mysql_fetch_object($cur_query);
 		$haendler_arr = explode(";",$einstellungen->mappingHaendlerkunde);
 		
-		//hole order		
-		$cur_query = xtc_db_query("SELECT * FROM orders WHERE orders_id=".intval($_POST['KeyBestellung']));
+		//hole order
+                $orderstable = $oostable['orders'];
+		$cur_query = xtc_db_query("SELECT *
+                                           FROM $orderstable
+                                           WHERE orders_id=".intval($_POST['KeyBestellung']));
 		$Kunde = mysql_fetch_object($cur_query);
 
-		//zusatzinfos vom kunden holen		
-		$cur_query = xtc_db_query("SELECT customers.customers_gender, customers.customers_newsletter, customers.customers_fax, customers.customers_vat_id FROM orders, customers WHERE orders.customers_id=customers.customers_id AND customers.customers_id=".$Kunde->customers_id);
+		//zusatzinfos vom kunden holen
+                $orderstable = $oostable['orders'];
+                $customerstable = $oostable['customers'];
+		$cur_query = xtc_db_query("SELECT customers.customers_gender, customers.customers_newsletter, customers.customers_fax, customers.customers_vat_id 
+                                           FROM $orderstable,
+                                                $customerstable
+                                           WHERE orders.customers_id=customers.customers_id 
+                                             AND customers.customers_id=".$Kunde->customers_id);
 		$cust = mysql_fetch_object($cur_query);
 		
 		$Kunde->customers_gender = $cust->customers_gender;
