@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: AdminSession.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
+   $Id: AdminSession.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -94,16 +94,16 @@ class AdminSession {
 	   return false;
 	}
 	function destroy($sessID) {
-	   // delete session-data
+	   // DELETE session-data
 	   mysql_query("DELETE FROM eazysales_adminsession WHERE  cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
-	   // if session was deleted, return true,
+	   // if session was DELETEd, return true,
 	   if(mysql_affected_rows($GLOBALS["DB"]->DB_Connection))
 	       return true;
 	   // ...else return false
 	   return false;
 	}
 	function gc($sessMaxLifeTime) {
-	   // delete old sessions
+	   // DELETE old sessions
 	   mysql_query("DELETE FROM eazysales_adminsession WHERE  nSessionExpires < ".time(),$GLOBALS["DB"]->DB_Connection);
 	   // return affected rows
 	   return mysql_affected_rows($GLOBALS["DB"]->DB_Connection);

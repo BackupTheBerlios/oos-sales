@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.5 2006/07/09 02:07:11 r23 Exp $
+   $Id: index.php,v 1.6 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -479,15 +479,15 @@ function installiere()
 {
 	$hinweis = parse_mysql_dump("eazySales_connector_DB.sql");
 	//inserte syncuser
-	if (!mysql_query("insert into eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br>".mysql_error()." Nr: ".mysql_errno();
+	if (!mysql_query("INSERT INTO eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br>".mysql_error()." Nr: ".mysql_errno();
 	//inserte evtl. sentorder
 	if ($_POST['altebestellungen']==2)
 	{
-		$best_query = eS_execute_query("SELECT orders_id FROM orders ORDER BY orders_id");
+		$best_query = xtc_db_query("SELECT orders_id FROM orders ORDER BY orders_id");
 		while ($orderkey = mysql_fetch_row($best_query))
 		{
 			if ($orderkey[0]>0)
-				eS_execute_query("insert into eazysales_sentorders (orders_id) values (".$orderkey[0].")");
+				xtc_db_query("INSERT INTO eazysales_sentorders (orders_id) values (".$orderkey[0].")");
 		}
 	}
 	
@@ -517,8 +517,8 @@ function installiere()
 	$statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt=0;
 	
 
-	eS_execute_query("delete FROM eazysales_einstellungen");
-	eS_execute_query("insert into eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
+	xtc_db_query("DELETE FROM eazysales_einstellungen");
+	xtc_db_query("INSERT INTO eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
 	//ende einstellungen
 
 	if (strlen($hinweis)>0)
@@ -612,7 +612,7 @@ function getTemplateArray($cur_template, $module)
 }
 
 
-function eS_execute_query($query)
+function xtc_db_query($query)
 {	
 	return mysql_query($query);
 }

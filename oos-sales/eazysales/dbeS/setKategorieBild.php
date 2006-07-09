@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setKategorieBild.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: setKategorieBild.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -49,7 +49,7 @@ if (auth())
 		$bildname=$categories_id.".jpg";
 		move_uploaded_file($_FILES['bild']['tmp_name'],DIR_FS_CATALOG_IMAGES."categories/".$bildname);
 		//updaten
-		eS_execute_query("update categories set categories_image=\"$bildname\" WHERE categories_id=".$categories_id);
+		xtc_db_query("update categories set categories_image=\"$bildname\" WHERE categories_id=".$categories_id);
 	}
 }
 mysql_close();

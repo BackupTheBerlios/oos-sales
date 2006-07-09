@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategoriePict.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: KategoriePict.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -85,7 +85,7 @@ if (auth())
 		$return = 0;
 		//hol categories_id
 		$categories_id = getFremdKategorie(intval($_POST['KeyKategorie']));
-		eS_execute_query("update categories set categories_image='' WHERE categories_id=".$categories_id);
+		xtc_db_query("update categories set categories_image='' WHERE categories_id=".$categories_id);
 		
 	}
 }

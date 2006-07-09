@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
+   $Id: konfiguration.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -54,7 +54,7 @@ zeigeFuss();
 function zeigeKonfigForm()
 {
 	//hole einstellungen
-	$cur_query = eS_execute_query("SELECT * FROM eazysales_einstellungen");
+	$cur_query = xtc_db_query("SELECT * FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);	
 	
 	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"CURRENT_TEMPLATE\"");
@@ -384,8 +384,8 @@ function updateKonfig()
 	$statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt=0;
 	
 
-	eS_execute_query("delete FROM eazysales_einstellungen");
-	eS_execute_query("insert into eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
+	xtc_db_query("DELETE FROM eazysales_einstellungen");
+	xtc_db_query("INSERT INTO eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
 }
 
 function getTemplateArray($cur_template, $module)

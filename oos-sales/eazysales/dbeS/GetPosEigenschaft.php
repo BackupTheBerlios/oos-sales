@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetPosEigenschaft.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: GetPosEigenschaft.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,14 +43,14 @@ if (auth())
 	{		
 		$return = 0;
 		//hole einstellungen
-		$cur_query = eS_execute_query("SELECT languages_id FROM eazysales_einstellungen");
+		$cur_query = xtc_db_query("SELECT languages_id FROM eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
 
 		//hole orders_products_id
 		$orders_products_id = getFremdBestellPos(intval($_POST['KeyBestellPos']));
 			
 		//hole alle Eigenschaften, die ausgew�lt wurden zu dieser bestellung
-		$cur_query = eS_execute_query("SELECT orders_products_attributes.*, orders_products.products_tax, orders_products.products_id FROM orders_products_attributes, orders_products WHERE orders_products_attributes.orders_products_id=".$orders_products_id." AND orders_products.orders_products_id=orders_products_attributes.orders_products_id ORDER BY orders_products_attributes.orders_products_id");
+		$cur_query = xtc_db_query("SELECT orders_products_attributes.*, orders_products.products_tax, orders_products.products_id FROM orders_products_attributes, orders_products WHERE orders_products_attributes.orders_products_id=".$orders_products_id." AND orders_products.orders_products_id=orders_products_attributes.orders_products_id ORDER BY orders_products_attributes.orders_products_id");
 		while ($WarenkorbPosEigenschaft = mysql_fetch_object($cur_query))
 		{
 			$preisprefix=1;
@@ -58,7 +58,7 @@ if (auth())
 				$preisprefix=-1;
 
 			//hole attribut
-			$attribut_query = eS_execute_query("SELECT products_attributes.products_attributes_id FROM products_attributes, products_options, products_options_values WHERE products_attributes.products_id=".$WarenkorbPosEigenschaft->products_id." AND products_attributes.options_id=products_options.products_options_id AND products_attributes.options_values_id=products_options_values.products_options_values_id AND products_attributes.options_values_price=".$WarenkorbPosEigenschaft->options_values_price." AND products_options.products_options_name=\"".$WarenkorbPosEigenschaft->products_options."\" AND products_options.language_id=".$einstellungen->languages_id." AND products_options_values.products_options_values_name=\"".$WarenkorbPosEigenschaft->products_options_values."\" AND products_options_values.language_id=".$einstellungen->languages_id);
+			$attribut_query = xtc_db_query("SELECT products_attributes.products_attributes_id FROM products_attributes, products_options, products_options_values WHERE products_attributes.products_id=".$WarenkorbPosEigenschaft->products_id." AND products_attributes.options_id=products_options.products_options_id AND products_attributes.options_values_id=products_options_values.products_options_values_id AND products_attributes.options_values_price=".$WarenkorbPosEigenschaft->options_values_price." AND products_options.products_options_name=\"".$WarenkorbPosEigenschaft->products_options."\" AND products_options.language_id=".$einstellungen->languages_id." AND products_options_values.products_options_values_name=\"".$WarenkorbPosEigenschaft->products_options_values."\" AND products_options_values.language_id=".$einstellungen->languages_id);
 			
 			$attribut_arr = mysql_fetch_row($attribut_query);
 			

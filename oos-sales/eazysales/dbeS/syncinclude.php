@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: syncinclude.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,11 +45,6 @@ xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! �erprfen S
 
 define ('ES_ENABLE_LOGGING',0);
 
-function eS_execute_query($query)
-{	
-	return xtc_db_query($query);
-}
-
 /**
  * Authentifiziert die Anfrage
  *
@@ -60,7 +55,7 @@ function auth()
 	$cName = $_POST["userID"];
 	$cPass = $_POST["userPWD"];
 
-	$cur_query = eS_execute_query("SELECT * FROM eazysales_sync");
+	$cur_query = xtc_db_query("SELECT * FROM eazysales_sync");
 	$loginDaten = mysql_fetch_object($cur_query);
 	if ($cName == $loginDaten->cName && $cPass == $loginDaten->cPass)
 		return true;
@@ -137,13 +132,13 @@ function setMappingArtikel ($eS_key, $mein_key)
 	if ($mein_key && $eS_key)
 	{
 		//ist mein_key schon drin?
-		$cur_query = eS_execute_query("SELECT products_id FROM eazysales_martikel WHERE products_id=".$mein_key);
+		$cur_query = xtc_db_query("SELECT products_id FROM eazysales_martikel WHERE products_id=".$mein_key);
 		$prod = mysql_fetch_object($cur_query);
 		if ($prod->products_id>0)
 			return "";
 		else 
 		{
-			eS_execute_query("insert into eazysales_martikel (products_id, kArtikel) values ($mein_key,$eS_key)");
+			xtc_db_query("INSERT INTO eazysales_martikel (products_id, kArtikel) values ($mein_key,$eS_key)");
 		}
 	}
 }
@@ -155,13 +150,13 @@ function setMappingKategorie ($eS_key, $mein_key)
 	if ($mein_key && $eS_key)
 	{
 		//ist mein_key schon drin?
-		$cur_query = eS_execute_query("SELECT categories_id FROM eazysales_mkategorie WHERE categories_id=".$mein_key);
+		$cur_query = xtc_db_query("SELECT categories_id FROM eazysales_mkategorie WHERE categories_id=".$mein_key);
 		$prod = mysql_fetch_object($cur_query);
 		if ($prod->categories_id>0)
 			return "";
 		else 
 		{
-			eS_execute_query("insert into eazysales_mkategorie (categories_id, kKategorie) values ($mein_key,$eS_key)");
+			xtc_db_query("INSERT INTO eazysales_mkategorie (categories_id, kKategorie) values ($mein_key,$eS_key)");
 		}
 	}
 }
@@ -172,17 +167,17 @@ function setMappingEigenschaft ($eS_key, $mein_key, $kArtikel)
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key && $kArtikel)
 	{
-		eS_execute_query("delete FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
-		eS_execute_query("insert into eazysales_mvariation (kEigenschaft,products_options_id,kArtikel) values ($eS_key, $mein_key, $kArtikel)");
+		xtc_db_query("DELETE FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
+		xtc_db_query("INSERT INTO eazysales_mvariation (kEigenschaft,products_options_id,kArtikel) values ($eS_key, $mein_key, $kArtikel)");
 	}
 }
 
 function setMappingBestellPos ($mein_key)
 {
 	$mein_key = intval($mein_key);
-	eS_execute_query("delete FROM eazysales_mbestellpos WHERE orders_products_id=".$mein_key);
-	eS_execute_query("insert into eazysales_mbestellpos (orders_products_id) values ($mein_key)");
-	$query = eS_execute_query("SELECT LAST_INSERT_ID()");
+	xtc_db_query("DELETE FROM eazysales_mbestellpos WHERE orders_products_id=".$mein_key);
+	xtc_db_query("INSERT INTO eazysales_mbestellpos (orders_products_id) values ($mein_key)");
+	$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 	$id_arr = mysql_fetch_row($query);
 	return $id_arr[0];
 }
@@ -193,88 +188,88 @@ function setMappingEigenschaftsWert ($eS_key, $mein_key, $kArtikel)
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key)
 	{
-		logExtra("delete FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
-		eS_execute_query("delete FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
+		logExtra("DELETE FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
+		xtc_db_query("DELETE FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
 		//ist mein_key schon drin?
-		$cur_query = eS_execute_query("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
+		$cur_query = xtc_db_query("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
 		logExtra("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
 		$prod = mysql_fetch_object($cur_query);
 		if ($prod->products_id>0)
 			return "";
 		else 
 		{
-			logExtra("insert into eazysales_mvariationswert (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
-			eS_execute_query("insert into eazysales_mvariationswert (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
+			logExtra("INSERT INTO eazysales_mvariationswert (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
+			xtc_db_query("INSERT INTO eazysales_mvariationswert (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
 		}
 	}
 }
 
 function getFremdArtikel($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT products_id FROM eazysales_martikel WHERE kArtikel=".$eS_key);
+	$cur_query = xtc_db_query("SELECT products_id FROM eazysales_martikel WHERE kArtikel=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_id;
 }
 
 function getEsArtikel($mein_key)
 {
-	$cur_query = eS_execute_query("SELECT kArtikel FROM eazysales_martikel WHERE products_id=".$mein_key);
+	$cur_query = xtc_db_query("SELECT kArtikel FROM eazysales_martikel WHERE products_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kArtikel;
 }
 
 function getFremdKategorie($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT categories_id FROM eazysales_mkategorie WHERE kKategorie=".$eS_key);
+	$cur_query = xtc_db_query("SELECT categories_id FROM eazysales_mkategorie WHERE kKategorie=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->categories_id;
 }
 
 function getEsKategorie($mein_key)
 {
-	$cur_query = eS_execute_query("SELECT kKategorie FROM eazysales_mkategorie WHERE categories_id=".$mein_key);
+	$cur_query = xtc_db_query("SELECT kKategorie FROM eazysales_mkategorie WHERE categories_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kKategorie;
 }
 
 function getFremdBestellPos($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT orders_products_id FROM eazysales_mbestellpos WHERE kBestellPos=".$eS_key);
+	$cur_query = xtc_db_query("SELECT orders_products_id FROM eazysales_mbestellpos WHERE kBestellPos=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->orders_products_id;
 }
 
 function getEsEigenschaft($mein_key, $kArtikel)
 {
-	$cur_query = eS_execute_query("SELECT kEigenschaft FROM eazysales_mvariation WHERE kArtikel=".$kArtikel." AND products_options_id=".$eS_key);
+	$cur_query = xtc_db_query("SELECT kEigenschaft FROM eazysales_mvariation WHERE kArtikel=".$kArtikel." AND products_options_id=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kEigenschaft;
 }
 
 function getFremdEigenschaft($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT products_options_id FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
+	$cur_query = xtc_db_query("SELECT products_options_id FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_options_id;
 }
 
 function getEigenschaftsArtikel($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT kArtikel FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
+	$cur_query = xtc_db_query("SELECT kArtikel FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kArtikel;
 }
 
 function getFremdEigenschaftsWert($eS_key)
 {
-	$cur_query = eS_execute_query("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
+	$cur_query = xtc_db_query("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_attributes_id;
 }
 
 function getEsEigenschaftsWert($mein_key, $kArtikel)
 {
-	$cur_query = eS_execute_query("SELECT kEigenschaftsWert FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
+	$cur_query = xtc_db_query("SELECT kEigenschaftsWert FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kEigenschaftsWert;
 }
@@ -317,7 +312,7 @@ function logge($return)
 function get_tax($products_tax_class_id)
 {
 	//get tax class
-	$taxclass_query = eS_execute_query("SELECT * FROM tax_rates WHERE tax_class_id=".$products_tax_class_id." AND tax_zone_id=".$GLOBALS['einstellungen']->tax_zone_id);
+	$taxclass_query = xtc_db_query("SELECT * FROM tax_rates WHERE tax_class_id=".$products_tax_class_id." AND tax_zone_id=".$GLOBALS['einstellungen']->tax_zone_id);
 	$tax = mysql_fetch_object($taxclass_query);
 	return ($tax->tax_rate);
 }

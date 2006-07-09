@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getCountArtikel.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: getCountArtikel.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,7 +40,7 @@ if (auth())
 {
 	$return=0;	
 	//hole anzahl zu versendender Artikel
-	$cur_query = eS_execute_query("SELECT count(*) FROM products LEFT JOIN eazysales_martikel ON products.products_id=eazysales_martikel.products_id WHERE eazysales_martikel.products_id is NULL");
+	$cur_query = xtc_db_query("SELECT count(*) FROM products LEFT JOIN eazysales_martikel ON products.products_id=eazysales_martikel.products_id WHERE eazysales_martikel.products_id is NULL");
 	if ($anzahl = mysql_fetch_row($cur_query))
 	{
 		if ($anzahl>0)

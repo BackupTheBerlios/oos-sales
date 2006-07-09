@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellungPos.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: GetBestellungPos.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,12 +43,12 @@ if (auth())
 	{
 		$return = 0;		
 		//hole orderposes
-		$cur_query = eS_execute_query("SELECT * FROM orders_products WHERE orders_id=".intval($_POST['KeyBestellung'])." ORDER BY orders_products_id");
+		$cur_query = xtc_db_query("SELECT * FROM orders_products WHERE orders_id=".intval($_POST['KeyBestellung'])." ORDER BY orders_products_id");
 		while ($BestellungPos = mysql_fetch_object($cur_query))
 		{
 			//hole etl aufpreise
 			$aufpreis=0;
-			$aufpreise_query = eS_execute_query("SELECT options_values_price FROM orders_products_attributes WHERE orders_id=".$BestellungPos->orders_id." AND orders_products_id=".$BestellungPos->orders_products_id." AND options_values_price!=0");
+			$aufpreise_query = xtc_db_query("SELECT options_values_price FROM orders_products_attributes WHERE orders_id=".$BestellungPos->orders_id." AND orders_products_id=".$BestellungPos->orders_products_id." AND options_values_price!=0");
 			while ($aufpreis_arr = mysql_fetch_row($aufpreise_query))
 			{
 				$aufpreis+=($aufpreis_arr[0]*(100+$BestellungPos->products_tax))/100;
@@ -65,14 +65,14 @@ if (auth())
 			echo("\n");
 		}
 		//letzte Position Versand
-		$cur_query = eS_execute_query("SELECT * FROM orders_total WHERE class=\"ot_shipping\" AND orders_id=".intval($_POST['KeyBestellung']));
+		$cur_query = xtc_db_query("SELECT * FROM orders_total WHERE class=\"ot_shipping\" AND orders_id=".intval($_POST['KeyBestellung']));
 		if ($Versand = mysql_fetch_object($cur_query))
 		{
 			//mappe bestellpos
 			$kBestellPos = setMappingBestellPos(0);
 
 			//hole versand mwst aus einstellungen 
-			$cur_query = eS_execute_query("SELECT versandMwst FROM eazysales_einstellungen");
+			$cur_query = xtc_db_query("SELECT versandMwst FROM eazysales_einstellungen");
 			$einstellungen = mysql_fetch_object($cur_query);
 			
 			echo(CSVkonform($kBestellPos).';');

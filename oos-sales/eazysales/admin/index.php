@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
+   $Id: index.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,7 +41,7 @@ $adminsession = new AdminSession();
 //adminlogin
 if (intval($_POST["adminlogin"])==1)
 {
-	$user_query = eS_execute_query("SELECT * FROM customers WHERE customers_email_address=\"".realEscape($_POST["benutzer"])."\" AND customers_password=\"".md5($_POST["passwort"])."\"");
+	$user_query = xtc_db_query("SELECT * FROM customers WHERE customers_email_address=\"".realEscape($_POST["benutzer"])."\" AND customers_password=\"".md5($_POST["passwort"])."\"");
 	$user = mysql_fetch_object($user_query);
 	//hole DEFAULT_CUSTOMERS_STATUS_ID_ADMIN
 	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_ADMIN\"");

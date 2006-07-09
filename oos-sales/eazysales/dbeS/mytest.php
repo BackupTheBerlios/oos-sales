@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: mytest.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: mytest.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -42,7 +42,7 @@ $cPass = $_POST["uPWD"];
 $_POST["uID"]="*";
 $_POST["uPWD"]="*";
 
-$cur_query = eS_execute_query("SELECT * FROM eazysales_sync");
+$cur_query = xtc_db_query("SELECT * FROM eazysales_sync");
 $loginDaten = mysql_fetch_object($cur_query);
 if ($cName == $loginDaten->cName && $cPass == $loginDaten->cPass)
 	$return=0;

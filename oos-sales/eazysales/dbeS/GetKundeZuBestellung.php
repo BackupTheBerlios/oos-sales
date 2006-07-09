@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetKundeZuBestellung.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: GetKundeZuBestellung.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,16 +43,16 @@ if (auth())
 		$return=0;
 		
 		//hole einstellungen 
-		$cur_query = eS_execute_query("SELECT mappingHaendlerkunde FROM eazysales_einstellungen");
+		$cur_query = xtc_db_query("SELECT mappingHaendlerkunde FROM eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
 		$haendler_arr = explode(";",$einstellungen->mappingHaendlerkunde);
 		
 		//hole order		
-		$cur_query = eS_execute_query("SELECT * FROM orders WHERE orders_id=".intval($_POST['KeyBestellung']));
+		$cur_query = xtc_db_query("SELECT * FROM orders WHERE orders_id=".intval($_POST['KeyBestellung']));
 		$Kunde = mysql_fetch_object($cur_query);
 
 		//zusatzinfos vom kunden holen		
-		$cur_query = eS_execute_query("SELECT customers.customers_gender, customers.customers_newsletter, customers.customers_fax, customers.customers_vat_id FROM orders, customers WHERE orders.customers_id=customers.customers_id AND customers.customers_id=".$Kunde->customers_id);
+		$cur_query = xtc_db_query("SELECT customers.customers_gender, customers.customers_newsletter, customers.customers_fax, customers.customers_vat_id FROM orders, customers WHERE orders.customers_id=customers.customers_id AND customers.customers_id=".$Kunde->customers_id);
 		$cust = mysql_fetch_object($cur_query);
 		
 		$Kunde->customers_gender = $cust->customers_gender;

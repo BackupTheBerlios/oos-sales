@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetAdresse.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: GetAdresse.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,7 +40,7 @@ if (auth())
 	if (intval($_POST['KeyAdresse']))
 	{
 		//hole order
-		$cur_query = eS_execute_query("SELECT * FROM orders WHERE orders_id=".intval($_POST['KeyAdresse']));
+		$cur_query = xtc_db_query("SELECT * FROM orders WHERE orders_id=".intval($_POST['KeyAdresse']));
 		$Order = mysql_fetch_object($cur_query);
 		if (!$Order->delivery_firstname && !$Order->delivery_lastname)
 		{

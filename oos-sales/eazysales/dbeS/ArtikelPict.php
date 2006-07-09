@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: ArtikelPict.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: ArtikelPict.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -201,7 +201,7 @@ if (auth())
 		$return =0;
 		//hol products_id
 		$products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
-		eS_execute_query("update products set products_image='' WHERE products_id=".$products_id);
+		xtc_db_query("update products set products_image='' WHERE products_id=".$products_id);
 	}
 	
 }

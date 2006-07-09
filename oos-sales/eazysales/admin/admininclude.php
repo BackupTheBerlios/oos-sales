@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: admininclude.php,v 1.3 2006/07/09 01:55:15 r23 Exp $
+   $Id: admininclude.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -47,7 +47,7 @@ require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
 xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! �erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
-function eS_execute_query($query)
+function xtc_db_query($query)
 {	
 	return xtc_db_query($query);
 }

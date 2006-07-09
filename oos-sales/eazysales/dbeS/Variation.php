@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
+   $Id: Variation.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
 
    wawi - osis online shop
 
@@ -50,20 +50,20 @@ if (auth())
 		if ($products_id>0)
 		{
 			//hole einstellungen
-			$cur_query = eS_execute_query("SELECT languages_id FROM eazysales_einstellungen");
+			$cur_query = xtc_db_query("SELECT languages_id FROM eazysales_einstellungen");
 			$einstellungen = mysql_fetch_object($cur_query);
 			
 			//hol products_options_id
-			$cur_query = eS_execute_query("SELECT products_options_id FROM products_options WHERE language_id=".$einstellungen->languages_id." AND products_options_name=\"$Eigenschaft->cName\"");
+			$cur_query = xtc_db_query("SELECT products_options_id FROM products_options WHERE language_id=".$einstellungen->languages_id." AND products_options_name=\"$Eigenschaft->cName\"");
 			$options_id = mysql_fetch_object($cur_query);
 			if (!$options_id->products_options_id)
 			{
 				//erstelle eigenschaft
 				//hole max PK
-				$cur_query = eS_execute_query("SELECT max(products_options_id) FROM products_options");
+				$cur_query = xtc_db_query("SELECT max(products_options_id) FROM products_options");
 				$max_id_arr = mysql_fetch_row($cur_query);
 				$options_id->products_options_id = $max_id_arr[0]+1;
-				eS_execute_query("insert into products_options (products_options_id,language_id,products_options_name) values ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
+				xtc_db_query("INSERT INTO products_options (products_options_id,language_id,products_options_name) values ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
 			}
 			//mapping zu variation 
 			setMappingEigenschaft($Eigenschaft->kEigenschaft,$options_id->products_options_id,$Eigenschaft->kArtikel);
