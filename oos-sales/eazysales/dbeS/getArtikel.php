@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.6 2006/07/09 15:47:22 r23 Exp $
+   $Id: getArtikel.php,v 1.7 2006/07/09 16:09:23 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,22 +45,41 @@ if (auth())
 	$einstellungen = mysql_fetch_object($cur_query);
 	
 	//get currency
-	$cur_query = xtc_db_query("SELECT * FROM currencies WHERE currencies_id=".$einstellungen->currencies_id);
+        $currenciestable = $oostable['currencies'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $currenciestable
+                                   WHERE currencies_id=".$einstellungen->currencies_id);
 	$currency = mysql_fetch_object($cur_query);
 	
 	//hole einen noch nicht versandten Artikel nach eS raus 
-	$cur_query = xtc_db_query("SELECT products.products_id FROM products LEFT JOIN eazysales_martikel ON products.products_id=eazysales_martikel.products_id WHERE eazysales_martikel.products_id is NULL limit 1");
+        $productstable = $oostable['products'];
+	$cur_query = xtc_db_query("SELECT products.products_id 
+                                   FROM $productstable LEFT JOIN
+                                        eazysales_martikel
+                                     ON products.products_id=eazysales_martikel.products_id
+                                  WHERE eazysales_martikel.products_id is NULL limit 1");
 	if ($product_id = mysql_fetch_object($cur_query))
 	{
 		//hole product
-		$product_query = xtc_db_query("SELECT p.*, pd.* FROM products p, products_description pd WHERE p.products_id=".$product_id->products_id." AND p.products_id=pd.products_id AND pd.language_id=".$einstellungen->languages_id." ORDER BY pd.products_name");		
+                $productstable = $oostable['products'];
+                $products_descriptiontable = $oostable['products_description'];
+		$product_query = xtc_db_query("SELECT p.*, pd.*
+                                               FROM $productstable p,
+                                                    $products_descriptiontable pd
+                                               WHERE p.products_id=".$product_id->products_id." 
+                                                 AND p.products_id=pd.products_id 
+                                                 AND pd.language_id=".$einstellungen->languages_id." 
+                                               ORDER BY pd.products_name");
 		if ($product = mysql_fetch_object($product_query))
 		{	
 			//hole VPE
 			$vpe="";
 			if ($product->products_vpe>0)
 			{
-				$vpe_query = xtc_db_query("SELECT products_vpe_name FROM products_vpe WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_vpe_id=".$product->products_vpe);		
+				$vpe_query = xtc_db_query("SELECT products_vpe_name 
+                                                           FROM products_vpe 
+                                                           WHERE language_id=".$GLOBALS['einstellungen']->languages_id."
+                                                              AND products_vpe_id=".$product->products_vpe);
 				$vpe_res = mysql_fetch_object($vpe_query);
 				$vpe = substr($vpe_res->products_vpe_name,0,5);
 			}
@@ -169,7 +188,10 @@ function get_attribute($product)
 	if ($product->products_shippingtime>0)
 	{
 		//hole bezeichnung
-		$cur_query = xtc_db_query("SELECT shipping_status_name FROM shipping_status WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND shipping_status_id=".$product->products_shippingtime);
+		$cur_query = xtc_db_query("SELECT shipping_status_name 
+                                           FROM shipping_status 
+                                           WHERE language_id=".$GLOBALS['einstellungen']->languages_id." 
+                                             AND shipping_status_id=".$product->products_shippingtime);
 		$status = mysql_fetch_object($cur_query);
 		if (strlen($status->shipping_status_name)>0)
 		{
@@ -261,13 +283,21 @@ function get_variationswerte($products_id,$options_id)
 
 	$variationswerte="";
 	//existieren Variationen fr diesen Artikel?
-	$cur_query = xtc_db_query("SELECT * FROM products_attributes WHERE options_id=".$options_id." AND products_id=".$products_id);
+        $products_attributestable = $oostable['products_attributes'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $products_attributestable
+                                   WHERE options_id=".$options_id."
+                                     AND products_id=".$products_id);
 	while ($variation = mysql_fetch_object($cur_query))
 	{
 		if ($variation->options_values_id>0)
 		{
 			//hole Variationswertnamen etc.
-			$opt_query = xtc_db_query("SELECT products_options_values_name, products_options_values_id FROM products_options_values WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_options_values_id=".$variation->options_values_id);
+                        $products_options_valuestable = $oostable['products_options_values'];
+			$opt_query = xtc_db_query("SELECT products_options_values_name, products_options_values_id
+                                                   FROM $products_options_valuestable
+                                                   WHERE language_id=".$GLOBALS['einstellungen']->languages_id."
+                                                     AND products_options_values_id=".$variation->options_values_id);
 			$var_name = mysql_fetch_object($opt_query);
 			if ($var_name->products_options_values_id>0)
 			{
@@ -293,13 +323,21 @@ function get_variationen($products_id)
 
 	$variationen="";
 	//existieren Variationen zu diesem Artikel?
-	$cur_query = xtc_db_query("SELECT * FROM products_attributes WHERE products_id=".$products_id." group by options_id");
+        $products_attributestable = $oostable['products_attributes'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $products_attributestable
+                                   WHERE products_id=".$products_id."
+                                   GROUP BY options_id");
 	while ($variation = mysql_fetch_object($cur_query))
 	{
 		if ($variation->options_id>0)
 		{
 			//hole Variationsname etc.
-			$opt_query = xtc_db_query("SELECT products_options_name, products_options_id FROM products_options WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_options_id=".$variation->options_id);
+                        $products_optionstable = $oostable['products_options'];
+			$opt_query = xtc_db_query("SELECT products_options_name, products_options_id 
+                                                   FROM $products_optionstable
+                                                   WHERE language_id=".$GLOBALS['einstellungen']->languages_id." 
+                                                     AND products_options_id=".$variation->options_id);
 			$var_name = mysql_fetch_object($opt_query);
 			if ($var_name->products_options_id>0)
 			{
@@ -316,6 +354,10 @@ function get_variationen($products_id)
 
 function get_staffelpreise($products_id, $endkunde)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$staffel="";
 	$anzahl = "";
 	$preise = "";
@@ -346,7 +388,12 @@ function get_staffelpreise($products_id, $endkunde)
 	if ($staffelpreiseDa)
 	{
 		//existieren Staffelprese fr diesen Artikel?
-		$cur_query = xtc_db_query("SELECT * FROM ".$table." WHERE products_id=".$products_id." AND quantity>1 ORDER BY quantity asc limit 5");
+           $productstable = $oostable['products'];
+		$cur_query = xtc_db_query("SELECT * 
+                                           FROM $productstable 
+                                           WHERE products_id=".$products_id." 
+                                             AND quantity>1 
+                                           ORDER BY quantity asc limit 5");
 		while ($staffelpreise = mysql_fetch_object($cur_query))
 		{
 			$anzahlStaffelpreise++;
@@ -393,6 +440,7 @@ function get_preisHaendlerKunde($product)
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
+
 	$haendlerKunden_arr = explode(";",$GLOBALS['einstellungen']->mappingHaendlerkunde);
 	if ($haendlerKunden_arr[0]>0)
 	{
@@ -414,14 +462,22 @@ function get_cats($products_id)
 
 	$res ="";
 	//get cat_id
-	$glob_cat_query = xtc_db_query("SELECT * FROM products_to_categories WHERE products_id=".$products_id);
+
+        $products_to_categoriestable = $oostable['products_to_categories'];
+	$glob_cat_query = xtc_db_query("SELECT * 
+                                        FROM $products_to_categoriestable
+                                        WHERE products_id=".$products_id);
 	while ($act_cat = mysql_fetch_object($glob_cat_query))
 	{
 		$catArr = array();
 		$cur_cat_id = $act_cat->categories_id;
 		if ($cur_cat_id>0)
 		{
-			$cat_query = xtc_db_query("SELECT * FROM categories WHERE categories_id=".$cur_cat_id);
+
+                  $categoriestable = $oostable['categories'];
+			$cat_query = xtc_db_query("SELECT *
+                                                   FROM $categoriestable
+                                                   WHERE categories_id=".$cur_cat_id);
 			$current_cat = mysql_fetch_object($cat_query);	
 			array_push($catArr,$cur_cat_id);
 		}
@@ -429,9 +485,13 @@ function get_cats($products_id)
 		while ($current_cat->parent_id>0)
 		{
 			$cur_cat_id = $current_cat->parent_id;
-			$cat_query = xtc_db_query("SELECT * FROM categories WHERE categories_id=".$cur_cat_id);
-			$current_cat = mysql_fetch_object($cat_query);		
-			array_push($catArr,$cur_cat_id);		
+
+                  $categoriestable = $oostable['categories'];
+			$cat_query = xtc_db_query("SELECT *
+                                                    FROM $categoriestable
+                                                    WHERE categories_id=".$cur_cat_id);
+			$current_cat = mysql_fetch_object($cat_query);
+			array_push($catArr,$cur_cat_id);
 		}
 		$cnt = count($catArr);
 		for ($i=0;$i<$cnt;$i++)
@@ -440,21 +500,31 @@ function get_cats($products_id)
 			if ($i==0)
 				$vor="K";
 			$catId = array_pop($catArr);
-			$cat_query = xtc_db_query("SELECT * FROM categories_description WHERE categories_id=".$catId." AND language_id=".$GLOBALS['einstellungen']->languages_id);
+
+                  $categories_descriptiontable = $oostable['categories_description'];
+			$cat_query = xtc_db_query("SELECT *
+                                                   FROM $categories_descriptiontable
+                                                   WHERE categories_id=".$catId."
+                                                     AND language_id=".$GLOBALS['einstellungen']->languages_id);
 			$current_cat = mysql_fetch_object($cat_query);
-			$cat_query = xtc_db_query("SELECT categories_status FROM categories WHERE categories_id=".$catId);
+
+                  $categoriestable = $oostable['categories'];
+			$cat_query = xtc_db_query("SELECT categories_status
+                                                   FROM $categoriestable
+                                                   WHERE categories_id=".$catId);
 			$current_cat_status = mysql_fetch_object($cat_query);
-			$res.=CSVkonform($vor).";".			
+
+			$res.=CSVkonform($vor).";"
 				CSVkonform(unhtmlentities($current_cat->categories_name)).";".
 				CSVkonform(substr(unhtmlentities($current_cat->categories_description),0,64000)).";".
-				CSVkonform($catId).";".
+				CSVkonform($catId).";"
 				CSVkonform($current_cat_status->categories_status).";\n";
 		}
 	}
 	if ($res=="")
-		$res.=CSVkonform("K").";".			
-			CSVkonform("Top").";".
-			CSVkonform("Wurzelkategorie").";".
+		$res.=CSVkonform("K").";"
+			CSVkonform("Top").";"
+			CSVkonform("Wurzelkategorie").";"
 			CSVkonform(0).";".
 			CSVkonform(0).";\n";
 	return $res;
@@ -467,9 +537,12 @@ function getManufacturer($manufacturers_id)
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	$manu_query = xtc_db_query("SELECT * FROM manufacturers WHERE manufacturers_id=".$manufacturers_id);
+    $manufacturerstable = $oostable['manufacturers'];
+	$manu_query = xtc_db_query("SELECT *
+                                    FROM $manufacturerstable
+                                    WHERE manufacturers_id=".$manufacturers_id);
 	$manu = mysql_fetch_object($manu_query);
-	return ($manu->manufacturers_name);	
+	return ($manu->manufacturers_name);
 }
 
 ?>
