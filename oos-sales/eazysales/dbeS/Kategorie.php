@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.8 2006/07/09 14:06:28 r23 Exp $
+   $Id: Kategorie.php,v 1.9 2006/07/09 15:19:33 r23 Exp $
 
    wawi - osis online shop
 
@@ -57,11 +57,15 @@ if (auth())
 			$categories_id_oberkat = getFremdKategorie($Kategorie->kOberKategorie);
 			if (!$categories_id_oberkat)
 			{
-				xtc_db_query("INSERT INTO categories (categories_status, date_added, categories_template, listing_template, products_sorting, products_sorting2) values (0,now(),\"$einstellungen->cat_category_template\",\"$einstellungen->cat_listing_template\",\"$einstellungen->cat_sorting\",\"$einstellungen->cat_sorting2\")");
+                          $categoriestable = $oostable['categories'];
+
+				xtc_db_query("INSERT INTO $categoriestable (categories_status, date_added, categories_template, listing_template, products_sorting, products_sorting2) values (0,now(),\"$einstellungen->cat_category_template\",\"$einstellungen->cat_listing_template\",\"$einstellungen->cat_sorting\",\"$einstellungen->cat_sorting2\")");
 				//hole id
 				$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 				$categories_id_oberkat_arr = mysql_fetch_row($query);
-				xtc_db_query("INSERT INTO categories_description (categories_id, language_id) values (".$categories_id_oberkat_arr[0].",$einstellungen->languages_id)");
+
+                          $categories_descriptiontable = $oostable['categories_description'];
+				xtc_db_query("INSERT INTO $categories_descriptiontable (categories_id, language_id) values (".$categories_id_oberkat_arr[0].",$einstellungen->languages_id)");
 				$Kategorie->parent_id = $categories_id_oberkat_arr[0];
 				setMappingKategorie($Kategorie->kOberKategorie, $Kategorie->parent_id);
 			}
@@ -73,16 +77,22 @@ if (auth())
 		if ($categories_id>0)
 		{
 			//update
-			xtc_db_query("UPDATE categories SET parent_id=$Kategorie->parent_id, categories_status=1 WHERE categories_id=".$categories_id);
-			xtc_db_query("UPDATE categories_description SET categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" WHERE categories_id=".$categories_id." AND language_id=".$einstellungen->languages_id);
+                  $categoriestable = $oostable['categories'];
+			xtc_db_query("UPDATE $categoriestable SET parent_id=$Kategorie->parent_id, categories_status=1 WHERE categories_id=".$categories_id);
+
+                  $categories_descriptiontable = $oostable['categories_description'];
+			xtc_db_query("UPDATE $categories_descriptiontable SET categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" WHERE categories_id=".$categories_id." AND language_id=".$einstellungen->languages_id);
 		}
 		else 
 		{
 			//insert
-			xtc_db_query("INSERT INTO categories (parent_id, categories_status, categories_template, listing_template, products_sorting, products_sorting2, date_added) values ($Kategorie->parent_id,1,\"".$einstellungen->cat_category_template."\",\"".$einstellungen->cat_listing_template."\",\"".$einstellungen->cat_sorting."\",\"".$einstellungen->cat_sorting2."\",now())");
+                  $categoriestable = $oostable['categories'];
+			xtc_db_query("INSERT INTO $categoriestable (parent_id, categories_status, categories_template, listing_template, products_sorting, products_sorting2, date_added) values ($Kategorie->parent_id,1,\"".$einstellungen->cat_category_template."\",\"".$einstellungen->cat_listing_template."\",\"".$einstellungen->cat_sorting."\",\"".$einstellungen->cat_sorting2."\",now())");
 			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 			$categories_id_arr = mysql_fetch_row($query);
-			xtc_db_query("INSERT INTO categories_description (categories_id, language_id, categories_name, categories_description) values (".$categories_id_arr[0].",$einstellungen->languages_id, \"$Kategorie->cName\", \"$Kategorie->cBeschreibung\")");
+
+                  $categories_descriptiontable = $oostable['categories_description'];
+			xtc_db_query("INSERT INTO $categories_descriptiontable (categories_id, language_id, categories_name, categories_description) values (".$categories_id_arr[0].",$einstellungen->languages_id, \"$Kategorie->cName\", \"$Kategorie->cBeschreibung\")");
 			setMappingKategorie($Kategorie->kKategorie, $categories_id_arr[0]);
 		}
  	}	
@@ -92,7 +102,8 @@ if (auth())
 		$return=0;
 		$cat = getFremdKategorie(intval($_POST['KeyKategorie']));
 		if ($cat>0)
-			xtc_db_query("UPDATE categories SET categories_status=0 WHERE categories_id=".$cat);
+                  $categoriestable = $oostable['categories'];
+			xtc_db_query("UPDATE $categoriestable SET categories_status=0 WHERE categories_id=".$cat);
 	}
 }
 

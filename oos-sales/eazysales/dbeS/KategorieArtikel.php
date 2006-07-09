@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategorieArtikel.php,v 1.5 2006/07/09 03:29:07 r23 Exp $
+   $Id: KategorieArtikel.php,v 1.6 2006/07/09 15:21:05 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,7 +45,9 @@ if (auth())
 		$products_id = getFremdArtikel($KategorieArtikel->kArtikel);
 		$categories_id = getFremdKategorie($KategorieArtikel->kKategorie);
 		if ($products_id && $categories_id)
-			xtc_db_query("INSERT INTO products_to_categories (products_id, categories_id) values ($products_id, $categories_id)");
+
+                  $products_to_categoriestable = $oostable['products_to_categories'];
+			xtc_db_query("INSERT INTO $products_to_categoriestable (products_id, categories_id) values ($products_id, $categories_id)");
  	}
 	else
 		$return=5;

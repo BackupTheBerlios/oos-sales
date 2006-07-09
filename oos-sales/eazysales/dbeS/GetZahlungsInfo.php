@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetZahlungsInfo.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
+   $Id: GetZahlungsInfo.php,v 1.7 2006/07/09 15:24:13 r23 Exp $
 
    wawi - osis online shop
 
@@ -44,14 +44,19 @@ if (auth())
 	{
 		$return = 0;
 		//hole order
-		$cur_query = xtc_db_query("SELECT orders_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, cc_start, cc_issue, cc_cvv FROM orders WHERE orders_id=".intval($_POST['KeyBestellung']));
+
+                $orderstable = $oostable['orders'];
+		$cur_query = xtc_db_query("SELECT orders_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, cc_start, cc_issue, cc_cvv 
+                                           FROM $orderstable
+                                           WHERE orders_id=".intval($_POST['KeyBestellung']));
 		$ZahlungsInfo = mysql_fetch_object($cur_query);
 		$ZahlungsInfo->send=0;
 		//ist es Banktransfer?
 		if ($ZahlungsInfo->payment_method=="banktransfer")
 		{
 			//hole bankdaten
-			$cur_query = xtc_db_query("SELECT * FROM banktransfer WHERE orders_id=".intval($_POST['KeyBestellung']));
+                  $banktransfertable = $oostable['banktransfer'];
+			$cur_query = xtc_db_query("SELECT * FROM $banktransfertable WHERE orders_id=".intval($_POST['KeyBestellung']));
 			$Bank = mysql_fetch_object($cur_query);
 			if ($Bank->orders_id>0)
 			{
@@ -67,7 +72,11 @@ if (auth())
 			//Kreditkarte
 			//hole chainkey
 			$ZahlungsInfo->send=1;
-			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"CC_KEYCHAIN\"");
+
+                   $configurationtable = $oostable['configuration'];
+			$cur_query = xtc_db_query("SELECT $configurationtable
+                                                   FROM configuration
+                                                   WHERE configuration_key=\"CC_KEYCHAIN\"");
 			$chain = mysql_fetch_object($cur_query);
 			$ZahlungsInfo->cKartenNr = changedataout($ZahlungsInfo->cc_number,$chain->configuration_value);
 			$ZahlungsInfo->cGueltigkeit = $ZahlungsInfo->cc_expires;
