@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: Kategorie.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,7 +39,7 @@ $return=3;
 if (auth())
 {
 	//hole einstellungen
-	$cur_query = eS_execute_query("select * from eazysales_einstellungen");
+	$cur_query = eS_execute_query("SELECT * FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);
 
 	if ((intval($_POST["action"]) == 1 || intval($_POST["action"]) == 3) && intval($_POST['KeyKategorie'])>0)
@@ -59,7 +59,7 @@ if (auth())
 			{
 				eS_execute_query("insert into categories (categories_status, date_added, categories_template, listing_template, products_sorting, products_sorting2) values (0,now(),\"$einstellungen->cat_category_template\",\"$einstellungen->cat_listing_template\",\"$einstellungen->cat_sorting\",\"$einstellungen->cat_sorting2\")");
 				//hole id
-				$query = eS_execute_query("select LAST_INSERT_ID()");
+				$query = eS_execute_query("SELECT LAST_INSERT_ID()");
 				$categories_id_oberkat_arr = mysql_fetch_row($query);
 				eS_execute_query("insert into categories_description (categories_id, language_id) values (".$categories_id_oberkat_arr[0].",$einstellungen->languages_id)");
 				$Kategorie->parent_id = $categories_id_oberkat_arr[0];
@@ -73,14 +73,14 @@ if (auth())
 		if ($categories_id>0)
 		{
 			//update
-			eS_execute_query("update categories set parent_id=$Kategorie->parent_id, categories_status=1 where categories_id=".$categories_id);
-			eS_execute_query("update categories_description set categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" where categories_id=".$categories_id." and language_id=".$einstellungen->languages_id);
+			eS_execute_query("update categories set parent_id=$Kategorie->parent_id, categories_status=1 WHERE categories_id=".$categories_id);
+			eS_execute_query("update categories_description set categories_name=\"$Kategorie->cName\", categories_description=\"$Kategorie->cBeschreibung\" WHERE categories_id=".$categories_id." AND language_id=".$einstellungen->languages_id);
 		}
 		else 
 		{
 			//insert
 			eS_execute_query("insert into categories (parent_id, categories_status, categories_template, listing_template, products_sorting, products_sorting2, date_added) values ($Kategorie->parent_id,1,\"".$einstellungen->cat_category_template."\",\"".$einstellungen->cat_listing_template."\",\"".$einstellungen->cat_sorting."\",\"".$einstellungen->cat_sorting2."\",now())");
-			$query = eS_execute_query("select LAST_INSERT_ID()");
+			$query = eS_execute_query("SELECT LAST_INSERT_ID()");
 			$categories_id_arr = mysql_fetch_row($query);
 			eS_execute_query("insert into categories_description (categories_id, language_id, categories_name, categories_description) values (".$categories_id_arr[0].",$einstellungen->languages_id, \"$Kategorie->cName\", \"$Kategorie->cBeschreibung\")");
 			setMappingKategorie($Kategorie->kKategorie, $categories_id_arr[0]);
@@ -92,7 +92,7 @@ if (auth())
 		$return=0;
 		$cat = getFremdKategorie(intval($_POST['KeyKategorie']));
 		if ($cat>0)
-			eS_execute_query("update categories set categories_status=0 where categories_id=".$cat);
+			eS_execute_query("update categories set categories_status=0 WHERE categories_id=".$cat);
 	}
 }
 

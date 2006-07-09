@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: VariationWert.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -49,21 +49,21 @@ if (auth())
 		$EigenschaftWert->cName = realEscape($_POST["Name"]);
 
 		//hole einstellungen
-		$cur_query = eS_execute_query("select languages_id, tax_class_id, tax_zone_id from eazysales_einstellungen");
+		$cur_query = eS_execute_query("SELECT languages_id, tax_class_id, tax_zone_id FROM eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
 		
 		$products_options_id = getFremdEigenschaft($EigenschaftWert->kEigenschaft);
 		if ($products_options_id>0)
 		{
 			//schaue, ob dieser EigenschaftsWert bereits global existiert fr diese Eigenschaft!!
-			$cur_query = eS_execute_query("select products_options_values.products_options_values_id from products_options_values, products_options_values_to_products_options where products_options_values_to_products_options.products_options_id=$products_options_id and products_options_values_to_products_options.products_options_values_id=products_options_values.products_options_values_id and products_options_values.language_id=$einstellungen->languages_id and products_options_values.products_options_values_name=\"$EigenschaftWert->cName\"");
+			$cur_query = eS_execute_query("SELECT products_options_values.products_options_values_id FROM products_options_values, products_options_values_to_products_options WHERE products_options_values_to_products_options.products_options_id=$products_options_id AND products_options_values_to_products_options.products_options_values_id=products_options_values.products_options_values_id AND products_options_values.language_id=$einstellungen->languages_id AND products_options_values.products_options_values_name=\"$EigenschaftWert->cName\"");
 			$options_values = mysql_fetch_object($cur_query);
 			
 			if (!$options_values->products_options_values_id)
 			{
 				//erstelle diesen Wert global
 				//hole max PK
-				$cur_query = eS_execute_query("select max(products_options_values_id) from products_options_values");
+				$cur_query = eS_execute_query("SELECT max(products_options_values_id) FROM products_options_values");
 				$max_id_arr = mysql_fetch_row($cur_query);
 				$options_values->products_options_values_id = $max_id_arr[0]+1;
 				eS_execute_query("insert into products_options_values (products_options_values_id,language_id,products_options_values_name) values ($options_values->products_options_values_id,$einstellungen->languages_id,\"$EigenschaftWert->cName\")");			
@@ -80,11 +80,11 @@ if (auth())
 				if ($products_id>0)
 				{
 					//hole products_tax_class_id
-					$cur_query = eS_execute_query("select products_tax_class_id from products where products_id=".$products_id);
+					$cur_query = eS_execute_query("SELECT products_tax_class_id FROM products WHERE products_id=".$products_id);
 					$cur_tax = mysql_fetch_object($cur_query);
 					$Aufpreis = ($EigenschaftWert->fAufpreis/(100+get_tax($cur_tax->products_tax_class_id)))*100;
 					eS_execute_query("insert into products_attributes (products_id,options_id,options_values_id,options_values_price,price_prefix) values($products_id,$products_options_id,$options_values->products_options_values_id,$Aufpreis,\"+\")");
-					$query = eS_execute_query("select LAST_INSERT_ID()");
+					$query = eS_execute_query("SELECT LAST_INSERT_ID()");
 					$last_attribute_id_arr = mysql_fetch_row($query);					
 					setMappingEigenschaftsWert($EigenschaftWert->kEigenschaftWert, $last_attribute_id_arr[0], $kArtikel);
 				}

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: getArtikel.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,26 +41,26 @@ if (auth())
 {
 	$return = 0;
 	//hole einstellunegn
-	$cur_query = eS_execute_query("select * from eazysales_einstellungen");
+	$cur_query = eS_execute_query("SELECT * FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);
 	
 	//get currency
-	$cur_query = eS_execute_query("select * from currencies where currencies_id=".$einstellungen->currencies_id);
+	$cur_query = eS_execute_query("SELECT * FROM currencies WHERE currencies_id=".$einstellungen->currencies_id);
 	$currency = mysql_fetch_object($cur_query);
 	
 	//hole einen noch nicht versandten Artikel nach eS raus 
-	$cur_query = eS_execute_query("select products.products_id from products LEFT JOIN eazysales_martikel ON products.products_id=eazysales_martikel.products_id where eazysales_martikel.products_id is NULL limit 1");
+	$cur_query = eS_execute_query("SELECT products.products_id FROM products LEFT JOIN eazysales_martikel ON products.products_id=eazysales_martikel.products_id WHERE eazysales_martikel.products_id is NULL limit 1");
 	if ($product_id = mysql_fetch_object($cur_query))
 	{
 		//hole product
-		$product_query = eS_execute_query("select p.*, pd.* from products p, products_description pd where p.products_id=".$product_id->products_id." and p.products_id=pd.products_id and pd.language_id=".$einstellungen->languages_id." order by pd.products_name");		
+		$product_query = eS_execute_query("SELECT p.*, pd.* FROM products p, products_description pd WHERE p.products_id=".$product_id->products_id." AND p.products_id=pd.products_id AND pd.language_id=".$einstellungen->languages_id." ORDER BY pd.products_name");		
 		if ($product = mysql_fetch_object($product_query))
 		{	
 			//hole VPE
 			$vpe="";
 			if ($product->products_vpe>0)
 			{
-				$vpe_query = eS_execute_query("select products_vpe_name from products_vpe where language_id=".$GLOBALS['einstellungen']->languages_id." and products_vpe_id=".$product->products_vpe);		
+				$vpe_query = eS_execute_query("SELECT products_vpe_name FROM products_vpe WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_vpe_id=".$product->products_vpe);		
 				$vpe_res = mysql_fetch_object($vpe_query);
 				$vpe = substr($vpe_res->products_vpe_name,0,5);
 			}
@@ -165,7 +165,7 @@ function get_attribute($product)
 	if ($product->products_shippingtime>0)
 	{
 		//hole bezeichnung
-		$cur_query = eS_execute_query("select shipping_status_name from shipping_status where language_id=".$GLOBALS['einstellungen']->languages_id." and shipping_status_id=".$product->products_shippingtime);
+		$cur_query = eS_execute_query("SELECT shipping_status_name FROM shipping_status WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND shipping_status_id=".$product->products_shippingtime);
 		$status = mysql_fetch_object($cur_query);
 		if (strlen($status->shipping_status_name)>0)
 		{
@@ -253,13 +253,13 @@ function get_variationswerte($products_id,$options_id)
 {
 	$variationswerte="";
 	//existieren Variationen fr diesen Artikel?
-	$cur_query = eS_execute_query("select * from products_attributes where options_id=".$options_id." and products_id=".$products_id);
+	$cur_query = eS_execute_query("SELECT * FROM products_attributes WHERE options_id=".$options_id." AND products_id=".$products_id);
 	while ($variation = mysql_fetch_object($cur_query))
 	{
 		if ($variation->options_values_id>0)
 		{
 			//hole Variationswertnamen etc.
-			$opt_query = eS_execute_query("select products_options_values_name, products_options_values_id from products_options_values where language_id=".$GLOBALS['einstellungen']->languages_id." and products_options_values_id=".$variation->options_values_id);
+			$opt_query = eS_execute_query("SELECT products_options_values_name, products_options_values_id FROM products_options_values WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_options_values_id=".$variation->options_values_id);
 			$var_name = mysql_fetch_object($opt_query);
 			if ($var_name->products_options_values_id>0)
 			{
@@ -281,13 +281,13 @@ function get_variationen($products_id)
 {
 	$variationen="";
 	//existieren Variationen zu diesem Artikel?
-	$cur_query = eS_execute_query("select * from products_attributes where products_id=".$products_id." group by options_id");
+	$cur_query = eS_execute_query("SELECT * FROM products_attributes WHERE products_id=".$products_id." group by options_id");
 	while ($variation = mysql_fetch_object($cur_query))
 	{
 		if ($variation->options_id>0)
 		{
 			//hole Variationsname etc.
-			$opt_query = eS_execute_query("select products_options_name, products_options_id from products_options where language_id=".$GLOBALS['einstellungen']->languages_id." and products_options_id=".$variation->options_id);
+			$opt_query = eS_execute_query("SELECT products_options_name, products_options_id FROM products_options WHERE language_id=".$GLOBALS['einstellungen']->languages_id." AND products_options_id=".$variation->options_id);
 			$var_name = mysql_fetch_object($opt_query);
 			if ($var_name->products_options_id>0)
 			{
@@ -334,7 +334,7 @@ function get_staffelpreise($products_id, $endkunde)
 	if ($staffelpreiseDa)
 	{
 		//existieren Staffelprese fr diesen Artikel?
-		$cur_query = eS_execute_query("select * from ".$table." where products_id=".$products_id." and quantity>1 order by quantity asc limit 5");
+		$cur_query = eS_execute_query("SELECT * FROM ".$table." WHERE products_id=".$products_id." AND quantity>1 ORDER BY quantity asc limit 5");
 		while ($staffelpreise = mysql_fetch_object($cur_query))
 		{
 			$anzahlStaffelpreise++;
@@ -364,7 +364,7 @@ function get_preisEndkunde($product)
 	if ($endKunden_arr[0]>0)
 	{
 		$personalOfferTable = "personal_offers_by_customers_status_".$endKunden_arr[0];
-		$cur_query = eS_execute_query("select * from $personalOfferTable where quantity=1 and products_id=".$product->products_id);
+		$cur_query = eS_execute_query("SELECT * FROM $personalOfferTable WHERE quantity=1 AND products_id=".$product->products_id);
 		$staffelpreise = mysql_fetch_object($cur_query);
 		if ($staffelpreise->quantity == 1 && $staffelpreise->personal_offer>0)
 			return $staffelpreise->personal_offer;
@@ -378,7 +378,7 @@ function get_preisHaendlerKunde($product)
 	if ($haendlerKunden_arr[0]>0)
 	{
 		$personalOfferTable = "personal_offers_by_customers_status_".$haendlerKunden_arr[0];
-		$cur_query = eS_execute_query("select * from $personalOfferTable where quantity=1 and products_id=".$product->products_id);
+		$cur_query = eS_execute_query("SELECT * FROM $personalOfferTable WHERE quantity=1 AND products_id=".$product->products_id);
 		$staffelpreise = mysql_fetch_object($cur_query);
 		if ($staffelpreise->quantity == 1 && $staffelpreise->personal_offer>0)
 			return $staffelpreise->personal_offer;
@@ -391,14 +391,14 @@ function get_cats($products_id)
 {
 	$res ="";
 	//get cat_id
-	$glob_cat_query = eS_execute_query("select * from products_to_categories where products_id=".$products_id);
+	$glob_cat_query = eS_execute_query("SELECT * FROM products_to_categories WHERE products_id=".$products_id);
 	while ($act_cat = mysql_fetch_object($glob_cat_query))
 	{
 		$catArr = array();
 		$cur_cat_id = $act_cat->categories_id;
 		if ($cur_cat_id>0)
 		{
-			$cat_query = eS_execute_query("select * from categories where categories_id=".$cur_cat_id);
+			$cat_query = eS_execute_query("SELECT * FROM categories WHERE categories_id=".$cur_cat_id);
 			$current_cat = mysql_fetch_object($cat_query);	
 			array_push($catArr,$cur_cat_id);
 		}
@@ -406,7 +406,7 @@ function get_cats($products_id)
 		while ($current_cat->parent_id>0)
 		{
 			$cur_cat_id = $current_cat->parent_id;
-			$cat_query = eS_execute_query("select * from categories where categories_id=".$cur_cat_id);
+			$cat_query = eS_execute_query("SELECT * FROM categories WHERE categories_id=".$cur_cat_id);
 			$current_cat = mysql_fetch_object($cat_query);		
 			array_push($catArr,$cur_cat_id);		
 		}
@@ -417,9 +417,9 @@ function get_cats($products_id)
 			if ($i==0)
 				$vor="K";
 			$catId = array_pop($catArr);
-			$cat_query = eS_execute_query("select * from categories_description where categories_id=".$catId." and language_id=".$GLOBALS['einstellungen']->languages_id);
+			$cat_query = eS_execute_query("SELECT * FROM categories_description WHERE categories_id=".$catId." AND language_id=".$GLOBALS['einstellungen']->languages_id);
 			$current_cat = mysql_fetch_object($cat_query);
-			$cat_query = eS_execute_query("select categories_status from categories where categories_id=".$catId);
+			$cat_query = eS_execute_query("SELECT categories_status FROM categories WHERE categories_id=".$catId);
 			$current_cat_status = mysql_fetch_object($cat_query);
 			$res.=CSVkonform($vor).";".			
 				CSVkonform(unhtmlentities($current_cat->categories_name)).";".
@@ -440,7 +440,7 @@ function get_cats($products_id)
 //get hersteller
 function getManufacturer($manufacturers_id)
 {
-	$manu_query = eS_execute_query("select * from manufacturers where manufacturers_id=".$manufacturers_id);
+	$manu_query = eS_execute_query("SELECT * FROM manufacturers WHERE manufacturers_id=".$manufacturers_id);
 	$manu = mysql_fetch_object($manu_query);
 	return ($manu->manufacturers_name);	
 }

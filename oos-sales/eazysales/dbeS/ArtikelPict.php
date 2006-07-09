@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: ArtikelPict.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: ArtikelPict.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -46,7 +46,7 @@ if (auth())
 		$oldArtikelPict = new ArtikelPict();
 		$oldArtikelPict->loadFromDB($ArtikelPict->kArtikel);
 
-		$GLOBALS["DB"]->executeQuery("DELETE from tartikelpict where kArtikel=".$ArtikelPict->kArtikel,4);
+		$GLOBALS["DB"]->executeQuery("DELETE FROM tartikelpict WHERE kArtikel=".$ArtikelPict->kArtikel,4);
 
 		if ($ArtikelPict->insertInDB())
 			$return = 0;
@@ -201,7 +201,7 @@ if (auth())
 		$return =0;
 		//hol products_id
 		$products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
-		eS_execute_query("update products set products_image='' where products_id=".$products_id);
+		eS_execute_query("update products set products_image='' WHERE products_id=".$products_id);
 	}
 	
 }

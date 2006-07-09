@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: SetBestellung.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,13 +45,13 @@ if (auth())
 		$return = 0;
 		//setze orders_status auf gew�lte Option bei eS Versadnt
 		//hole einstellungen
-		$cur_query = eS_execute_query("select StatusVersendet from eazysales_einstellungen");
+		$cur_query = eS_execute_query("SELECT StatusVersendet FROM eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
 		
 		//setze status der Bestellung
 		if ($einstellungen->StatusVersendet>0)
 		{
-			eS_execute_query("update orders set orders_status=".$einstellungen->StatusVersendet." where orders_id=".intval($_POST['KeyBestellung']));
+			eS_execute_query("update orders set orders_status=".$einstellungen->StatusVersendet." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$VersandInfo = realEscape($_POST["VersandInfo"]);
 			$VersandDatum = realEscape($_POST["VersandDatum"]);
@@ -67,13 +67,13 @@ if (auth())
 		$return = 0;
 		//setze orders_status auf gew�lte Option bei eS Abholung
 		//hole einstellungen
-		$cur_query = eS_execute_query("select StatusAbgeholt from eazysales_einstellungen");
+		$cur_query = eS_execute_query("SELECT StatusAbgeholt FROM eazysales_einstellungen");
 		$einstellungen = mysql_fetch_object($cur_query);
 		
 		//setze status der Bestellung
 		if ($einstellungen->StatusAbgeholt>0)
 		{
-			eS_execute_query("update orders set orders_status=".$einstellungen->StatusAbgeholt." where orders_id=".intval($_POST['KeyBestellung']));
+			eS_execute_query("update orders set orders_status=".$einstellungen->StatusAbgeholt." WHERE orders_id=".intval($_POST['KeyBestellung']));
 			//fge history hinzu
 			$kommentar = "Erfolgreich in eazySales bernommen";
 			eS_execute_query("insert into orders_status_history (orders_id, orders_status_id, date_added, comments) values(".intval($_POST['KeyBestellung']).", ".$einstellungen->StatusAbgeholt.", now(), \"".$kommentar."\")");

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: index.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -23,7 +23,7 @@
 
 /**
  * eazySales_Connector/index.php
- * AdminLogin für eazySales Connector
+ * AdminLogin fr eazySales Connector
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
@@ -41,10 +41,10 @@ $adminsession = new AdminSession();
 //adminlogin
 if (intval($_POST["adminlogin"])==1)
 {
-	$user_query = eS_execute_query("select * from customers where customers_email_address=\"".realEscape($_POST["benutzer"])."\" and customers_password=\"".md5($_POST["passwort"])."\"");
+	$user_query = eS_execute_query("SELECT * FROM customers WHERE customers_email_address=\"".realEscape($_POST["benutzer"])."\" AND customers_password=\"".md5($_POST["passwort"])."\"");
 	$user = mysql_fetch_object($user_query);
 	//hole DEFAULT_CUSTOMERS_STATUS_ID_ADMIN
-	$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_ADMIN\"");
+	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_ADMIN\"");
 	$def_adminstatus = mysql_fetch_object($cur_query);
 	if ($user->customers_id>0 && $def_adminstatus->configuration_value==0)
 	{

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: konfiguration.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -23,7 +23,7 @@
 
 /**
  * eazySales_Connector/index.php
- * AdminLogin für eazySales Connector
+ * AdminLogin fr eazySales Connector
  * 
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
  * 
@@ -54,10 +54,10 @@ zeigeFuss();
 function zeigeKonfigForm()
 {
 	//hole einstellungen
-	$cur_query = eS_execute_query("select * from eazysales_einstellungen");
+	$cur_query = eS_execute_query("SELECT * FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);	
 	
-	$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"CURRENT_TEMPLATE\"");
+	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"CURRENT_TEMPLATE\"");
 	$cur_template = mysql_fetch_object($cur_query);
 	
 	//Templategeschichten
@@ -76,7 +76,7 @@ function zeigeKonfigForm()
 	$order_array2=array(array('id' => 'ASC','text'=>'Aufsteigend'),
 				array('id' => 'DESC','text'=>'Absteigend'));
 				
-	//Templatesachen für Produkte
+	//Templatesachen fr Produkte
 	
 				
 	//defaultwerte setzen
@@ -88,28 +88,28 @@ function zeigeKonfigForm()
 		$einstellungen->versandMwst = 16;
 	if (!$einstellungen->languages_id)
 	{
-		$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"DEFAULT_LANGUAGE\"");
+		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_LANGUAGE\"");
 		$def_lang = mysql_fetch_object($cur_query);
 		if ($def_lang->configuration_value)
 		{
-			$cur_query = xtc_db_query("select languages_id from languages where code=\"".$def_lang->configuration_value."\"");
+			$cur_query = xtc_db_query("SELECT languages_id FROM languages WHERE code=\"".$def_lang->configuration_value."\"");
 			$langID = mysql_fetch_object($cur_query);			
 			$einstellungen->languages_id = $langID->languages_id;
 		}
 		else 
 		{
 			//erstbeste Lang
-			$cur_query = xtc_db_query("select languages_id from languages");
+			$cur_query = xtc_db_query("SELECT languages_id FROM languages");
 			$langID = mysql_fetch_object($cur_query);			
 			$einstellungen->languages_id = $langID->languages_id;
 		}
 	}
 	if (!$einstellungen->mappingEndkunde)
 	{
-		$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
+		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
 		$def_userstatus = mysql_fetch_object($cur_query);
 		$einstellungen->mappingEndkunde=$def_userstatus->configuration_value;
-		$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
+		$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
 		$def_userstatus_guest = mysql_fetch_object($cur_query);		
 		$einstellungen->mappingEndkunde.=";".$def_userstatus_guest->configuration_value;
 	}
@@ -121,14 +121,14 @@ function zeigeKonfigForm()
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>Konfiguration vom eazySales Connector</h3></td></tr>
 								<tr><td class="content" align="center"><br>
-										Für den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, müssen einige Einstellungen als Standard gesetzt sein.<br><br>
+										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br><br>
 										<table cellspacing="0" cellpadding="0" width="580">
 											<tr>
 												<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
 											</tr>
 											<tr>
 												<td class="content" align="center">
-													Hilfe zu den einzelnen Einstellungmöglichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
+													Hilfe zu den einzelnen Einstellungmï¿½lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br>
 													<form action="konfiguration.php" method="post" name="konfig">
 													<input type="hidden" name="update" value="1">
 													<table cellspacing="0" cellpadding="10" width="100%">
@@ -136,9 +136,9 @@ function zeigeKonfigForm()
 															<td><b>Shop URL</b></td><td><input type="text" name="shopurl" size="50" class="konfig" value="'.$einstellungen->shopURL.'"></td>
 														</tr>
 														<tr>
-															<td><b>Standardwährung</b></td><td><select name="waehrung">
+															<td><b>Standardwï¿½rung</b></td><td><select name="waehrung">
 	');
-	$cur_query = xtc_db_query("select * from currencies");
+	$cur_query = xtc_db_query("SELECT * FROM currencies");
 	while ($currency = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$currency->currencies_id.'" ');if ($currency->currencies_id==$einstellungen->currencies_id) echo('selected'); echo('>'.$currency->title.'</option>');
@@ -148,7 +148,7 @@ function zeigeKonfigForm()
 														<tr>
 															<td><b>Standardsprache</b></td><td><select name="sprache">
 	');
-	$cur_query = xtc_db_query("select * from languages");
+	$cur_query = xtc_db_query("SELECT * FROM languages");
 	while ($lang = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$lang->languages_id.'" ');if ($lang->languages_id==$einstellungen->languages_id) echo('selected'); echo('>'.$lang->name.'</option>');
@@ -160,7 +160,7 @@ function zeigeKonfigForm()
 														<tr>
 															<td><b>Standardliefertermin</b></td><td><select name="liefertermin">
 	');
-	$cur_query = xtc_db_query("select * from shipping_status where language_id=".$einstellungen->languages_id);
+	$cur_query = xtc_db_query("SELECT * FROM shipping_status WHERE language_id=".$einstellungen->languages_id);
 	while ($liefer = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$liefer->shipping_status_id.'" ');if ($liefer->shipping_status_id==$einstellungen->shipping_status_id) echo('selected'); echo('>'.$liefer->shipping_status_name.'</option>');
@@ -175,7 +175,7 @@ function zeigeKonfigForm()
 														<tr>
 															<td><b>Standard Steuerzone</b></td><td><select name="steuerzone">
 	');
-	$cur_query = xtc_db_query("select * from geo_zones");
+	$cur_query = xtc_db_query("SELECT * FROM geo_zones");
 	while ($zone = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$zone->geo_zone_id.'" ');if ($zone->geo_zone_id==$einstellungen->tax_zone_id) echo('selected'); echo('>'.$zone->geo_zone_name.'</option>');
@@ -187,7 +187,7 @@ function zeigeKonfigForm()
 														<tr>
 															<td><b>Standard Steuerklasse*</b></td><td><select name="steuerklasse">
 	');
-	$cur_query = xtc_db_query("select * from tax_class");
+	$cur_query = xtc_db_query("SELECT * FROM tax_class");
 	while ($klasse = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$klasse->tax_class_id.'" ');if ($klasse->tax_class_id==$einstellungen->tax_class_id) echo('selected'); echo('>'.$klasse->tax_class_title.'</option>');
@@ -197,18 +197,18 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 														<tr>
-															<td><b>Standard Steuersatzpriorität</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
+															<td><b>Standard Steuersatzprioritï¿½</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
 														</tr>
 														<tr>
-															<td><b>Steuersatz für Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
+															<td><b>Steuersatz fr Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
 														</tr>
 														<tr>
-															<td>Bestellstatusänderungen</td><td>&nbsp;</td>
+															<td>Bestellstatusï¿½derungen</td><td>&nbsp;</td>
 														</tr>
 														<tr>
-															<td><b>Sobald Bestellung erfolgreich in eazySales übernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ändern</option>
+															<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ï¿½dern</option>
 	');
-	$cur_query = xtc_db_query("select * from orders_status where language_id=".$einstellungen->languages_id." order by orders_status_id");
+	$cur_query = xtc_db_query("SELECT * FROM orders_status WHERE language_id=".$einstellungen->languages_id." ORDER BY orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusAbgeholt) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
@@ -218,9 +218,9 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 														<tr>
-															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ändern</option>
+															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ï¿½dern</option>
 	');
-	$cur_query = xtc_db_query("select * from orders_status where language_id=".$einstellungen->languages_id." order by orders_status_id");
+	$cur_query = xtc_db_query("SELECT * FROM orders_status WHERE language_id=".$einstellungen->languages_id." ORDER BY orders_status_id");
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusVersendet) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
@@ -230,12 +230,12 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 													</table><br>
-													eazySales kennt nur die Kundengruppen Endkunde und Händerkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist für die korrekte Preiszuordnung unerlässlich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
+													eazySales kennt nur die Kundengruppen Endkunde und Hï¿½derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerlï¿½slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br>
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td valign="top"><b>eazySales Endkunde</b></td><td>
 	');
-	$cur_query = xtc_db_query("select * from customers_status where language_id=".$einstellungen->languages_id." order by customers_status_id");
+	$cur_query = xtc_db_query("SELECT * FROM customers_status WHERE language_id=".$einstellungen->languages_id." ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
 		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
@@ -245,9 +245,9 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>eazySales Händlerkunde</b></td><td>
+															<td valign="top"><b>eazySales Hï¿½dlerkunde</b></td><td>
 	');
-	$cur_query = xtc_db_query("select * from customers_status where language_id=".$einstellungen->languages_id." order by customers_status_id");
+	$cur_query = xtc_db_query("SELECT * FROM customers_status WHERE language_id=".$einstellungen->languages_id." ORDER BY customers_status_id");
 	while ($grp = mysql_fetch_object($cur_query))
 	{
 		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br>');
@@ -257,13 +257,13 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 													</table><br>
-													Vorlagen für Kategorien und Artikel, die über eazySales eingestellt werden:
+													Vorlagen fr Kategorien und Artikel, die ber eazySales eingestellt werden:
 													<table cellspacing="0" cellpadding="10" width="100%">
 														<tr>
 															<td>Kategorien</td><td>&nbsp;</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>Artikelübersicht in Kategorien</b></td><td><select name="cat_listing">
+															<td valign="top"><b>Artikelbersicht in Kategorien</b></td><td><select name="cat_listing">
 	');
 	if (is_array($product_listing_template_arr))
 	{	
@@ -277,7 +277,7 @@ function zeigeKonfigForm()
 															</td>
 														</tr>
 														<tr>
-															<td valign="top"><b>Kategorieübersicht</b></td><td><select name="cat_template">
+															<td valign="top"><b>Kategoriebersicht</b></td><td><select name="cat_template">
 	');
 	if (is_array($category_listing_template_arr))
 	{	
@@ -384,7 +384,7 @@ function updateKonfig()
 	$statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt=0;
 	
 
-	eS_execute_query("delete from eazysales_einstellungen");
+	eS_execute_query("delete FROM eazysales_einstellungen");
 	eS_execute_query("insert into eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
 }
 
@@ -395,7 +395,7 @@ function getTemplateArray($cur_template, $module)
 	{
 		while  (($file = readdir($dir)) !==false) 
 		{
-			if (is_file( DIR_FS_CATALOG.'templates/'.$cur_template->configuration_value.'/module/'.$module.'/'.$file) and ($file !="index.html"))
+			if (is_file( DIR_FS_CATALOG.'templates/'.$cur_template->configuration_value.'/module/'.$module.'/'.$file) AND ($file !="index.html"))
 			{
 				$files[]=array('id' => $file,'text' => $file);
 			}

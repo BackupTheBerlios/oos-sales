@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: AdminSession.php,v 1.2 2006/07/09 01:48:41 r23 Exp $
+   $Id: AdminSession.php,v 1.3 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -51,7 +51,7 @@ class AdminSession {
 	function read($sessID) {
 	   // fetch session-data
 	   $res = mysql_query("SELECT cSessionData FROM eazysales_adminsession
-	                       WHERE cSessionId = '$sessID'
+	                       WHERE  cSessionId = '$sessID'
 	                       AND nSessionExpires > ".time(),$GLOBALS["DB"]->DB_Connection);
 	   // return data or an empty string at failure
 	   if($row = mysql_fetch_assoc($res))
@@ -63,14 +63,14 @@ class AdminSession {
 	   $newExp = time() + $this->lifeTime;
 	   // is a session with this id in the database?
 	   $res = mysql_query("SELECT * FROM eazysales_adminsession
-	                       WHERE cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
+	                       WHERE  cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
 	   // if yes,
 	   if(mysql_num_rows($res)) {
 	       // ...update session-data
 	       mysql_query("UPDATE eazysales_adminsession
 	                     SET nSessionExpires = '$newExp',
 	                     cSessionData = '$sessData'
-	                     WHERE cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
+	                     WHERE  cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
 	       // if something happened, return true
 	       if(mysql_affected_rows($GLOBALS["DB"]->DB_Connection))
 	           return true;
@@ -95,7 +95,7 @@ class AdminSession {
 	}
 	function destroy($sessID) {
 	   // delete session-data
-	   mysql_query("DELETE FROM eazysales_adminsession WHERE cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
+	   mysql_query("DELETE FROM eazysales_adminsession WHERE  cSessionId = '$sessID'",$GLOBALS["DB"]->DB_Connection);
 	   // if session was deleted, return true,
 	   if(mysql_affected_rows($GLOBALS["DB"]->DB_Connection))
 	       return true;
@@ -104,7 +104,7 @@ class AdminSession {
 	}
 	function gc($sessMaxLifeTime) {
 	   // delete old sessions
-	   mysql_query("DELETE FROM eazysales_adminsession WHERE nSessionExpires < ".time(),$GLOBALS["DB"]->DB_Connection);
+	   mysql_query("DELETE FROM eazysales_adminsession WHERE  nSessionExpires < ".time(),$GLOBALS["DB"]->DB_Connection);
 	   // return affected rows
 	   return mysql_affected_rows($GLOBALS["DB"]->DB_Connection);
 	}

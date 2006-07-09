@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setArtikelBild.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: setArtikelBild.php,v 1.4 2006/07/09 02:07:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -57,7 +57,7 @@ if (auth())
 			$ratio = $width / $height;
 			
 			//thumbnail
-			$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"PRODUCT_IMAGE_THUMBNAIL_WIDTH\"");
+			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_THUMBNAIL_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 120;
 			if ($width_obj->configuration_value>0)
@@ -68,7 +68,7 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_THUMBNAIL_IMAGES.$bildname, 80);
 			
 			//info
-			$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"PRODUCT_IMAGE_INFO_WIDTH\"");
+			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_INFO_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 200;
 			if ($width_obj->configuration_value>0)
@@ -79,7 +79,7 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_INFO_IMAGES.$bildname, 80);
 						
 			//popup
-			$cur_query = xtc_db_query("select configuration_value from configuration where configuration_key=\"PRODUCT_IMAGE_POPUP_WIDTH\"");
+			$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"PRODUCT_IMAGE_POPUP_WIDTH\"");
 			$width_obj = mysql_fetch_object($cur_query);
 			$new_width = 300;
 			if ($width_obj->configuration_value>0)
@@ -90,7 +90,7 @@ if (auth())
 			imagejpeg($image_p, DIR_FS_CATALOG_POPUP_IMAGES.$bildname, 80);
 		
 			//updaten
-			eS_execute_query("update products set products_image=\"$bildname\" where products_id=".$products_id);
+			eS_execute_query("update products set products_image=\"$bildname\" WHERE products_id=".$products_id);
 
 		}
 	}
