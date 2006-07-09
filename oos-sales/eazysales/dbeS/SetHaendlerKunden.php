@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetHaendlerKunden.php,v 1.4 2006/07/09 03:29:07 r23 Exp $
+   $Id: SetHaendlerKunden.php,v 1.5 2006/07/09 14:28:10 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,22 +34,20 @@
  * @version v1.0 / 16.06.06
 */
 
-require 'syncinclude.php';
+  require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
-	if (intval($_POST["action"]) == 2 && intval($_POST['Key']))
-	{
-		$return = 0;
-	}
+  $return = 3;
 
-	if (intval($_POST["action"]) == 4 && intval($_POST['Key']))
-	{
-		$return = 0;
-	}
-}
+  if (auth()){
+    if (intval($_POST["action"]) == 2 && intval($_POST['Key'])) {
+      $return = 0;
+    }
 
-echo($return);
-//logge($return);
+    if (intval($_POST["action"]) == 4 && intval($_POST['Key'])) {
+      $return = 0;
+    }
+  }
+
+  echo($return);
+  //logge($return);
 ?>
