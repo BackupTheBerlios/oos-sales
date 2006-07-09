@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: admininclude.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
+   $Id: admininclude.php,v 1.5 2006/07/09 02:39:06 r23 Exp $
 
    wawi - osis online shop
 
@@ -42,15 +42,25 @@ if (file_exists(DOCROOT_XTC_PATH.'includes/local/configure.php'))
 	include(DOCROOT_XTC_PATH.'includes/local/configure.php');
 // include server parameters
 require_once (DOCROOT_XTC_PATH.'includes/configure.php');
-require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
-require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! �erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
-function xtc_db_query($query)
-{	
-	return xtc_db_query($query);
-}
+// require  the database functions
+  $adodb_logsqltable = $oostable['adodb_logsql'];
+  if (!defined('ADODB_LOGSQL_TABLE')) {
+    define('ADODB_LOGSQL_TABLE', $adodb_logsqltable);
+  }
+  require  OOS_ADODB . 'adodb-errorhandler.inc.php';
+  require  OOS_ADODB . 'adodb.inc.php';
+  require  OOS_FUNCTIONS . 'function_db.php';
+
+// make a connection to the database... now 
+  if (!oosDBInit()) {
+    die('Unable to connect to database server!');
+  }
+
+  $dbconn =& oosDBGetConn();
+  oosDB_importTables($oostable);
+
 
 /**
  * real mysql escape mysql escape

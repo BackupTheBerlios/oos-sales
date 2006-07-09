@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.4 2006/07/09 02:20:22 r23 Exp $
+   $Id: konfiguration.php,v 1.5 2006/07/09 02:39:06 r23 Exp $
 
    wawi - osis online shop
 
@@ -53,6 +53,11 @@ zeigeFuss();
 
 function zeigeKonfigForm()
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	//hole einstellungen
 	$cur_query = xtc_db_query("SELECT * FROM eazysales_einstellungen");
 	$einstellungen = mysql_fetch_object($cur_query);	
@@ -359,6 +364,10 @@ function zeigeKonfigForm()
 
 function updateKonfig()
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$mappingEndkunde="";
 	$mappingHaendlerkunde="";
 	if (is_array($_POST['endkunde']))

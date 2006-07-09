@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
+   $Id: syncinclude.php,v 1.6 2006/07/09 02:39:06 r23 Exp $
 
    wawi - osis online shop
 
@@ -38,12 +38,27 @@ require '../paths.php';
 //get DB Connecion
 // include server parameters
 require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
-require_once (DIR_FS_INC . 'xtc_db_connect.inc.php');
-require_once (DIR_FS_INC . 'xtc_db_query.inc.php');
 
-xtc_db_connect() or die('Kann Datenbankverbindung nicht herstellen! �erprfen Sie den DOCROOT_XTC_PATH im eazySales_Connector/paths.php Script Zeile 15. Der Pfad muss entweder relativ oder absolut auf das Rootverzeichnis Ihres Shops zeigen (meist <i>xtcommerce</i>).');
 
 define ('ES_ENABLE_LOGGING',0);
+
+// require  the database functions
+  $adodb_logsqltable = $oostable['adodb_logsql'];
+  if (!defined('ADODB_LOGSQL_TABLE')) {
+    define('ADODB_LOGSQL_TABLE', $adodb_logsqltable);
+  }
+  require  OOS_ADODB . 'adodb-errorhandler.inc.php';
+  require  OOS_ADODB . 'adodb.inc.php';
+  require  OOS_FUNCTIONS . 'function_db.php';
+
+// make a connection to the database... now
+  if (!oosDBInit()) {
+    die('Unable to connect to database server!');
+  }
+
+  $dbconn =& oosDBGetConn();
+  oosDB_importTables($oostable);
+
 
 /**
  * Authentifiziert die Anfrage
@@ -127,6 +142,10 @@ function unhtmlentities($string)
 
 function setMappingArtikel ($eS_key, $mein_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$eS_key = intval($eS_key);
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key)
@@ -145,6 +164,10 @@ function setMappingArtikel ($eS_key, $mein_key)
 
 function setMappingKategorie ($eS_key, $mein_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$eS_key = intval($eS_key);
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key)
@@ -163,6 +186,10 @@ function setMappingKategorie ($eS_key, $mein_key)
 
 function setMappingEigenschaft ($eS_key, $mein_key, $kArtikel)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$eS_key = intval($eS_key);
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key && $kArtikel)
@@ -174,6 +201,10 @@ function setMappingEigenschaft ($eS_key, $mein_key, $kArtikel)
 
 function setMappingBestellPos ($mein_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$mein_key = intval($mein_key);
 	xtc_db_query("DELETE FROM eazysales_mbestellpos WHERE orders_products_id=".$mein_key);
 	xtc_db_query("INSERT INTO eazysales_mbestellpos (orders_products_id) values ($mein_key)");
@@ -184,6 +215,10 @@ function setMappingBestellPos ($mein_key)
 
 function setMappingEigenschaftsWert ($eS_key, $mein_key, $kArtikel)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$eS_key = intval($eS_key);
 	$mein_key = intval($mein_key);
 	if ($mein_key && $eS_key)
@@ -206,6 +241,10 @@ function setMappingEigenschaftsWert ($eS_key, $mein_key, $kArtikel)
 
 function getFremdArtikel($eS_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT products_id FROM eazysales_martikel WHERE kArtikel=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_id;
@@ -213,6 +252,10 @@ function getFremdArtikel($eS_key)
 
 function getEsArtikel($mein_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT kArtikel FROM eazysales_martikel WHERE products_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kArtikel;
@@ -220,6 +263,10 @@ function getEsArtikel($mein_key)
 
 function getFremdKategorie($eS_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT categories_id FROM eazysales_mkategorie WHERE kKategorie=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->categories_id;
@@ -227,6 +274,10 @@ function getFremdKategorie($eS_key)
 
 function getEsKategorie($mein_key)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT kKategorie FROM eazysales_mkategorie WHERE categories_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kKategorie;
@@ -234,6 +285,11 @@ function getEsKategorie($mein_key)
 
 function getFremdBestellPos($eS_key)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT orders_products_id FROM eazysales_mbestellpos WHERE kBestellPos=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->orders_products_id;
@@ -241,6 +297,11 @@ function getFremdBestellPos($eS_key)
 
 function getEsEigenschaft($mein_key, $kArtikel)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT kEigenschaft FROM eazysales_mvariation WHERE kArtikel=".$kArtikel." AND products_options_id=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kEigenschaft;
@@ -248,6 +309,11 @@ function getEsEigenschaft($mein_key, $kArtikel)
 
 function getFremdEigenschaft($eS_key)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT products_options_id FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_options_id;
@@ -255,6 +321,11 @@ function getFremdEigenschaft($eS_key)
 
 function getEigenschaftsArtikel($eS_key)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT kArtikel FROM eazysales_mvariation WHERE kEigenschaft=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kArtikel;
@@ -262,6 +333,11 @@ function getEigenschaftsArtikel($eS_key)
 
 function getFremdEigenschaftsWert($eS_key)
 {
+
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT products_attributes_id FROM eazysales_mvariationswert WHERE kEigenschaftsWert=".$eS_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->products_attributes_id;
@@ -269,6 +345,10 @@ function getFremdEigenschaftsWert($eS_key)
 
 function getEsEigenschaftsWert($mein_key, $kArtikel)
 {
+    // Get database information
+    $dbconn =& oosDBGetConn();
+    $oostable =& oosDBGetTables();
+
 	$cur_query = xtc_db_query("SELECT kEigenschaftsWert FROM eazysales_mvariationswert WHERE kArtikel=$kArtikel AND products_attributes_id=".$mein_key);
 	$prod = mysql_fetch_object($cur_query);
 	return $prod->kEigenschaftsWert;
