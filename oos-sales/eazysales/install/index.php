@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.10 2006/07/09 17:26:19 r23 Exp $
+   $Id: index.php,v 1.11 2006/07/09 22:44:34 r23 Exp $
 
    wawi - osis online shop
 
@@ -220,7 +220,7 @@ function installSchritt1() {
 							<table cellspacing="0" cellpadding="0" width="96%">
 								<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
 								<tr><td class="content" ><br>
-										Dieses Modul erlaubt es, Ihren xt:Commerce Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br><br>
+										Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br><br>
 										Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br><br>
 										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprche fr evtl. entstandene Sch�en werden nicht bernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br><br>
 
