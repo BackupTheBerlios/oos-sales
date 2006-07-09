@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.5 2006/07/09 02:39:06 r23 Exp $
+   $Id: konfiguration.php,v 1.6 2006/07/09 02:40:30 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,7 @@
  * @version v1.0 / 14.06.06
 */
 
-require_once("admininclude.php");
+require 'admininclude.php';
 require_once("adminTemplates.php");
 
 $adminsession = new AdminSession();
