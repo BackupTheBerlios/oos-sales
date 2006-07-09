@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setKategorieBild.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
+   $Id: setKategorieBild.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
 
    wawi - osis online shop
 
@@ -52,7 +52,8 @@ if (auth())
 		xtc_db_query("update categories set categories_image=\"$bildname\" WHERE categories_id=".$categories_id);
 	}
 }
-mysql_close();
+
+
 echo($return);
 logge($return);
 

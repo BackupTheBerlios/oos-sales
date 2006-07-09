@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: mytest.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
+   $Id: mytest.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
 
    wawi - osis online shop
 
@@ -47,7 +47,7 @@ $loginDaten = mysql_fetch_object($cur_query);
 if ($cName == $loginDaten->cName && $cPass == $loginDaten->cPass)
 	$return=0;
 
-mysql_close();
+
 echo($return.";XTC");
 //echo($return);
 logge($return);

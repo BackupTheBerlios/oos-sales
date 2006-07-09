@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellungPos.php,v 1.5 2006/07/09 02:20:22 r23 Exp $
+   $Id: GetBestellungPos.php,v 1.6 2006/07/09 03:29:07 r23 Exp $
 
    wawi - osis online shop
 
@@ -86,7 +86,8 @@ if (auth())
 		}
 	}
 }
-mysql_close();
+
+
 echo($return);
 logge($return);
 ?>

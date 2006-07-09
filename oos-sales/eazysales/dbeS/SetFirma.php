@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetFirma.php,v 1.3 2006/07/09 02:00:18 r23 Exp $
+   $Id: SetFirma.php,v 1.4 2006/07/09 03:29:07 r23 Exp $
 
    wawi - osis online shop
 
@@ -47,7 +47,6 @@ if (auth())
 		$return=5;
 }
 
-mysql_close();
 echo($return);
 //logge($return);
 ?>
