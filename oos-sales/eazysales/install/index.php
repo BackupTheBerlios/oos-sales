@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.12 2006/07/09 22:46:16 r23 Exp $
+   $Id: index.php,v 1.13 2006/07/10 03:00:02 r23 Exp $
 
    wawi - osis online shop
 
@@ -243,8 +243,9 @@ function installSchritt1() {
 															<td><b>Standardw�rung</b></td><td><select name="waehrung">
 	');
 
-    $geo_zonestable = $oostable['geo_zones'];
-	$cur_query = xtc_db_query("SELECT * FROM currencies");
+    $currenciestable = $oostable['currencies'];
+	$cur_query = xtc_db_query("SELECT *
+                                   FROM $currenciestable");
 	while ($currency = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$currency->currencies_id.'" ');if ($currency->currencies_id==$einstellungen->currencies_id) echo('selected'); echo('>'.$currency->title.'</option>');
@@ -254,7 +255,10 @@ function installSchritt1() {
 														<tr>
 															<td><b>Standardsprache</b></td><td><select name="sprache">
 	');
-	$cur_query = xtc_db_query("SELECT * FROM languages");
+
+    $languagestable = $oostable['languages'];
+    $query = "SELECT languages_id, name, iso_639_2, iso_639_1, status
+              FROM $languagestable";
 	while ($lang = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$lang->languages_id.'" ');if ($lang->languages_id==$einstellungen->languages_id) echo('selected'); echo('>'.$lang->name.'</option>');
@@ -283,8 +287,8 @@ function installSchritt1() {
 	');
 
     $geo_zonestable = $oostable['geo_zones'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $geo_zonestable");
+    $query ="SELECT geo_zone_id, geo_zone_name, geo_zone_description
+             FROM $geo_zonestable";
 	while ($zone = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$zone->geo_zone_id.'" ');if ($zone->geo_zone_id==$einstellungen->tax_zone_id) echo('selected'); echo('>'.$zone->geo_zone_name.'</option>');
@@ -298,8 +302,8 @@ function installSchritt1() {
 	');
 
     $tax_classtable = $oostable['tax_class'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $tax_classtable");
+    $query = "SELECT tax_class_id, tax_class_title, tax_class_description
+              FROM $tax_classtable";
 	while ($klasse = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$klasse->tax_class_id.'" ');if ($klasse->tax_class_id==$einstellungen->tax_class_id) echo('selected'); echo('>'.$klasse->tax_class_title.'</option>');
@@ -322,10 +326,10 @@ function installSchritt1() {
 	');
 
     $orders_statustable = $oostable['orders_status'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $orders_statustable
-                                   WHERE language_id=".$einstellungen->languages_id."
-                                   ORDER BY orders_status_id");
+    $query = "SELECT orders_status_id, orders_status_name
+              FROM $orders_statustable
+              WHERE orders_languages_id = ".$einstellungen->languages_id."
+              ORDER BY orders_status_id";
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusAbgeholt) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
@@ -339,10 +343,10 @@ function installSchritt1() {
 	');
 
     $orders_statustable = $oostable['orders_status'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $orders_statustable
-                                   WHERE language_id=".$einstellungen->languages_id."
-                                   ORDER BY orders_status_id");
+    $query = "SELECT orders_status_id, orders_status_name
+              FROM $orders_statustable
+              WHERE language_id=".$einstellungen->languages_id."
+              ORDER BY orders_status_id";
 	while ($status = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusVersendet) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
