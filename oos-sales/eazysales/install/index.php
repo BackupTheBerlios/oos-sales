@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.18 2006/07/10 15:42:51 r23 Exp $
+   $Id: index.php,v 1.19 2006/07/10 17:48:52 r23 Exp $
 
    wawi - osis online shop
 
@@ -282,7 +282,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       ';
 
       $tax_classtable = $oostable['tax_class'];
-      $query = "SELECT tax_class_id, tax_class_title, tax_class_description
+      $query = "SELECT tax_class_id, tax_class_title
                 FROM $tax_classtable";
       $result =& $dbconn->Execute($query);
 
@@ -312,7 +312,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       $orders_statustable = $oostable['orders_status'];
       $query = "SELECT orders_status_id, orders_status_name
                 FROM $orders_statustable
-                WHERE orders_languages_id = ".$einstellungen->languages_id."
+                WHERE orders_languages_id = '" . $einstellungen->languages_id . "'
                 ORDER BY orders_status_id";
       $result =& $dbconn->Execute($query);
 
@@ -333,8 +333,10 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       $orders_statustable = $oostable['orders_status'];
       $query = "SELECT orders_status_id, orders_status_name
                 FROM $orders_statustable
-                WHERE language_id=".$einstellungen->languages_id."
+                WHERE orders_languages_id = '" . $einstellungen->languages_id . "'
                 ORDER BY orders_status_id";
+      $result =& $dbconn->Execute($query);
+
       while ($status = $result->fields) {
         echo '<option value="' . $status['orders_status_id'] . '" '; if ($status['orders_status_id'] == $einstellungen->StatusVersendet) echo ' selected="selected"'; echo '>' . $status['orders_status_name'] . '</option>';
 
@@ -354,38 +356,49 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 					<td>
       ';
 
-    $customers_statusstable = $oostable['customers_status'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $customers_statusstable
-                                   WHERE language_id=".$einstellungen->languages_id."
-                                   ORDER BY customers_status_id");
-	while ($grp = mysql_fetch_object($cur_query))
-	{
-		echo('<input type="checkbox" name="endkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingEndkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
-	}
-															
-	echo('
+      $customers_statusstable = $oostable['customers_status'];
+      $query = "SELECT customers_status_id, customers_status_name
+                FROM $customers_statusstable
+                WHERE customers_status_languages_id = '" . $einstellungen->languages_id . "'
+                ORDER BY customers_status_id";
+      $result =& $dbconn->Execute($query);
+
+      while ($grp = $result->fields) {
+        echo '<input type="checkbox" name="endkunde[]" value="' . $grp['customers_status_id'] . '"'; if (in_array( $grp['customers_status_id'], $mappingEndkunde_arr)) echo' checked="checked"'; echo'> ' . $grp['customers_status_name'] . '<br />';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '
 					</td>
 				</tr>
 				<tr>
 					<td valign="top"><b>eazySales H&auml;dlerkunde</b></td>
 					<td>
-	');
+      ';
 
-    $customers_statusstable = $oostable['customers_status'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $customers_statusstable
-                                   WHERE language_id=".$einstellungen->languages_id."
-                                   ORDER BY customers_status_id");
-	while ($grp = mysql_fetch_object($cur_query))
-	{
-		echo('<input type="checkbox" name="haendlerkunde[]" value="'.$grp->customers_status_id.'"');if (in_array($grp->customers_status_id,$mappingHaendlerkunde_arr)) echo('checked'); echo('> '.$grp->customers_status_name.'<br />');
-	}
-															
-	echo('
+      $customers_statusstable = $oostable['customers_status'];
+      $query = "SELECT customers_status_id, customers_status_name
+                FROM $customers_statusstable
+                WHERE customers_status_languages_id = '" . $einstellungen->languages_id . "'
+                ORDER BY customers_status_id";
+      $result =& $dbconn->Execute($query);
+
+      while ($grp = $result->fields) {
+        echo '<input type="checkbox" name="haendlerkunde[]" value="' . $grp['customers_status_id'] . '"'; if (in_array( $grp['customers_status_id'], $mappingEndkunde_arr)) echo' checked="checked"'; echo'> ' . $grp['customers_status_name'] . '<br />';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '
 					</td>
 				</tr>
 				</table><br />
+
 				Vorlagen f&uuml;r Kategorien und Artikel, die &uuml;ber eazySales eingestellt werden:
 				<table cellspacing="0" cellpadding="10" width="100%">
 				<tr>
@@ -393,122 +406,114 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 				</tr>
 				<tr>
 					<td valign="top"><b>Artikel&uuml;bersicht in Kategorien</b></td><td><select name="cat_listing">
-	');
-	if (is_array($product_listing_template_arr))
-	{	
-		foreach ($product_listing_template_arr as $template)
-		{
-			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->cat_listing_template) echo('selected'); echo('>'.$template['text'].'</option>');
-		}
-	}
-	echo('</select></td>
+      ';
+
+
+      if (is_array($product_listing_template_arr)) {
+        foreach ($product_listing_template_arr as $template) {
+          echo '<option value="'.$template['id'].'" '; if ($template['id'] == $einstellungen->cat_listing_template) echo ' selected="selected"'; echo '>'.$template['text'].'</option>';
+        }
+      }
+      echo '</select></td>
 				</tr>
 				<tr>
 					<td valign="top"><b>Kategorie&uuml;bersicht</b></td><td><select name="cat_template">
-	');
-	if (is_array($category_listing_template_arr))
-	{	
-		foreach ($category_listing_template_arr as $template)
-		{
-			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->cat_category_template) echo('selected'); echo('>'.$template['text'].'</option>');
-		}
-	}
-	echo('</select></td>
+      ';
+
+
+      if (is_array($category_listing_template_arr)) {
+        foreach ($category_listing_template_arr as $template) {
+           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->cat_category_template) echo ' selected="selected"'; echo '>'.$template['text'].'</option>';
+        }
+      }
+      echo '</select></td>
 				</tr>
 				<tr>
 					<td valign="top"><b>Artikelsortierung</b></td><td><select name="cat_sorting">
-	');
-	if (is_array($order_array))
-	{	
-		foreach ($order_array as $sortierung)
-		{
-			echo('<option value="'.$sortierung['id'].'" ');if ($sortierung['id']==$einstellungen->cat_sorting) echo('selected'); echo('>'.$sortierung['text'].'</option>');
-		}
-	}
-	echo('</select> <select name="cat_sorting2">
-	');
+      ';
 
-	if (is_array($order_array2))
-	{
-		foreach ($order_array2 as $sortierung)
-		{
-			echo('<option value="'.$sortierung['id'].'" ');if ($sortierung['id']==$einstellungen->cat_sorting2) echo('selected'); echo('>'.$sortierung['text'].'</option>');
-		}
-	}
-	echo('
-															</select>
-															</td>
-														</tr>
-														<tr>
-															<td>Artikel</td><td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>Artikeldetails</b></td><td><select name="product_template">
-	');
-	if (is_array($productinfo_template_arr))
-	{	
-		foreach ($productinfo_template_arr as $template)
-		{
-			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->prod_product_template) echo('selected'); echo('>'.$template['text'].'</option>');
-		}
-	}
-	echo('
-															</select>	
-															</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>Artikeloptionen</b></td><td><select name="option_template">
-	');
-	if (is_array($productoptions_template_arr))
-	{	
-		foreach ($productoptions_template_arr as $template)
-		{
-			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->prod_options_template) echo('selected'); echo('>'.$template['text'].'</option>');
-		}
-	}
-	echo('
-															</select>	
-															</td>
-														</tr>
-														<tr>
-															<td colspan="2">
-															M�hten Sie alle bisher eingegangenen Bestellungen samt Kundenadressen beim ersten Internetabgleich in eazySales erhalten? Falls nein, werden nur alle zuknftigen Bestellungen nach eazySales bertragen. <input type="radio" name="altebestellungen" value="1" checked>Ja / <input type="radio" name="altebestellungen" value="2">Nein
-															
-															</td>
-														</tr>
-													</table><br />
-												</td>
-											</tr>
-										</table><br />
-										<table cellspacing="0" cellpadding="0" width="580">
-											<tr>
-												<td class="unter_content_header">&nbsp;<b>Synchronsations - Benutzerdaten</b></td>
-											</tr>
-											<tr>
-												<td class="content">													
-													Fr die Synchronisation zwischen eazySales und diesem wird ein Synchronisationsbenutzer ben�igt. Bitte <b>notieren Sie sich</b> unbedingt <b>diese Angaben</b> und setzen sie einen starken kryptischen Benutzernamen und Passwort - oder bernehmen Sie die zuf�lig generierten Vorgaben. Diese Angaben werden einmalig in den eazySales Einstellungen eingetragen.
-													<br /><br /><br />
-													<center>
-													<table cellspacing="0" cellpadding="10" width="70%" style="border-width:1px;border-color:#222222;border-style:solid;">
-													<tr>
-														<td><b>Sync-Benutzername</b></td><td><input type="text" name="syncuser" size="20" class="login" value="'.$syncuser.'"></td>
-													</tr>
-													<tr>
-														<td><b>Sync-Passwort</b></td><td><input type="text" name="syncpass" size="20" class="login" value="'.$syncpass.'"></td>
-													</tr>
-													</table>
-													<br /><br />
-													'.$hinweis.'
-													<input type="submit" value="Installation starten">
-													</form>
-													</center>
-												</td>
-											</tr>
-										</table>
-								</td></tr>
-							</table><br />
-						</td>
-	');
+      if (is_array($order_array)) {
+        foreach ($order_array as $sortierung) {
+           echo '<option value="'.$sortierung['id'].'" '; if ($sortierung['id']==$einstellungen->cat_sorting) echo ' selected="selected"'; echo '>'.$sortierung['text'].'</option>';
+        }
+      }
+      echo '</select> <select name="cat_sorting2">';
+
+      if (is_array($order_array2)) {
+        foreach ($order_array2 as $sortierung) {
+           echo '<option value="'.$sortierung['id'].'" '; if ($sortierung['id']==$einstellungen->cat_sorting2) echo ' selected="selected"'; echo '>'.$sortierung['text'].'</option>';
+        }
+      }
+      echo '</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Artikel</td><td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td valign="top"><b>Artikeldetails</b></td><td><select name="product_template">
+      ';
+
+
+      if (is_array($productinfo_template_arr)) {
+        foreach ($productinfo_template_arr as $template) {
+           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->prod_product_template) echo ' selected="selected"'; echo('>'.$template['text'].'</option>');
+        }
+      }
+      echo '</select>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><b>Artikeloptionen</b></td><td><select name="option_template">
+      ';
+
+      if (is_array($productoptions_template_arr)) {
+        foreach ($productoptions_template_arr as $template) {
+           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->prod_options_template) echo ' selected="selected"'; echo('>'.$template['text'].'</option>');
+        }
+      }
+      echo '</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						M&ouml;chten Sie alle bisher eingegangenen Bestellungen samt Kundenadressen beim ersten Internetabgleich in eazySales erhalten? Falls nein, werden nur alle zuk&uuml;nftigen Bestellungen nach eazySales &uuml;bertragen.<br />
+                                                <input type="radio" name="altebestellungen" value="1" checked="checked">Ja / <input type="radio" name="altebestellungen" value="2">Nein
+					</td>
+				</tr>
+				</table><br />
+				</td>
+			</tr>
+			</table><br />
+			<table cellspacing="0" cellpadding="0" width="580">
+			<tr>
+				<td class="unter_content_header">&nbsp;<b>Synchronsations - Benutzerdaten</b></td>
+			</tr>
+			<tr>
+				<td class="content">
+					F&uuml;r die Synchronisation zwischen eazySales und Iheem OOS [OSIS Online Shop]  wird ein Synchronisationsbenutzer ben&ouml;tigt. Bitte <b>notieren Sie sich</b> unbedingt <b>diese Angaben</b> und setzen sie einen starken kryptischen Benutzernamen und Passwort - oder &uuml;bernehmen Sie die zuf&auml;llig generierten Vorgaben. Diese Angaben werden einmalig in den eazySales Einstellungen eingetragen.
+					<br /><br /><br />
+					<center>
+						<table cellspacing="0" cellpadding="10" width="70%" style="border-width:1px;border-color:#222222;border-style:solid;">
+						<tr>
+							<td><b>Sync-Benutzername</b></td><td><input type="text" name="syncuser" size="20" class="login" value="'.$syncuser.'"></td>
+						</tr>
+						<tr>
+							<td><b>Sync-Passwort</b></td><td><input type="text" name="syncpass" size="20" class="login" value="'.$syncpass.'"></td>
+						</tr>
+						</table>
+						<br /><br />
+						'.$hinweis.'
+						<input type="submit" value="Installation starten">
+						</form>
+					</center>
+				</td>
+			</tr>
+			</table>
+			</td></tr>
+		</table><br />
+	</td>
+      ';
 }
 
 function schritt1EingabenVollstaendig()
@@ -572,7 +577,7 @@ function installiere()
 
 	if (strlen($hinweis)>0)
 	{
-		echo('
+	      echo '
 							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 								<table cellspacing="0" cellpadding="0" width="96%">
 									<tr><td class="content_header" align="center"><h3>eazySales Connector Datenbankeinrichtung fehlgeschlagen</h3></td></tr>
@@ -590,13 +595,13 @@ function installiere()
 									</td></tr>
 								</table><br />
 							</td>
-		');
+	      ';
 	}
 	else
 	{
 		//hole webserver
 		$url= "http://".$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
-		echo('
+	      echo '
 							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 								<table cellspacing="0" cellpadding="0" width="96%">
 									<tr><td class="content_header" align="center"><h3>eazySales Connector Installation abgeschlossen</h3></td></tr>
@@ -625,7 +630,7 @@ function installiere()
 									</td></tr>
 								</table><br />
 							</td>
-		');
+	      ';
 	}
 }
 
