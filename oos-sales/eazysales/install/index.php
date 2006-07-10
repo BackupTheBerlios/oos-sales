@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.14 2006/07/10 03:09:29 r23 Exp $
+   $Id: index.php,v 1.15 2006/07/10 03:31:55 r23 Exp $
 
    wawi - osis online shop
 
@@ -126,24 +126,22 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
     return $errors;
   }
 
-function installSchritt1() {
+
+  function installSchritt1() {
 
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	$order_array = array(array('id' => 'p.products_price','text'=>'Artikelpreis'),
-				array('id' => 'pd.products_name','text'=>'Artikelname'),
-				array('id' => 'p.products_ordered','text'=>'Bestellte Artikel'),
-				array('id' => 'p.products_sort','text'=>'Reihung'),
-				array('id' => 'p.products_weight','text'=>'Gewicht'),
-				array('id' => 'p.products_quantity','text'=>'Lagerbestand'));
-				
-	$order_array2=array(array('id' => 'ASC','text'=>'Aufsteigend'),
-				array('id' => 'DESC','text'=>'Absteigend'));
-				
-	//Templatesachen fr Produkte
+    $order_array = array(array('id' => 'p.products_price','text'=>'Artikelpreis'),
+                         array('id' => 'pd.products_name','text'=>'Artikelname'),
+                         array('id' => 'p.products_ordered','text'=>'Bestellte Artikel'),
+                         array('id' => 'p.products_sort','text'=>'Reihung'),
+                         array('id' => 'p.products_weight','text'=>'Gewicht'),
+                         array('id' => 'p.products_quantity','text'=>'Lagerbestand'));
 
+    $order_array2 = array(array('id' => 'ASC','text'=>'Aufsteigend'),
+                          array('id' => 'DESC','text'=>'Absteigend'));
 
     //defaultwerte setzen
     if (!$einstellungen->shopURL) $einstellungen->shopURL = OOS_SHOP_SERVER . OOS_SHOP;
@@ -152,43 +150,34 @@ function installSchritt1() {
 
     if (!$einstellungen->languages_id) {
       $configurationtable = $oostable['configuration'];
-		$cur_query = xtc_db_query("SELECT configuration_value
-                                           FROM $configurationtable
-                                           WHERE configuration_key=\"DEFAULT_LANGUAGE\"");
-      $def_lang = mysql_fetch_object($cur_query);
+      $query = "SELECT configuration_value
+                FROM $configurationtable
+                WHERE configuration_key = 'DEFAULT_LANGUAGE'";
+      $def_lang = $dbconn->GetOne($query);
 
-      if ($def_lang->configuration_value) {
-        $languagestable = $oostable['languages'];
-			$cur_query = xtc_db_query("SELECT languages_id
-                                                   FROM $languagestable
-                                                   WHERE code=\"".$def_lang->configuration_value."\"");
-			$langID = mysql_fetch_object($cur_query);
-			$einstellungen->languages_id = $langID->languages_id;
-      } else {
-	//erstbeste Lang
-        $languagestable = $oostable['languages'];
-			$cur_query = xtc_db_query("SELECT languages_id
-                                                   FROM $languagestable");
-			$langID = mysql_fetch_object($cur_query);
-			$einstellungen->languages_id = $langID->languages_id;
-      }
+      $languagestable = $oostable['languages'];
+      $query = "SELECT languages_id
+                FROM $languagestable
+                WHERE iso_639_2 = '" . $def_lang . "'";
+      $langID = $dbconn->GetOne($query);
+      $einstellungen->languages_id = $langID;
     }
 
 
     if (!$einstellungen->mappingEndkunde) {
       $configurationtable = $oostable['configuration'];
-		$cur_query = xtc_db_query("SELECT configuration_value
-                                           FROM $configurationtable
-                                           WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID\"");
-		$def_userstatus = mysql_fetch_object($cur_query);
-		$einstellungen->mappingEndkunde=$def_userstatus->configuration_value;
+      $query = "SELECT configuration_value
+                FROM $configurationtable
+                WHERE configuration_key = 'DEFAULT_CUSTOMERS_STATUS_ID'";
+      $def_userstatus = $dbconn->GetOne($query);
+      $einstellungen->mappingEndkunde = $def_userstatus;
 
       $configurationtable = $oostable['configuration'];
-		$cur_query = xtc_db_query("SELECT configuration_value
-                                           FROM $configurationtable
-                                           WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_GUEST\"");
-		$def_userstatus_guest = mysql_fetch_object($cur_query);		
-		$einstellungen->mappingEndkunde.=";".$def_userstatus_guest->configuration_value;
+      $cur_query = "SELECT configuration_value
+                    FROM $configurationtable
+                    WHERE configuration_key = 'DEFAULT_CUSTOMERS_STATUS_ID_GUEST'";
+      $def_userstatus_guest = $dbconn->GetOne($query);
+      $einstellungen->mappingEndkunde .= ';' . $def_userstatus_guest;
     }
 
     $mappingEndkunde_arr = explode (";",$einstellungen->mappingEndkunde);
