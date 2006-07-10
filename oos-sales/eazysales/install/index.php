@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.13 2006/07/10 03:00:02 r23 Exp $
+   $Id: index.php,v 1.14 2006/07/10 03:09:29 r23 Exp $
 
    wawi - osis online shop
 
@@ -132,18 +132,6 @@ function installSchritt1() {
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-    $configurationtable = $oostable['configuration'];
-	$cur_query = xtc_db_query("SELECT configuration_value
-                                   FROM $configurationtable
-                                   WHERE configuration_key=\"CURRENT_TEMPLATE\"");
-	$cur_template = mysql_fetch_object($cur_query);
-	
-	//Templategeschichten
-	$product_listing_template_arr = getTemplateArray($cur_template, "product_listing");
-	$category_listing_template_arr = getTemplateArray($cur_template, "categorie_listing");
-	$productinfo_template_arr = getTemplateArray($cur_template, "product_info");
-	$productoptions_template_arr = getTemplateArray($cur_template, "product_options");
-	
 	$order_array = array(array('id' => 'p.products_price','text'=>'Artikelpreis'),
 				array('id' => 'pd.products_name','text'=>'Artikelname'),
 				array('id' => 'p.products_ordered','text'=>'Bestellte Artikel'),
@@ -244,8 +232,8 @@ function installSchritt1() {
 	');
 
     $currenciestable = $oostable['currencies'];
-	$cur_query = xtc_db_query("SELECT *
-                                   FROM $currenciestable");
+    $query = "SELECT currencies_id, title, code
+              FROM $currenciestable");
 	while ($currency = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$currency->currencies_id.'" ');if ($currency->currencies_id==$einstellungen->currencies_id) echo('selected'); echo('>'.$currency->title.'</option>');
@@ -652,23 +640,6 @@ function generatePW($length=8)
 		$dummy[0]= $tmp;
 	}
 	return substr(implode('',$dummy),0,$length);
-}
-
-function getTemplateArray($cur_template, $module)
-{
-	$files=array();
-	if ($dir= opendir(DIR_FS_CATALOG.'templates/'.$cur_template->configuration_value.'/module/'.$module.'/'))
-	{
-		while  (($file = readdir($dir)) !==false) 
-		{
-			if (is_file( DIR_FS_CATALOG.'templates/'.$cur_template->configuration_value.'/module/'.$module.'/'.$file) AND ($file !="index.html"))
-			{
-				$files[]=array('id' => $file,'text' => $file);
-			}
-		}
-		closedir($dir);
-	}	
-	return $files;
 }
 
 ?>
