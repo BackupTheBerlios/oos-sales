@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.15 2006/07/10 03:31:55 r23 Exp $
+   $Id: index.php,v 1.16 2006/07/10 04:24:43 r23 Exp $
 
    wawi - osis online shop
 
@@ -192,45 +192,46 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       sleep(1);
       $syncpass = generatePW(8);
 
-      echo('
-						<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
-							<table cellspacing="0" cellpadding="0" width="96%">
-								<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
-								<tr><td class="content" ><br />
-										Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br /><br />
-										Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br /><br />
-										Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsansprche fr evtl. entstandene Sch�en werden nicht bernommen! Sicher Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br /><br />
 
-										<center>
-										Fr den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, mssen einige Einstellungen als Standard gesetzt sein.<br /><br />
-										<table cellspacing="0" cellpadding="0" width="580">
-											<tr>
-												<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
-											</tr>
-											<tr>
-												<td class="content" align="center">
-													Hilfe zu den einzelnen Einstellungm�lichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br />
-													<form action="index.php" method="post" name="konfig">
-													<input type="hidden" name="install" value="1">
-													<table cellspacing="0" cellpadding="10" width="100%">
-														<tr>
-															<td><b>Shop URL</b></td><td><input type="text" name="shopurl" size="50" class="konfig" value="'.$einstellungen->shopURL.'"></td>
-														</tr>
-														<tr>
-															<td><b>Standardw�rung</b></td><td><select name="waehrung">
+      echo('
+	<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
+	<table cellspacing="0" cellpadding="0" width="96%">
+	<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
+	<tr><td class="content" ><br />
+		Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br /><br />
+		Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br /><br />
+		Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsanspr&uuml;che f&uuml;r evtl. entstandene Sch&auml;den werden nicht &uuml;bernommen! Sichern Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br /><br />
+
+		<center>
+		F&uuml;r den reibungslosen Im-/ und Export von Daten zwischen <a href="http://www.jtl-software.de">eazySales</a> und Ihrem Shop, m&uuml;ssen einige Einstellungen als Standard gesetzt sein.<br /><br />
+		<table cellspacing="0" cellpadding="0" width="580">
+		<tr>
+			<td class="unter_content_header">&nbsp;<b>Einstellungen</b></td>
+		</tr>
+		<tr>
+			<td class="content" align="center">
+				Hilfe zu den einzelnen Einstellungm&ouml;glichkeiten finden Sie unter <a href="http://www.jtl-software.de/eazySales_connector.php" target="_blank">eazySales Connector Konfigurationshilfe</a>.<br />
+				<form action="index.php" method="post" name="konfig">
+				<input type="hidden" name="install" value="1">
+				<table cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td><b>Shop URL</b></td><td><input type="text" name="shopurl" size="50" class="konfig" value="'.$einstellungen->shopURL.'"></td>
+				</tr>
+				<tr>
+					<td><b>Standardw&auml;hrung</b></td><td><select name="waehrung">
 	');
 
     $currenciestable = $oostable['currencies'];
     $query = "SELECT currencies_id, title, code
-              FROM $currenciestable");
+              FROM $currenciestable";
 	while ($currency = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$currency->currencies_id.'" ');if ($currency->currencies_id==$einstellungen->currencies_id) echo('selected'); echo('>'.$currency->title.'</option>');
 	}
 	echo('</select></td>
-														</tr>
-														<tr>
-															<td><b>Standardsprache</b></td><td><select name="sprache">
+				</tr>
+				<tr>
+					<td><b>Standardsprache</b></td><td><select name="sprache">
 	');
 
     $languagestable = $oostable['languages'];
@@ -240,27 +241,23 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	{
 		echo('<option value="'.$lang->languages_id.'" ');if ($lang->languages_id==$einstellungen->languages_id) echo('selected'); echo('>'.$lang->name.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-														<tr>
-															<td><b>Standardliefertermin</b></td><td><select name="liefertermin">
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td><b>Standardliefertermin</b></td><td><select name="liefertermin">
 	');
 	$cur_query = xtc_db_query("SELECT * FROM shipping_status WHERE language_id=".$einstellungen->languages_id);
 	while ($liefer = mysql_fetch_object($cur_query))
 	{
 		echo('<option value="'.$liefer->shipping_status_id.'" ');if ($liefer->shipping_status_id==$einstellungen->shipping_status_id) echo('selected'); echo('>'.$liefer->shipping_status_name.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-														<tr>
-															<td>Umsatzsteuer</td><td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td><b>Standard Steuerzone</b></td><td><select name="steuerzone">
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td>Umsatzsteuer</td><td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><b>Standard Steuerzone</b></td><td><select name="steuerzone">
 	');
 
     $geo_zonestable = $oostable['geo_zones'];
@@ -270,12 +267,10 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	{
 		echo('<option value="'.$zone->geo_zone_id.'" ');if ($zone->geo_zone_id==$einstellungen->tax_zone_id) echo('selected'); echo('>'.$zone->geo_zone_name.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-														<tr>
-															<td><b>Standard Steuerklasse*</b></td><td><select name="steuerklasse">
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td><b>Standard Steuerklasse*</b></td><td><select name="steuerklasse">
 	');
 
     $tax_classtable = $oostable['tax_class'];
@@ -285,21 +280,19 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	{
 		echo('<option value="'.$klasse->tax_class_id.'" ');if ($klasse->tax_class_id==$einstellungen->tax_class_id) echo('selected'); echo('>'.$klasse->tax_class_title.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-														<tr>
-															<td><b>Standard Steuersatzpriorit�</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
-														</tr>
-														<tr>
-															<td><b>Steuersatz fr Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
-														</tr>
-														<tr>
-															<td>Bestellstatus�derungen</td><td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht �dern</option>
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td><b>Standard Steuersatzpriorit�</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
+				</tr>
+				<tr>
+					<td><b>Steuersatz f&uuml;r Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
+				</tr>
+				<tr>
+					<td>Bestellstatus&auml;nderungen</td><td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ändern</option>
 	');
 
     $orders_statustable = $oostable['orders_status'];
@@ -311,12 +304,10 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusAbgeholt) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-														<tr>
-															<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht �dern</option>
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ändern</option>
 	');
 
     $orders_statustable = $oostable['orders_status'];
@@ -328,15 +319,14 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	{
 		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusVersendet) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
 	}
-	echo('
-															</select>														
-															</td>
-														</tr>
-													</table><br />
-													eazySales kennt nur die Kundengruppen Endkunde und H�derkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist fr die korrekte Preiszuordnung unerl�slich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
-													<table cellspacing="0" cellpadding="10" width="100%">
-														<tr>
-															<td valign="top"><b>eazySales Endkunde</b></td><td>
+	echo('</select></td>
+				</tr>
+				</table><br />
+				eazySales kennt nur die Kundengruppen Endkunde und H&auml;dlerkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist f&uuml;r die korrekte Preiszuordnung unerl&auml;sslich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
+				<table cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td valign="top"><b>eazySales Endkunde</b></td>
+					<td>
 	');
 
     $customers_statusstable = $oostable['customers_status'];
@@ -350,10 +340,11 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	}
 															
 	echo('
-															</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>eazySales H�dlerkunde</b></td><td>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><b>eazySales H&auml;dlerkunde</b></td>
+					<td>
 	');
 
     $customers_statusstable = $oostable['customers_status'];
@@ -367,16 +358,16 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 	}
 															
 	echo('
-															</td>
-														</tr>
-													</table><br />
-													Vorlagen fr Kategorien und Artikel, die ber eazySales eingestellt werden:
-													<table cellspacing="0" cellpadding="10" width="100%">
-														<tr>
-															<td>Kategorien</td><td>&nbsp;</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>Artikelbersicht in Kategorien</b></td><td><select name="cat_listing">
+					</td>
+				</tr>
+				</table><br />
+				Vorlagen f&uuml;r Kategorien und Artikel, die &uuml;ber eazySales eingestellt werden:
+				<table cellspacing="0" cellpadding="10" width="100%">
+				<tr>
+					<td>Kategorien</td><td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td valign="top"><b>Artikel&uuml;bersicht in Kategorien</b></td><td><select name="cat_listing">
 	');
 	if (is_array($product_listing_template_arr))
 	{	
@@ -385,12 +376,10 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->cat_listing_template) echo('selected'); echo('>'.$template['text'].'</option>');
 		}
 	}
-	echo('
-															</select>	
-															</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>Kategoriebersicht</b></td><td><select name="cat_template">
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td valign="top"><b>Kategorie&uuml;bersicht</b></td><td><select name="cat_template">
 	');
 	if (is_array($category_listing_template_arr))
 	{	
@@ -399,12 +388,10 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 			echo('<option value="'.$template['id'].'" ');if ($template['id']==$einstellungen->cat_category_template) echo('selected'); echo('>'.$template['text'].'</option>');
 		}
 	}
-	echo('
-															</select>	
-															</td>
-														</tr>
-														<tr>
-															<td valign="top"><b>Artikelsortierung</b></td><td><select name="cat_sorting">
+	echo('</select></td>
+				</tr>
+				<tr>
+					<td valign="top"><b>Artikelsortierung</b></td><td><select name="cat_sorting">
 	');
 	if (is_array($order_array))
 	{	
@@ -413,11 +400,11 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 			echo('<option value="'.$sortierung['id'].'" ');if ($sortierung['id']==$einstellungen->cat_sorting) echo('selected'); echo('>'.$sortierung['text'].'</option>');
 		}
 	}
-	echo('
-															</select> <select name="cat_sorting2">
+	echo('</select> <select name="cat_sorting2">
 	');
+
 	if (is_array($order_array2))
-	{	
+	{
 		foreach ($order_array2 as $sortierung)
 		{
 			echo('<option value="'.$sortierung['id'].'" ');if ($sortierung['id']==$einstellungen->cat_sorting2) echo('selected'); echo('>'.$sortierung['text'].'</option>');
@@ -617,18 +604,18 @@ function installiere()
 	}
 }
 
-function generatePW($length=8)
-{
-	$dummy= array_merge(range('0', '9'), range('a', 'z'), range('A', 'Z'));
-	mt_srand((double)microtime()*1000000);
-	for ($i = 1; $i <= (count($dummy)*2); $i++)
-	{
-		$swap= mt_rand(0,count($dummy)-1);
-		$tmp= $dummy[$swap];
-		$dummy[$swap]= $dummy[0];
-		$dummy[0]= $tmp;
-	}
-	return substr(implode('',$dummy),0,$length);
-}
+
+  function generatePW($length = 8) {
+
+    $dummy = array_merge(range('0', '9'), range('a', 'z'), range('A', 'Z'));
+    mt_srand((double)microtime()*1000000);
+    for ($i = 1; $i <= (count($dummy)*2); $i++) {
+      $swap = mt_rand(0,count($dummy)-1);
+      $tmp = $dummy[$swap];
+      $dummy[$swap] = $dummy[0];
+      $dummy[0] = $tmp;
+    }
+    return substr(implode('',$dummy),0,$length);
+  }
 
 ?>
