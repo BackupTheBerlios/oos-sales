@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.16 2006/07/10 04:24:43 r23 Exp $
+   $Id: index.php,v 1.17 2006/07/10 13:53:37 r23 Exp $
 
    wawi - osis online shop
 
@@ -221,26 +221,46 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 					<td><b>Standardw&auml;hrung</b></td><td><select name="waehrung">
 	');
 
-    $currenciestable = $oostable['currencies'];
-    $query = "SELECT currencies_id, title, code
-              FROM $currenciestable";
-	while ($currency = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$currency->currencies_id.'" ');if ($currency->currencies_id==$einstellungen->currencies_id) echo('selected'); echo('>'.$currency->title.'</option>');
-	}
+      $currenciestable = $oostable['currencies'];
+      $query = "SELECT currencies_id, title, code
+                FROM $currenciestable";
+      $result =& $dbconn->Execute($query);
+
+      while ($currency = $result->fields) {
+        echo '<option value="' . $currency['currencies_id'] . '" ' ;
+        if ($currency['currencies_id'] == $einstellungen->currencies_id) {
+          echo ' selected="selected"';
+        }
+        echo '>' . $currency['title'] . '</option>';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
 	echo('</select></td>
 				</tr>
 				<tr>
 					<td><b>Standardsprache</b></td><td><select name="sprache">
 	');
 
-    $languagestable = $oostable['languages'];
-    $query = "SELECT languages_id, name, iso_639_2, iso_639_1, status
-              FROM $languagestable";
-	while ($lang = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$lang->languages_id.'" ');if ($lang->languages_id==$einstellungen->languages_id) echo('selected'); echo('>'.$lang->name.'</option>');
-	}
+      $languagestable = $oostable['languages'];
+      $query = "SELECT languages_id, name, iso_639_2,
+                FROM $languagestable";
+      $result =& $dbconn->Execute($query);
+
+      while ($lang = $result->fields) {
+        echo '<option value="' . $lang['languages_id'] . '" ' ;
+        if ($lang['languages_id'] == $einstellungen->languages_id) {
+          echo ' selected="selected"';
+        }
+        echo '>' . $lang['name'] . '</option>';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
 	echo('</select></td>
 				</tr>
 				<tr>
