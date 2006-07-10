@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.17 2006/07/10 13:53:37 r23 Exp $
+   $Id: index.php,v 1.18 2006/07/10 15:42:51 r23 Exp $
 
    wawi - osis online shop
 
@@ -193,7 +193,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       $syncpass = generatePW(8);
 
 
-      echo('
+      echo '
 	<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
 	<table cellspacing="0" cellpadding="0" width="96%">
 	<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
@@ -219,7 +219,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 				</tr>
 				<tr>
 					<td><b>Standardw&auml;hrung</b></td><td><select name="waehrung">
-	');
+      ';
 
       $currenciestable = $oostable['currencies'];
       $query = "SELECT currencies_id, title, code
@@ -227,83 +227,77 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       $result =& $dbconn->Execute($query);
 
       while ($currency = $result->fields) {
-        echo '<option value="' . $currency['currencies_id'] . '" ' ;
-        if ($currency['currencies_id'] == $einstellungen->currencies_id) {
-          echo ' selected="selected"';
-        }
-        echo '>' . $currency['title'] . '</option>';
+        echo '<option value="' . $currency['currencies_id'] . '" ';  if ($currency['currencies_id'] == $einstellungen->currencies_id) echo ' selected="selected"'; echo '>' . $currency['title'] . '</option>';
 
         $result->MoveNext();
       }
       // Close result set
       $result->Close();
 
-	echo('</select></td>
+      echo '</select></td>
 				</tr>
 				<tr>
 					<td><b>Standardsprache</b></td><td><select name="sprache">
-	');
+      ';
 
       $languagestable = $oostable['languages'];
-      $query = "SELECT languages_id, name, iso_639_2,
+      $query = "SELECT languages_id, name, iso_639_2
                 FROM $languagestable";
       $result =& $dbconn->Execute($query);
 
       while ($lang = $result->fields) {
-        echo '<option value="' . $lang['languages_id'] . '" ' ;
-        if ($lang['languages_id'] == $einstellungen->languages_id) {
-          echo ' selected="selected"';
-        }
-        echo '>' . $lang['name'] . '</option>';
+        echo '<option value="' . $lang['languages_id'] . '" '; if ($lang['languages_id'] == $einstellungen->languages_id) echo ' selected="selected"'; echo '>' . $lang['name'] . '</option>';
 
         $result->MoveNext();
       }
       // Close result set
       $result->Close();
 
-	echo('</select></td>
-				</tr>
-				<tr>
-					<td><b>Standardliefertermin</b></td><td><select name="liefertermin">
-	');
-	$cur_query = xtc_db_query("SELECT * FROM shipping_status WHERE language_id=".$einstellungen->languages_id);
-	while ($liefer = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$liefer->shipping_status_id.'" ');if ($liefer->shipping_status_id==$einstellungen->shipping_status_id) echo('selected'); echo('>'.$liefer->shipping_status_name.'</option>');
-	}
-	echo('</select></td>
+      echo '</select></td>
 				</tr>
 				<tr>
 					<td>Umsatzsteuer</td><td>&nbsp;</td>
 				</tr>
 				<tr>
 					<td><b>Standard Steuerzone</b></td><td><select name="steuerzone">
-	');
+      ';
 
-    $geo_zonestable = $oostable['geo_zones'];
-    $query ="SELECT geo_zone_id, geo_zone_name, geo_zone_description
-             FROM $geo_zonestable";
-	while ($zone = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$zone->geo_zone_id.'" ');if ($zone->geo_zone_id==$einstellungen->tax_zone_id) echo('selected'); echo('>'.$zone->geo_zone_name.'</option>');
-	}
-	echo('</select></td>
+      $geo_zonestable = $oostable['geo_zones'];
+      $query ="SELECT geo_zone_id, geo_zone_name
+               FROM $geo_zonestable";
+      $result =& $dbconn->Execute($query);
+
+      while ($zone = $result->fields) {
+        echo '<option value="' . $zone['geo_zone_id'] . '" '; if ($zone['geo_zone_id'] == $einstellungen->tax_zone_id) echo ' selected="selected"'; echo '>' . $zone['geo_zone_name'] . '</option>';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '</select></td>
 				</tr>
 				<tr>
 					<td><b>Standard Steuerklasse*</b></td><td><select name="steuerklasse">
-	');
+      ';
 
-    $tax_classtable = $oostable['tax_class'];
-    $query = "SELECT tax_class_id, tax_class_title, tax_class_description
-              FROM $tax_classtable";
-	while ($klasse = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$klasse->tax_class_id.'" ');if ($klasse->tax_class_id==$einstellungen->tax_class_id) echo('selected'); echo('>'.$klasse->tax_class_title.'</option>');
-	}
-	echo('</select></td>
+      $tax_classtable = $oostable['tax_class'];
+      $query = "SELECT tax_class_id, tax_class_title, tax_class_description
+                FROM $tax_classtable";
+      $result =& $dbconn->Execute($query);
+
+      while ($klasse = $result->fields) {
+        echo '<option value="' . $klasse['tax_class_id'] . '" '; if ($klasse['tax_class_id'] == $einstellungen->tax_class_id) echo ' selected="selected"'; echo '>' . $klasse['tax_class_title'] . '</option>';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '</select></td>
 				</tr>
 				<tr>
-					<td><b>Standard Steuersatzpriorit�</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
+					<td><b>Standard Steuersatzpriorit&auml;t</b></td><td><input type="text" name="prioritaet" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->tax_priority.'"></td>
 				</tr>
 				<tr>
 					<td><b>Steuersatz f&uuml;r Versandkosten</b></td><td><input type="text" name="versandMwst" size="50" class="konfig" style="width:30px;" value="'.$einstellungen->versandMwst.'"> %</td>
@@ -312,42 +306,53 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 					<td>Bestellstatus&auml;nderungen</td><td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht ändern</option>
-	');
+					<td><b>Sobald Bestellung erfolgreich in eazySales bernommen wird, Status setzen auf:</b></td><td><select name="StatusAbgeholt"><option value="0">Status nicht &auml;ndern</option>
+      ';
 
-    $orders_statustable = $oostable['orders_status'];
-    $query = "SELECT orders_status_id, orders_status_name
-              FROM $orders_statustable
-              WHERE orders_languages_id = ".$einstellungen->languages_id."
-              ORDER BY orders_status_id";
-	while ($status = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusAbgeholt) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
-	}
-	echo('</select></td>
+      $orders_statustable = $oostable['orders_status'];
+      $query = "SELECT orders_status_id, orders_status_name
+                FROM $orders_statustable
+                WHERE orders_languages_id = ".$einstellungen->languages_id."
+                ORDER BY orders_status_id";
+      $result =& $dbconn->Execute($query);
+
+      while ($status = $result->fields) {
+        echo '<option value="' . $status['orders_status_id'] . '" '; if ($status['orders_status_id'] == $einstellungen->StatusAbgeholt) echo ' selected="selected"'; echo '>' . $status['orders_status_name'] . '</option>';
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '</select></td>
 				</tr>
 				<tr>
-					<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht ändern</option>
-	');
+					<td><b>Sobald Bestellung in eazySales versandt wird, Status setzen auf</b></td><td><select name="StatusVersendet"><option value="0">Status nicht &auml;ndern</option>
+      ';
 
-    $orders_statustable = $oostable['orders_status'];
-    $query = "SELECT orders_status_id, orders_status_name
-              FROM $orders_statustable
-              WHERE language_id=".$einstellungen->languages_id."
-              ORDER BY orders_status_id";
-	while ($status = mysql_fetch_object($cur_query))
-	{
-		echo('<option value="'.$status->orders_status_id.'" ');if ($status->orders_status_id==$einstellungen->StatusVersendet) echo('selected'); echo('>'.$status->orders_status_name.'</option>');
-	}
-	echo('</select></td>
+      $orders_statustable = $oostable['orders_status'];
+      $query = "SELECT orders_status_id, orders_status_name
+                FROM $orders_statustable
+                WHERE language_id=".$einstellungen->languages_id."
+                ORDER BY orders_status_id";
+      while ($status = $result->fields) {
+        echo '<option value="' . $status['orders_status_id'] . '" '; if ($status['orders_status_id'] == $einstellungen->StatusVersendet) echo ' selected="selected"'; echo '>' . $status['orders_status_name'] . '</option>';
+
+
+        $result->MoveNext();
+      }
+      // Close result set
+      $result->Close();
+
+      echo '</select></td>
 				</tr>
 				</table><br />
-				eazySales kennt nur die Kundengruppen Endkunde und H&auml;dlerkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist f&uuml;r die korrekte Preiszuordnung unerl&auml;sslich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
+				eazySales kennt nur die Kundengruppen Endkunde und H&auml;ndlerkunde. Weisen Sie diesen Kundengruppen Ihre Shop-Kundengruppen zu - dies ist f&uuml;r die korrekte Preiszuordnung unerl&auml;sslich. Vergeben Sie nicht Ihre Kundengruppen doppelt.<br />
 				<table cellspacing="0" cellpadding="10" width="100%">
 				<tr>
 					<td valign="top"><b>eazySales Endkunde</b></td>
 					<td>
-	');
+      ';
 
     $customers_statusstable = $oostable['customers_status'];
 	$cur_query = xtc_db_query("SELECT *
