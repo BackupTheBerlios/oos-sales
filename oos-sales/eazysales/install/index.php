@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.19 2006/07/10 17:48:52 r23 Exp $
+   $Id: index.php,v 1.20 2006/07/11 06:46:41 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,32 +34,34 @@
  * @version v1.01 / 14.06.06
 */
 
-  require '../paths.php';
+  define('OOS_VALID_MOD', 'yes');
 
-//get DB Connecion
-// include server parameters
-require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
+  if(!defined('SHOP_ROOT')) {
+    define('SHOP_ROOT', dirname(__FILE__) . '/../../../');
+  }
 
 
-  require OOS_INCLUDES . 'oos_tables.php';
+  require SHOP_ROOT. '/includes/config.php';
+
+  require SHOP_ROOT . OOS_INCLUDES . 'oos_tables.php';
+  require SHOP_ROOT . OOS_FUNCTIONS . 'function_kernel.php';
 
 // require  the database functions
   $adodb_logsqltable = $oostable['adodb_logsql'];
   if (!defined('ADODB_LOGSQL_TABLE')) {
     define('ADODB_LOGSQL_TABLE', $adodb_logsqltable);
   }
-  require  OOS_ADODB . 'adodb-errorhandler.inc.php';
-  require  OOS_ADODB . 'adodb.inc.php';
-  require  OOS_FUNCTIONS . 'function_db.php';
+  require SHOP_ROOT . OOS_ADODB . 'adodb-errorhandler.inc.php';
+  require SHOP_ROOT . OOS_ADODB . 'adodb.inc.php';
+  require SHOP_ROOT . OOS_FUNCTIONS . 'function_db.php';
 
-// make a connection to the database... now 
+// make a connection to the database... now
   if (!oosDBInit()) {
     die('Unable to connect to database server!');
   }
 
   $dbconn =& oosDBGetConn();
   oosDB_importTables($oostable);
-
 
 
   function zeigeKopf() {
@@ -144,7 +146,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
                           array('id' => 'DESC','text'=>'Absteigend'));
 
     //defaultwerte setzen
-    if (!$einstellungen->shopURL) $einstellungen->shopURL = OOS_SHOP_SERVER . OOS_SHOP;
+    if (!$einstellungen->shopURL) $einstellungen->shopURL = OOS_HTTP_SERVER . OOS_SHOP;
     if (!$einstellungen->tax_priority) $einstellungen->tax_priority = 1;
     if (!$einstellungen->versandMwst) $einstellungen->versandMwst = 16;
 
@@ -399,35 +401,7 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 				</tr>
 				</table><br />
 
-				Vorlagen f&uuml;r Kategorien und Artikel, die &uuml;ber eazySales eingestellt werden:
 				<table cellspacing="0" cellpadding="10" width="100%">
-				<tr>
-					<td>Kategorien</td><td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td valign="top"><b>Artikel&uuml;bersicht in Kategorien</b></td><td><select name="cat_listing">
-      ';
-
-
-      if (is_array($product_listing_template_arr)) {
-        foreach ($product_listing_template_arr as $template) {
-          echo '<option value="'.$template['id'].'" '; if ($template['id'] == $einstellungen->cat_listing_template) echo ' selected="selected"'; echo '>'.$template['text'].'</option>';
-        }
-      }
-      echo '</select></td>
-				</tr>
-				<tr>
-					<td valign="top"><b>Kategorie&uuml;bersicht</b></td><td><select name="cat_template">
-      ';
-
-
-      if (is_array($category_listing_template_arr)) {
-        foreach ($category_listing_template_arr as $template) {
-           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->cat_category_template) echo ' selected="selected"'; echo '>'.$template['text'].'</option>';
-        }
-      }
-      echo '</select></td>
-				</tr>
 				<tr>
 					<td valign="top"><b>Artikelsortierung</b></td><td><select name="cat_sorting">
       ';
@@ -442,34 +416,6 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
       if (is_array($order_array2)) {
         foreach ($order_array2 as $sortierung) {
            echo '<option value="'.$sortierung['id'].'" '; if ($sortierung['id']==$einstellungen->cat_sorting2) echo ' selected="selected"'; echo '>'.$sortierung['text'].'</option>';
-        }
-      }
-      echo '</select>
-					</td>
-				</tr>
-				<tr>
-					<td>Artikel</td><td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td valign="top"><b>Artikeldetails</b></td><td><select name="product_template">
-      ';
-
-
-      if (is_array($productinfo_template_arr)) {
-        foreach ($productinfo_template_arr as $template) {
-           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->prod_product_template) echo ' selected="selected"'; echo('>'.$template['text'].'</option>');
-        }
-      }
-      echo '</select>
-					</td>
-				</tr>
-				<tr>
-					<td valign="top"><b>Artikeloptionen</b></td><td><select name="option_template">
-      ';
-
-      if (is_array($productoptions_template_arr)) {
-        foreach ($productoptions_template_arr as $template) {
-           echo '<option value="'.$template['id'].'" '; if ($template['id']==$einstellungen->prod_options_template) echo ' selected="selected"'; echo('>'.$template['text'].'</option>');
         }
       }
       echo '</select>
@@ -514,17 +460,16 @@ require_once (DOCROOT_XTC_PATH.'admin/includes/configure.php');
 		</table><br />
 	</td>
       ';
-}
+  }
 
-function schritt1EingabenVollstaendig()
-{
-	if (strlen($_POST["syncuser"])>0 && strlen($_POST["syncpass"])>0)
-		return 1;
-	return 0;
-}
+  function schritt1EingabenVollstaendig() {
+    if (strlen($_POST["syncuser"])>0 && strlen($_POST["syncpass"])>0) {
+      return 1;
+    }
+    return 0;
+  }
 
-function installiere()
-{
+  function installiere() {
 
     // Get database information
     $dbconn =& oosDBGetConn();
@@ -632,7 +577,7 @@ function installiere()
 							</td>
 	      ';
 	}
-}
+  }
 
 
   function generatePW($length = 8) {

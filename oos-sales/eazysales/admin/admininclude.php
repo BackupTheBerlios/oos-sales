@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: admininclude.php,v 1.6 2006/07/09 16:38:38 r23 Exp $
+   $Id: admininclude.php,v 1.7 2006/07/11 06:46:41 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,6 +43,23 @@ if (file_exists(DOCROOT_XTC_PATH.'includes/local/configure.php'))
 // include server parameters
 require_once (DOCROOT_XTC_PATH.'includes/configure.php');
 
+
+// define how the session functions will be used 
+  require OOS_FUNCTIONS . 'function_session.php';
+
+// set the session ID if it exists
+  if (isset($_POST[oos_session_name()])) {
+    oos_session_id($_POST[oos_session_name()]);
+  } elseif (isset($_GET[oos_session_name()])) {
+    oos_session_id($_GET[oos_session_name()]);
+  }
+
+  oos_session_name('eSConnectorAdm');
+  oos_session_start();
+
+  if (!isset($_SESSION)) {
+    $_SESSION = array();
+  }
 
 // require  the database functions
   $adodb_logsqltable = $oostable['adodb_logsql'];
