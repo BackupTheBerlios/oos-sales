@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: eazysales_tables.php,v 1.3 2006/07/11 16:13:16 r23 Exp $
+   $Id: eazysales_tables.php,v 1.4 2006/07/11 22:55:37 r23 Exp $
 
    wawi - osis online shop
 
@@ -84,6 +84,64 @@
     prod_options_template C(255) DEFAULT NULL,
     StatusAbgeholt I1 UNSIGNED NOT NULL DEFAULT '0',
     StatusVersendet I1 UNSIGNED NOT NULL DEFAULT '0'
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_mbestellpos';
+  $flds = "
+    kBestellPos I UNSIGNED NOTNULL AUTO PRIMARY,
+    orders_products_id I UNSIGNED DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_martikel';
+  $flds = "
+    products_id I UNSIGNED NOT NULL PRIMARY,
+    kArtikel I UNSIGNED DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_mkategorie';
+  $flds = "
+    categories_id I UNSIGNED NOT NULL PRIMARY,
+    kKategorie I UNSIGNED DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_mvariation';
+  $flds = "
+    kEigenschaft I UNSIGNED NOT NULL PRIMARY,
+    products_options_id I UNSIGNED DEFAULT NULL,
+    kArtikel int(11) DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_mvariationswert';
+  $flds = "
+    products_attributes_id I UNSIGNED NOT NULL PRIMARY,
+    kEigenschaftsWert I UNSIGNED DEFAULT NULL,
+    kArtikel int(11) DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_sentorders';
+  $flds = "
+    orders_id I UNSIGNED NOT NULL PRIMARY,
+    dGesendet datetime DEFAULT NULL,
+  ";
+  dosql($table, $flds);
+
+
+  $table = $prefix_table . 'eazysales_sync';
+  $flds = "
+    cName varchar(255)  DEFAULT NULL,
+    cPass varchar(255)  DEFAULT NULL
   ";
   dosql($table, $flds);
 
