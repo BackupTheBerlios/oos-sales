@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: admininclude.php,v 1.7 2006/07/11 06:46:41 r23 Exp $
+   $Id: admininclude.php,v 1.8 2006/07/11 07:34:15 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,19 +33,20 @@
  * @version v1.0 / 16.06.06
 */
 
-require '../paths.php';
-require_once("AdminSession.php");
+  /** ensure this file is being included by a parent file */
+  defined( 'OOS_VALID_MOD' ) or die( 'Direct Access to this location is not allowed.' );
 
-//get DB Connecion
-// Set the local configuration parameters - mainly for developers
-if (file_exists(DOCROOT_XTC_PATH.'includes/local/configure.php')) 
-	include(DOCROOT_XTC_PATH.'includes/local/configure.php');
-// include server parameters
-require_once (DOCROOT_XTC_PATH.'includes/configure.php');
+  if(!defined('SHOP_ROOT')) {
+    define('SHOP_ROOT', dirname(__FILE__) . '/../../../');
+  }
 
+  require SHOP_ROOT. 'includes/config.php';
+
+  require SHOP_ROOT . OOS_INCLUDES . 'oos_tables.php';
+  require SHOP_ROOT . OOS_FUNCTIONS . 'function_kernel.php';
 
 // define how the session functions will be used 
-  require OOS_FUNCTIONS . 'function_session.php';
+  require SHOP_ROOT . OOS_FUNCTIONS . 'function_session.php';
 
 // set the session ID if it exists
   if (isset($_POST[oos_session_name()])) {
@@ -66,11 +67,11 @@ require_once (DOCROOT_XTC_PATH.'includes/configure.php');
   if (!defined('ADODB_LOGSQL_TABLE')) {
     define('ADODB_LOGSQL_TABLE', $adodb_logsqltable);
   }
-  require  OOS_ADODB . 'adodb-errorhandler.inc.php';
-  require  OOS_ADODB . 'adodb.inc.php';
-  require  OOS_FUNCTIONS . 'function_db.php';
+  require SHOP_ROOT . OOS_ADODB . 'adodb-errorhandler.inc.php';
+  require SHOP_ROOT . OOS_ADODB . 'adodb.inc.php';
+  require SHOP_ROOT . OOS_FUNCTIONS . 'function_db.php';
 
-// make a connection to the database... now 
+// make a connection to the database... now
   if (!oosDBInit()) {
     die('Unable to connect to database server!');
   }
@@ -79,16 +80,18 @@ require_once (DOCROOT_XTC_PATH.'includes/configure.php');
   oosDB_importTables($oostable);
 
 
+
 /**
  * real mysql escape mysql escape
  * @access public
  * @param string $ausdruck Ausdruck, der escaped fr mysql werden soll
  * @return escaped expression
  */
-function realEscape ($ausdruck)
-{
-	if (get_magic_quotes_gpc())
-		return mysql_real_escape_string(stripslashes($ausdruck));
-	else
-		return mysql_real_escape_string($ausdruck);
-}
+  function realEscape ($ausdruck) {
+    if (get_magic_quotes_gpc()) {
+      return mysql_real_escape_string(stripslashes($ausdruck));
+    } else {
+      return mysql_real_escape_string($ausdruck);
+    }
+  }
+?>

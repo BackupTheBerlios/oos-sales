@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.7 2006/07/09 16:38:38 r23 Exp $
+   $Id: index.php,v 1.8 2006/07/11 07:34:15 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,10 +33,11 @@
  * @version v1.0 / 14.06.06
 */
 
+  define('OOS_VALID_MOD', 'yes');
+
 require 'admininclude.php';
 require 'adminTemplates.php';
 
-$adminsession = new AdminSession();
 
 //adminlogin
 if (intval($_POST["adminlogin"])==1)
