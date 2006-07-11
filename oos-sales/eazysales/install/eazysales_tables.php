@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: eazysales_tables.php,v 1.1 2006/07/09 22:52:25 r23 Exp $
+   $Id: eazysales_tables.php,v 1.2 2006/07/11 15:58:56 r23 Exp $
 
    wawi - osis online shop
 
@@ -21,33 +21,47 @@
    Released under the GNU General Public License
    ---------------------------------------------------------------------- */
 
-  function dosql($table, $flds) {
+  if (!function_exists('dosql')) {
+    function dosql($table, $flds) {
 
-    // Get database information
-    $dbconn =& oosDBGetConn();
-    $oostable =& oosDBGetTables();
+      // Get database information
+      $dbconn =& oosDBGetConn();
+      $oostable =& oosDBGetTables();
 
-    $dict = NewDataDictionary($dbconn);
+      $dict = NewDataDictionary($dbconn);
 
-    $taboptarray = array('mysql' => 'TYPE=MyISAM', 'REPLACE');
+      $taboptarray = array('mysql' => 'TYPE=MyISAM', 'REPLACE');
 
-    $sqlarray = $dict->CreateTableSQL($table, $flds, $taboptarray);
-    $dict->ExecuteSQLArray($sqlarray); 
+      $sqlarray = $dict->CreateTableSQL($table, $flds, $taboptarray);
+      $dict->ExecuteSQLArray($sqlarray); 
 
-    echo '<br /><img src="images/yes.gif" alt="" border="0" align="absmiddle"> <font class="oos-title">' . $table .  'erstellt.</font>';
+      echo '<br /><img src="images/yes.gif" alt="" border="0" align="absmiddle"> <font class="oos-title">' . $table .  'erstellt.</font>';
+    }
   }
 
 
-  function idxsql($idxname, $table, $idxflds) {
+  if (!function_exists('idxsql')) {
+    function idxsql($idxname, $table, $idxflds) {
 
-    // Get database information
-    $dbconn =& oosDBGetConn();
-    $oostable =& oosDBGetTables();
+      // Get database information
+      $dbconn =& oosDBGetConn();
+      $oostable =& oosDBGetTables();
 
-    $dict = NewDataDictionary($dbconn);
+      $dict = NewDataDictionary($dbconn);
 
-    $sqlarray = $dict->CreateIndexSQL($idxname, $table, $idxflds);
-    $dict->ExecuteSQLArray($sqlarray);
+      $sqlarray = $dict->CreateIndexSQL($idxname, $table, $idxflds);
+      $dict->ExecuteSQLArray($sqlarray);
+    }
   }
+
+
+  $table = $prefix_table . 'eazysales_adminsession';
+  $flds = "
+    cSessionId C(255) DEFAULT NULL,
+    nSessionExpires I DEFAULT '0' NULL,
+    cSessionData X
+  ";
+  dosql($table, $flds);
+
 
 ?>
