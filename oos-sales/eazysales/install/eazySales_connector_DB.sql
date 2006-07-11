@@ -1,4 +1,4 @@
-# $Id: eazySales_connector_DB.sql,v 1.2 2006/07/09 01:48:41 r23 Exp $
+# $Id: eazySales_connector_DB.sql,v 1.3 2006/07/11 16:13:16 r23 Exp $
 #
 # wawi - osis online shop
 #
@@ -19,32 +19,6 @@
 
 
 
-CREATE TABLE eazysales_adminsession (
-  cSessionId varchar(255)  default NULL,
-  nSessionExpires int(10) unsigned default NULL,
-  cSessionData text 
-);
-
-CREATE TABLE eazysales_einstellungen (
-  currencies_id smallint(6) default NULL,
-  languages_id smallint(6) default NULL,
-  mappingEndkunde varchar(255) default NULL,
-  mappingHaendlerkunde varchar(255) default NULL,
-  shopURL varchar(255) default NULL,
-  tax_class_id int(11) default NULL,
-  tax_zone_id int(11) default NULL,
-  tax_priority int(11) default NULL,
-  shipping_status_id int(11) default NULL,
-  versandMwst float default NULL,
-  cat_listing_template varchar(255) default NULL,
-  cat_category_template varchar(255) default NULL,
-  cat_sorting varchar(255) default NULL,
-  cat_sorting2 varchar(255) default NULL,
-  prod_product_template varchar(255) default NULL,
-  prod_options_template varchar(255) default NULL,
-  StatusAbgeholt tinyint(3) unsigned NOT NULL default '0',
-  StatusVersendet tinyint(3) unsigned NOT NULL default '0'
-);
 
 CREATE TABLE eazysales_mbestellpos (
   kBestellPos int(10) unsigned NOT NULL auto_increment,
