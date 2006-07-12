@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.20 2006/07/11 06:46:41 r23 Exp $
+   $Id: index.php,v 1.21 2006/07/12 00:43:55 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,10 +40,11 @@
     define('SHOP_ROOT', dirname(__FILE__) . '/../../../');
   }
 
-
   require SHOP_ROOT. '/includes/config.php';
 
   require SHOP_ROOT . OOS_INCLUDES . 'oos_tables.php';
+  require '../admin/oos_tables.php';
+
   require SHOP_ROOT . OOS_FUNCTIONS . 'function_kernel.php';
 
 // require  the database functions
@@ -62,6 +63,15 @@
 
   $dbconn =& oosDBGetConn();
   oosDB_importTables($oostable);
+
+
+  zeigeKopf();
+  if (schritt1EingabenVollstaendig()) {
+    installiere();
+  } else {
+    installSchritt1();
+  }
+  zeigeFuss();
 
 
   function zeigeKopf() {
@@ -104,28 +114,6 @@
 	</body>
 </html>
 	');
-  }
-
-
-  function parse_mysql_dump($url) {
-
-    $file_content = file($url);
-    $errors = '';
-
-    //print_r($file_content);
-    $query = '';
-    foreach($file_content as $i => $sql_line) {
-      $tsl = trim($sql_line);
-      if (($sql_line != '') && (substr($tsl, 0, 2) != '--') && (substr($tsl, 0, 1) != '#')) {
-        $query .= $sql_line;
-        if (preg_match("/;\s*$/", $sql_line)) {
-           $result = mysql_query($query);
-           if (!$result) $errors.="<br />".mysql_error()." Nr: ".mysql_errno()." in Zeile ".$i."<br />".$query."<br />";
-           $query = '';
-        }
-      }
-    }
-    return $errors;
   }
 
 
@@ -200,7 +188,7 @@
 	<table cellspacing="0" cellpadding="0" width="96%">
 	<tr><td class="content_header" align="center"><h3>eazySales Connector Installation</h3></td></tr>
 	<tr><td class="content" ><br />
-		Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] Shop mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br /><br />
+		Dieses Modul erlaubt es, Ihren OOS [OSIS Online Shop] mit der kostenlosen Warenwirtschaft <a href="http://www.jtl-software.de/eazysales.php">eazySales</a> zu betreiben. Dieses Modul ist kostenfrei, kann frei weitergegeben werden, unterliegt jedoch den Urheberrechten von <a href="http://www.jtl-software.de">JTL-Software</a>.<br /><br />
 		Den Funktionsumfang dieses Modul finden Sie unter <a href="http://www.jtl-software.de/eazysales_connector.php">http://www.jtl-software.de/eazysales_connector.php</a>.<br /><br />
 		Die Installation und Inbetriebnahme von eazySales Connector geschieht auf eigenes Risiko. Haftungsanspr&uuml;che f&uuml;r evtl. entstandene Sch&auml;den werden nicht &uuml;bernommen! Sichern Sie sich daher vorher sowohl Ihre Shopdatenbank als auch die eazySales Datenbank.<br /><br />
 
@@ -475,108 +463,160 @@
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
+    require 'eazysales_tables.php';
 
-# $hinweis = parse_mysql_dump("eazySales_connector_DB.sql");
-	//inserte syncuser
-	if (!mysql_query("INSERT INTO eazysales_sync values (\"".$_POST['syncuser']."\",\"".$_POST['syncpass']."\")")) $hinweis.="<br />".mysql_error()." Nr: ".mysql_errno();
-	//inserte evtl. sentorder
-	if ($_POST['altebestellungen']==2)
-	{
-		$best_query = xtc_db_query("SELECT orders_id FROM orders ORDER BY orders_id");
-		while ($orderkey = mysql_fetch_row($best_query))
-		{
-			if ($orderkey[0]>0)
-				xtc_db_query("INSERT INTO eazysales_sentorders (orders_id) values (".$orderkey[0].")");
-		}
-	}
-	
-	//inserte einstellungen
-	$mappingEndkunde="";
-	$mappingHaendlerkunde="";
-	if (is_array($_POST['endkunde']))
+    $eazysales_synctable = $oostable['eazysales_sync'];
+    $query = "INSERT INTO $eazysales_synctable
+              (cName,
+               cPass)
+               VALUES (" . $dbconn->qstr($_POST['syncuser']) . ','
+                         . $dbconn->qstr($_POST['syncpass']) . ")";
+    $dbconn->Execute($query);
+
+    if (isset($_POST['altebestellungen']) && ($_POST['altebestellungen'] == '2')) {
+      $orderstable = $oostable['orders'];
+      $query = "SELECT orders_id
+                FROM $orderstable
+                ORDER BY orders_id";
+      $result =& $dbconn->Execute($query);
+
+      if ($result->RecordCount() > 0) {
+        while ($orderkey = $result->fields) {
+          $eazysales_sentorderstable = $oostable['eazysales_sentorders'];
+          $query = "INSERT INTO $eazysales_sentorderstable
+                    (orders_id)
+                     VALUES (" . $dbconn->qstr($orderkey['orders_id']) . ")";
+          $dbconn->Execute($query);
+
+          $result->MoveNext();
+        }
+        // Close result set
+        $result->Close();
+      }
+    }
+
+    //inserte einstellungen
+    $mappingEndkunde = '';
+    $mappingHaendlerkunde = '';
+    if (is_array($_POST['endkunde']))
 		$mappingEndkunde = implode(";",$_POST['endkunde']);
-	if (is_array($_POST['haendlerkunde']))
+    if (is_array($_POST['haendlerkunde']))
 		$mappingHaendlerkunde = implode(";",$_POST['haendlerkunde']);
 	
-	$shopurl = $_POST['shopurl']; if (!$shopurl) $shopurl="";
-	$waehrung = $_POST['waehrung']; if (!$waehrung) $waehrung=0;
-	$sprache = $_POST['sprache']; if (!$sprache) $sprache=0;
-	$liefertermin = $_POST['liefertermin']; if (!$liefertermin) $liefertermin=0;
-	$steuerzone = $_POST['steuerzone']; if (!$steuerzone) $steuerzone=0;
-	$steuerklasse = $_POST['steuerklasse']; if (!$steuerklasse) $steuerklasse=0;
-	$prioritaet = $_POST['prioritaet']; if (!$prioritaet) $prioritaet=0;
-	$versandMwst = floatval($_POST['versandMwst']); if (!$versandMwst) $versandMwst=0;
-	$cat_listing = $_POST['cat_listing']; if (!$cat_listing) $cat_listing="";
-	$cat_template = $_POST['cat_template']; if (!$cat_template) $cat_template="";
-	$cat_sorting = $_POST['cat_sorting']; if (!$cat_sorting) $cat_sorting="";
-	$cat_sorting2 = $_POST['cat_sorting2']; if (!$cat_sorting2) $cat_sorting2="";
-	$product_template = $_POST['product_template']; if (!$product_template) $product_template="";
-	$option_template = $_POST['option_template']; if (!$option_template) $option_template="";
-	$statusAbgeholt = $_POST['StatusAbgeholt']; if (!$statusAbgeholt) $statusAbgeholt=0;
-	$statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt=0;
-	
+    $shopurl = $_POST['shopurl']; if (!$shopurl) $shopurl = '';
+    $waehrung = $_POST['waehrung']; if (!$waehrung) $waehrung = 0;
+    $sprache = $_POST['sprache']; if (!$sprache) $sprache = 0;
+    $liefertermin = $_POST['liefertermin']; if (!$liefertermin) $liefertermin = 0;
+    $steuerzone = $_POST['steuerzone']; if (!$steuerzone) $steuerzone = 0;
+    $steuerklasse = $_POST['steuerklasse']; if (!$steuerklasse) $steuerklasse = 0;
+    $prioritaet = $_POST['prioritaet']; if (!$prioritaet) $prioritaet = 0;
+    $versandMwst = floatval($_POST['versandMwst']); if (!$versandMwst) $versandMwst = 0;
+    $cat_listing = $_POST['cat_listing']; if (!$cat_listing) $cat_listing = '';
+    $cat_template = $_POST['cat_template']; if (!$cat_template) $cat_template = '';
+    $cat_sorting = $_POST['cat_sorting']; if (!$cat_sorting) $cat_sorting = '';
+    $cat_sorting2 = $_POST['cat_sorting2']; if (!$cat_sorting2) $cat_sorting2 = '';
+    $product_template = $_POST['product_template']; if (!$product_template) $product_template = '';
+    $option_template = $_POST['option_template']; if (!$option_template) $option_template = '';
+    $statusAbgeholt = $_POST['StatusAbgeholt']; if (!$statusAbgeholt) $statusAbgeholt = 0;
+    $statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt = 0;
 
-	xtc_db_query("DELETE FROM eazysales_einstellungen");
-	xtc_db_query("INSERT INTO eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) values ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
-	//ende einstellungen
 
-	if (strlen($hinweis)>0)
-	{
-	      echo '
-							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
-								<table cellspacing="0" cellpadding="0" width="96%">
-									<tr><td class="content_header" align="center"><h3>eazySales Connector Datenbankeinrichtung fehlgeschlagen</h3></td></tr>
-									<tr><td class="content" align="center"><br />
-											<table cellspacing="0" cellpadding="0" width="580">
-												<tr>
-													<td class="unter_content_header">&nbsp;<b>Bei der Datenbankeinrichtung sind folgende Fehler aufgetreten</b></td>
-												</tr>
-												<tr>
-													<td class="content">
-	'.$hinweis.'<br /><br /><br />L�ungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
-													</td>
-												</tr>
-											</table>
-									</td></tr>
-								</table><br />
-							</td>
+    $eazysales_einstellungentable = $oostable['eazysales_einstellungen'];
+    $dbconn->Execute("DELETE FROM $eazysales_einstellungentable");
+
+    $eazysales_einstellungentable = $oostable['eazysales_einstellungen'];
+    $query = "INSERT INTO $eazysales_einstellungentable
+             (StatusAbgeholt,
+              StatusVersendet,
+              currencies_id,
+              languages_id,
+              mappingEndkunde,
+              mappingHaendlerkunde,
+              shopURL,
+              tax_class_id,
+              tax_zone_id,
+              tax_priority,
+              shipping_status_id,
+              versandMwst,
+              cat_listing_template,
+              cat_category_template,
+              cat_sorting,
+              cat_sorting2,
+              prod_product_template,
+              prod_options_template)
+              VALUES (" . $dbconn->qstr($statusAbgeholt) . ','
+                        . $dbconn->qstr($statusVersandt) . ','
+                        . $dbconn->qstr($waehrung) . ','
+                        . $dbconn->qstr($sprache) . ','
+                        . $dbconn->qstr($mappingEndkunde) . ','
+                        . $dbconn->qstr($mappingHaendlerkunde) . ','
+                        . $dbconn->qstr($shopurl) . ','
+                        . $dbconn->qstr($steuerklasse) . ','
+                        . $dbconn->qstr($steuerzone) . ','
+                        . $dbconn->qstr($prioritaet) . ','
+                        . $dbconn->qstr($liefertermin) . ','
+                        . $dbconn->qstr($versandMwst) . ','
+                        . $dbconn->qstr($cat_listing) . ','
+                        . $dbconn->qstr($cat_template) . ','
+                        . $dbconn->qstr($cat_sorting) . ','
+                        . $dbconn->qstr($cat_sorting2) . ','
+                        . $dbconn->qstr($product_template) . ','
+                        . $dbconn->qstr($option_template) . ")";
+    $result = $dbconn->Execute($query);
+    if ($result === false) {
+      echo '
+	<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
+	<table cellspacing="0" cellpadding="0" width="96%">
+	<tr><td class="content_header" align="center"><h3>eazySales Connector Datenbankeinrichtung fehlgeschlagen</h3></td></tr>
+	<tr><td class="content" align="center"><br />
+	<table cellspacing="0" cellpadding="0" width="580">
+		<tr>
+			<td class="unter_content_header">&nbsp;<b>Bei der Datenbankeinrichtung sind folgende Fehler aufgetreten</b></td>
+		</tr>
+		<tr>
+			<td class="content">
+	'.$dbconn->ErrorMsg() .'<br /><br /><br />L&ouml;sungen sollten Sie hier finden: <a href="http://www.jtl-software.de/eazysales_connector.php">eazySales Connector</a>
+			</td>
+		</tr>
+		</table>
+		</td></tr>
+	</table><br />
+	</td>
+     ';
+    } else {
+      //hole webserver
+      $url= "http://".$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
+      echo '
+	<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
+	<table cellspacing="0" cellpadding="0" width="96%">
+	<tr><td class="content_header" align="center"><h3>eazySales Connector Installation abgeschlossen</h3></td></tr>
+	<tr><td class="content" align="center"><br />
+		<table cellspacing="0" cellpadding="0" width="580">
+		<tr>
+			<td class="unter_content_header">&nbsp;<b>Die Datenbank f&uuml;r eazySales Connector wurde aufgesetzt</b></td>
+		</tr>
+		<tr>
+			<td class="content">
+				Die Installation ist serverseitig soweit abgeschlossen.<br /><br />
+				Sie m&uuml;ssen nun eazySales im Menue Einstellungen -> Shop-Einstellungen konfigurieren.<br /><br />
+				Folgende Einstellungen m&uuml;ssen Sie in eazySales eintragen:<br /><br />
+			<table width="95%">
+				<tr><td><b>API-KEY</b>: </td><td>eazySales Connector</td></tr>
+				<tr><td><b>Web-Server</b>: </td><td>'.substr($url,0,strlen($url)-18).'</td></tr>
+				<tr><td><b>Web-Benutzer</b>: </td><td>'.$_POST['syncuser'].'</td></tr>
+				<tr><td><b>Passwort</b>: </td><td>'.$_POST['syncpass'].'</td></tr>
+			</table><br /><br />
+				Setzen Sie einen Haken bei "Bilder per HTTP versenden".<br />
+				Bei den FTP-Einstellungen mssen Sie nichts eintragen.<br />
+				Wir w&uuml;nschen Ihnen viel Erfolg mit Ihrem Shop!
+			</td>
+		</tr>
+		</table>
+		</td></tr>
+	</table><br />
+	</td>
 	      ';
-	}
-	else
-	{
-		//hole webserver
-		$url= "http://".$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
-	      echo '
-							<td bgcolor="#ffffff" style="border-color:#222222; border-width:1px; border-style:solid; border-top-width:0px; border-bottom-width:0px;" valign="top" align="center"><br />
-								<table cellspacing="0" cellpadding="0" width="96%">
-									<tr><td class="content_header" align="center"><h3>eazySales Connector Installation abgeschlossen</h3></td></tr>
-									<tr><td class="content" align="center"><br />
-											<table cellspacing="0" cellpadding="0" width="580">
-												<tr>
-													<td class="unter_content_header">&nbsp;<b>Die Datenbank fr eazySales Connector wurde aufgesetzt</b></td>
-												</tr>
-												<tr>
-													<td class="content">
-														Die Installation ist serverseitig soweit abgeschlossen.<br /><br />
-														Sie mssen nun eazySales im Men Einstellungen -> Shop-Einstellungen konfigurieren.<br /><br />
-														Folgende Einstellungen mssen Sie in eazySales eintragen:<br /><br />
-														<table width="95%">
-														<tr><td><b>API-KEY</b>: </td><td>eazySales Connector</td></tr>
-														<tr><td><b>Web-Server</b>: </td><td>'.substr($url,0,strlen($url)-18).'</td></tr>
-														<tr><td><b>Web-Benutzer</b>: </td><td>'.$_POST['syncuser'].'</td></tr>
-														<tr><td><b>Passwort</b>: </td><td>'.$_POST['syncpass'].'</td></tr>
-														</table><br /><br />
-														Setzen Sie einen Haken bei "Bilder per HTTP versenden".<br />
-														Bei den FTP-Einstellungen mssen Sie nichts eintragen.<br />
-														Wir wnschen Ihnen viel Erfolg mit Ihrem Shop!
-													</td>
-												</tr>
-											</table>
-									</td></tr>
-								</table><br />
-							</td>
-	      ';
-	}
+    }
   }
 
 

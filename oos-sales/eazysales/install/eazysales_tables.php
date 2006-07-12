@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: eazysales_tables.php,v 1.4 2006/07/11 22:55:37 r23 Exp $
+   $Id: eazysales_tables.php,v 1.5 2006/07/12 00:43:55 r23 Exp $
 
    wawi - osis online shop
 
@@ -35,7 +35,7 @@
       $sqlarray = $dict->CreateTableSQL($table, $flds, $taboptarray);
       $dict->ExecuteSQLArray($sqlarray); 
 
-      echo '<br /><img src="images/yes.gif" alt="" border="0" align="absmiddle"> <font class="oos-title">' . $table .  'erstellt.</font>';
+      // echo '<br /><img src="images/yes.gif" alt="" border="0" align="absmiddle"> <font class="oos-title">' . $table .  'erstellt.</font>';
     }
   }
 
@@ -54,6 +54,8 @@
     }
   }
 
+  $prefix_table = OOS_DB_PREFIX;
+  if (!$prefix_table == '') $prefix_table = $prefix_table . '_';
 
   $table = $prefix_table . 'eazysales_adminsession';
   $flds = "
@@ -91,7 +93,7 @@
   $table = $prefix_table . 'eazysales_mbestellpos';
   $flds = "
     kBestellPos I UNSIGNED NOTNULL AUTO PRIMARY,
-    orders_products_id I UNSIGNED DEFAULT NULL,
+    orders_products_id I UNSIGNED DEFAULT NULL
   ";
   dosql($table, $flds);
 
@@ -99,7 +101,7 @@
   $table = $prefix_table . 'eazysales_martikel';
   $flds = "
     products_id I UNSIGNED NOT NULL PRIMARY,
-    kArtikel I UNSIGNED DEFAULT NULL,
+    kArtikel I UNSIGNED DEFAULT NULL
   ";
   dosql($table, $flds);
 
@@ -107,7 +109,7 @@
   $table = $prefix_table . 'eazysales_mkategorie';
   $flds = "
     categories_id I UNSIGNED NOT NULL PRIMARY,
-    kKategorie I UNSIGNED DEFAULT NULL,
+    kKategorie I UNSIGNED DEFAULT NULL
   ";
   dosql($table, $flds);
 
@@ -116,7 +118,7 @@
   $flds = "
     kEigenschaft I UNSIGNED NOT NULL PRIMARY,
     products_options_id I UNSIGNED DEFAULT NULL,
-    kArtikel int(11) DEFAULT NULL,
+    kArtikel int(11) DEFAULT NULL
   ";
   dosql($table, $flds);
 
@@ -125,7 +127,7 @@
   $flds = "
     products_attributes_id I UNSIGNED NOT NULL PRIMARY,
     kEigenschaftsWert I UNSIGNED DEFAULT NULL,
-    kArtikel int(11) DEFAULT NULL,
+    kArtikel I DEFAULT NULL
   ";
   dosql($table, $flds);
 
@@ -133,15 +135,15 @@
   $table = $prefix_table . 'eazysales_sentorders';
   $flds = "
     orders_id I UNSIGNED NOT NULL PRIMARY,
-    dGesendet datetime DEFAULT NULL,
+    dGesendet T DEFAULT NULL
   ";
   dosql($table, $flds);
 
 
   $table = $prefix_table . 'eazysales_sync';
   $flds = "
-    cName varchar(255)  DEFAULT NULL,
-    cPass varchar(255)  DEFAULT NULL
+    cName C(255) DEFAULT NULL,
+    cPass C(255) DEFAULT NULL
   ";
   dosql($table, $flds);
 
