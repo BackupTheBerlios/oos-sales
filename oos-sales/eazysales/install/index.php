@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.21 2006/07/12 00:43:55 r23 Exp $
+   $Id: index.php,v 1.22 2006/07/12 00:45:58 r23 Exp $
 
    wawi - osis online shop
 
@@ -109,7 +109,7 @@
 		</tr>
 	</table>
 	<br />
-	<a href="htp://www.jtl-software.de/eazysales.php"><img src="../gfx/powered_by_eSales.gif"></a>
+	<a href="http://www.jtl-software.de/eazysales.php"><img src="../gfx/powered_by_eSales.gif"></a>
 	</center>
 	</body>
 </html>
