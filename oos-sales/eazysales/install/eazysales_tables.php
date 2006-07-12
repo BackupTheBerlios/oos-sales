@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: eazysales_tables.php,v 1.5 2006/07/12 00:43:55 r23 Exp $
+   $Id: eazysales_tables.php,v 1.6 2006/07/12 17:19:42 r23 Exp $
 
    wawi - osis online shop
 
@@ -20,6 +20,9 @@
    ----------------------------------------------------------------------
    Released under the GNU General Public License
    ---------------------------------------------------------------------- */
+
+  /** ensure this file is being included by a parent file */
+  defined( 'OOS_VALID_MOD' ) or die( 'Direct Access to this location is not allowed.' );
 
   if (!function_exists('dosql')) {
     function dosql($table, $flds) {
