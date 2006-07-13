@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.11 2006/07/13 03:05:50 r23 Exp $
+   $Id: SetBestellung.php,v 1.12 2006/07/13 03:21:10 r23 Exp $
 
    wawi - osis online shop
 
@@ -35,10 +35,10 @@
 */
 
 require 'syncinclude.php';
-$return=3;
+$return = 3;
 if (auth())
 {
-	$return=5;
+	$return = 5;
 	//Bestellung versandt
 	if (intval($_POST["action"]) == 6 && intval($_POST['KeyBestellung']))
 	{
@@ -88,7 +88,8 @@ if (auth())
 		}
 		
 		//setze bestellung auf abgeholt
-		xtc_db_query("INSERT INTO eazysales_sentorders (orders_id, dGesendet) VALUES (".intval($_POST['KeyBestellung']).",now())");
+                $eazysales_sentorderstable = $oostable['eazysales_sentorders'];
+		xtc_db_query("INSERT INTO $eazysales_sentorderstable (orders_id, dGesendet) VALUES (".intval($_POST['KeyBestellung']).",now())");
 	}
 }
 
