@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.13 2006/07/13 03:43:24 r23 Exp $
+   $Id: Kategorie.php,v 1.14 2006/07/13 03:52:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,13 +37,17 @@
 
   require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
-	//hole einstellungen
-        $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
-	$cur_query = xtc_db_query("SELECT * FROM $eazysales_einstellungenstable");
-	$einstellungen = mysql_fetch_object($cur_query);
+  $return = 3;
+
+  if (auth()) {
+    //hole einstellungen
+    $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+    $query = "SELECT currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL,
+                     tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,
+                     cat_listing_template, cat_category_template, cat_sorting, cat_sorting2,
+                     prod_product_template, prod_options_template, StatusAbgeholt, StatusVersendet
+              FROM $eazysales_einstellungenstable";
+    $einstellungen = $dbconn->Execute($query);
 
 	if ((intval($_POST["action"]) == 1 || intval($_POST["action"]) == 3) && intval($_POST['KeyKategorie'])>0)
 	{
