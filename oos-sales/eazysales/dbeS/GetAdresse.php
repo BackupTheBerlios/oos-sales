@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetAdresse.php,v 1.8 2006/07/09 16:38:38 r23 Exp $
+   $Id: GetAdresse.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,9 +32,13 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.02 / 05.07.06
 */
-require 'syncinclude.php';
 
-$return=3;
+  define('OOS_VALID_MOD', 'yes');
+
+  require 'syncinclude.php';
+
+  $return = 3;
+
 if (auth())
 {
 	if (intval($_POST['KeyAdresse']))

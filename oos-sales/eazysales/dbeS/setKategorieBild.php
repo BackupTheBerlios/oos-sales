@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setKategorieBild.php,v 1.10 2006/07/09 16:38:39 r23 Exp $
+   $Id: setKategorieBild.php,v 1.11 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,9 +33,12 @@
  * @version v1.0 / 20.06.06
 */
 
-require 'syncinclude.php';
+  define('OOS_VALID_MOD', 'yes');
 
-$return=3;
+  require 'syncinclude.php';
+
+  $return = 3;
+
 $_POST['userID'] = $_POST['euser'];
 $_POST['userPWD'] = $_POST['epass'];
 if (auth())

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: mytest.php,v 1.8 2006/07/09 16:38:39 r23 Exp $
+   $Id: mytest.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,6 +32,8 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.0 / 16.06.06
 */
+
+  define('OOS_VALID_MOD', 'yes');
 
   require 'syncinclude.php';
 

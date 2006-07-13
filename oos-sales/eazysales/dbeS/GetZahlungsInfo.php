@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetZahlungsInfo.php,v 1.8 2006/07/09 16:38:38 r23 Exp $
+   $Id: GetZahlungsInfo.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -32,7 +32,11 @@
  * @link http://jtl-software.de/eazysales.php
  * @version v1.0 / 15.06.06
 */
-require 'syncinclude.php';
+
+  define('OOS_VALID_MOD', 'yes');
+
+  require 'syncinclude.php';
+
 if (file_exists(DOCROOT_XTC_PATH."inc/changedataout.inc.php"))
 	require_once(DOCROOT_XTC_PATH."inc/changedataout.inc.php");
 

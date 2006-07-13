@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellung.php,v 1.9 2006/07/13 03:21:10 r23 Exp $
+   $Id: GetBestellung.php,v 1.10 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -33,7 +33,9 @@
  * @version v1.01 / 04.07.06
 */
 
-require 'syncinclude.php';
+  define('OOS_VALID_MOD', 'yes');
+
+  require 'syncinclude.php';
 
 $return=3;
 if (auth())

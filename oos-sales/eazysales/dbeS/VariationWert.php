@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.9 2006/07/13 03:05:50 r23 Exp $
+   $Id: VariationWert.php,v 1.10 2006/07/13 03:41:08 r23 Exp $
 
    wawi - osis online shop
 
@@ -34,7 +34,9 @@
  * @version v1.0 / 16.06.06
 */
 
-require 'syncinclude.php';
+  define('OOS_VALID_MOD', 'yes');
+
+  require 'syncinclude.php';
 
 $return = 3;
 if (auth())
@@ -49,8 +51,9 @@ if (auth())
 		$EigenschaftWert->cName = realEscape($_POST["Name"]);
 
 		//hole einstellungen
+                $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
 		$cur_query = xtc_db_query("SELECT languages_id, tax_class_id, tax_zone_id 
-                                           FROM eazysales_einstellungen");
+                                           FROM $eazysales_einstellungenstable");
 
 		$einstellungen = mysql_fetch_object($cur_query);
 		
