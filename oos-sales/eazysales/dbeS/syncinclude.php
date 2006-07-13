@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.10 2006/07/13 03:05:50 r23 Exp $
+   $Id: syncinclude.php,v 1.11 2006/07/13 07:47:40 r23 Exp $
 
    wawi - osis online shop
 
@@ -296,11 +296,11 @@
     $oostable =& oosDBGetTables();
 
     $eazysales_martikeltable = $oostable['eazysales_martikel'];
-	$cur_query = xtc_db_query("SELECT products_id
-                                   FROM $eazysales_martikeltable
-                                   WHERE kArtikel=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->products_id;
+    $query = "SELECT products_id
+              FROM $eazysales_martikeltable
+              WHERE kArtikel = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getEsArtikel($mein_key) {
@@ -311,11 +311,11 @@
 
     $eazysales_martikeltable = $oostable['eazysales_martikel'];
 
-	$cur_query = xtc_db_query("SELECT kArtikel
-                                   FROM $eazysales_martikeltable
-                                   WHERE products_id=".$mein_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->kArtikel;
+    $query = "SELECT kArtikel
+              FROM $eazysales_martikeltable
+              WHERE products_id = '" . intval($mein_key) . "'");
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getFremdKategorie($eS_key) {
@@ -326,11 +326,11 @@
 
     $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
 
-	$cur_query = xtc_db_query("SELECT categories_id
-                                   FROM $eazysales_mkategorietable
-                                   WHERE kKategorie=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->categories_id;
+    $query = "SELECT categories_id
+              FROM $eazysales_mkategorietable
+              WHERE kKategorie = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getEsKategorie($mein_key) {
@@ -341,11 +341,11 @@
 
     $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
 
-	$cur_query = xtc_db_query("SELECT kKategorie
-                                   FROM $eazysales_mkategorietable
-                                   WHERE categories_id=".$mein_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->kKategorie;
+    $query = "SELECT kKategorie
+              FROM $eazysales_mkategorietable
+              WHERE categories_id = '" . intval($mein_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getFremdBestellPos($eS_key) {
@@ -356,11 +356,11 @@
 
     $eazysales_mbestellpostable = $oostable['eazysales_mbestellpos'];
 
-	$cur_query = xtc_db_query("SELECT orders_products_id
-                                   FROM $eazysales_mbestellpostable
-                                   WHERE kBestellPos=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->orders_products_id;
+    $query = "SELECT orders_products_id
+              FROM $eazysales_mbestellpostable
+              WHERE kBestellPos = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getEsEigenschaft($mein_key, $kArtikel) {
@@ -371,12 +371,12 @@
 
     $eazysales_mvariationtable = $oostable['eazysales_mvariation'];
 
-	$cur_query = xtc_db_query("SELECT kEigenschaft 
-                                   FROM $eazysales_mvariationtable
-                                   WHERE kArtikel=".$kArtikel." 
-                                     AND products_options_id=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->kEigenschaft;
+    $query = "SELECT kEigenschaft
+              FROM $eazysales_mvariationtable
+              WHERE kArtikel= '" . intval($kArtikel) . "'
+              AND products_options_id = '" . intval($mein_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getFremdEigenschaft($eS_key) {
@@ -387,11 +387,11 @@
 
     $eazysales_mvariationtable = $oostable['eazysales_mvariation'];
 
-	$cur_query = xtc_db_query("SELECT products_options_id
-                                   FROM $eazysales_mvariationtable
-                                   WHERE kEigenschaft=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->products_options_id;
+    $query = "SELECT products_options_id
+              FROM $eazysales_mvariationtable
+              WHERE kEigenschaft = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getEigenschaftsArtikel($eS_key) {
@@ -402,11 +402,11 @@
 
     $eazysales_mvariationtable = $oostable['eazysales_mvariation'];
 
-	$cur_query = xtc_db_query("SELECT kArtikel
-                                   FROM $eazysales_mvariationtable
-                                   WHERE kEigenschaft=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->kArtikel;
+    $query = "SELECT kArtikel
+              FROM $eazysales_mvariationtable
+              WHERE kEigenschaft = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getFremdEigenschaftsWert($eS_key) {
@@ -417,11 +417,11 @@
 
     $eazysales_mvariationswerttable = $oostable['eazysales_mvariationswert'];
 
-	$cur_query = xtc_db_query("SELECT products_attributes_id
-                                   FROM $eazysales_mvariationswerttable
-                                   WHERE kEigenschaftsWert=".$eS_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->products_attributes_id;
+    $query = "SELECT products_attributes_id
+              FROM $eazysales_mvariationswerttable
+              WHERE kEigenschaftsWert = '" . intval($eS_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
   function getEsEigenschaftsWert($mein_key, $kArtikel) {
@@ -432,12 +432,12 @@
 
     $eazysales_mvariationswerttable = $oostable['eazysales_mvariationswert'];
 
-	$cur_query = xtc_db_query("SELECT kEigenschaftsWert
-                                   FROM $eazysales_mvariationswerttable
-                                   WHERE kArtikel=$kArtikel
-                                     AND products_attributes_id=".$mein_key);
-	$prod = mysql_fetch_object($cur_query);
-	return $prod->kEigenschaftsWert;
+    $query = "SELECT kEigenschaftsWert
+              FROM $eazysales_mvariationswerttable
+              WHERE kArtikel = $kArtikel
+                AND products_attributes_id = '" . intval($mein_key) . "'";
+    $prod = $dbconn->GetOne($query);
+    return $prod;
 }
 
 /**

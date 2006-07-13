@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.11 2006/07/13 04:05:01 r23 Exp $
+   $Id: VariationWert.php,v 1.12 2006/07/13 07:47:40 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,23 +41,23 @@
   $return = 3;
 
   if (auth()) {
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaftWert']))
-	{
-		$return = 0;
-		
-		$EigenschaftWert->kEigenschaftWert = intval($_POST["KeyEigenschaftWert"]);
-		$EigenschaftWert->kEigenschaft = intval($_POST["KeyEigenschaft"]);
-		$EigenschaftWert->fAufpreis = floatval($_POST["Aufpreis"]);
-		$EigenschaftWert->cName = realEscape($_POST["Name"]);
+    if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaftWert'])) {
+      $return = 0;
 
-		//hole einstellungen
-                $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
-		$cur_query = xtc_db_query("SELECT languages_id, tax_class_id, tax_zone_id 
-                                           FROM $eazysales_einstellungenstable");
+      $eigenschaft_wert = array();
 
-		$einstellungen = mysql_fetch_object($cur_query);
-		
-		$products_options_id = getFremdEigenschaft($EigenschaftWert->kEigenschaft);
+      $eigenschaft_wert['kEigenschaftWert'] = intval($_POST['KeyEigenschaftWert']);
+      $eigenschaft_wert['kEigenschaft'] = intval($_POST['KeyEigenschaft']);
+      $eigenschaft_wert['fAufpreis'] = floatval($_POST['Aufpreis']);
+      $eigenschaft_wert['cName'] = realEscape($_POST['Name']);
+
+      //hole einstellungen
+      $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+      $query = "SELECT languages_id, tax_class_id, tax_zone_id 
+                FROM $eazysales_einstellungenstable");
+      $einstellungen = $dbconn->GetRow($query);
+
+      $products_options_id = getFremdEigenschaft($eigenschaft_wert['kEigenschaft']);
 		if ($products_options_id>0)
 		{
 			//schaue, ob dieser EigenschaftsWert bereits global existiert fr diese Eigenschaft!!
@@ -69,7 +69,7 @@
                                                    WHERE products_options_values_to_products_options.products_options_id=$products_options_id 
                                                      AND products_options_values_to_products_options.products_options_values_id=products_options_values.products_options_values_id 
                                                      AND products_options_values.language_id=$einstellungen->languages_id 
-                                                     AND products_options_values.products_options_values_name=\"$EigenschaftWert->cName\"");
+                                                     AND products_options_values.products_options_values_name=\"$eigenschaft_wert['cName']\"");
 			$options_values = mysql_fetch_object($cur_query);
 			
 			if (!$options_values->products_options_values_id)
@@ -83,7 +83,7 @@
 				$options_values->products_options_values_id = $max_id_arr[0]+1;
 
                           $products_options_valuestable = $oostable['products_options_values'];
-				xtc_db_query("INSERT INTO $products_options_valuestable (products_options_values_id,language_id,products_options_values_name) VALUES ($options_values->products_options_values_id,$einstellungen->languages_id,\"$EigenschaftWert->cName\")");			
+				xtc_db_query("INSERT INTO $products_options_valuestable (products_options_values_id,language_id,products_options_values_name) VALUES ($options_values->products_options_values_id,$einstellungen->languages_id,\"$eigenschaft_wert['cName']\")");			
 				
 				//erstelle verknpfung zwischen wert und eig
                           $products_options_values_to_products_optionstable = $oostable['products_options_values_to_products_options'];
@@ -91,7 +91,7 @@
 			}
 		
 			//erstelle product_attribute
-			$kArtikel = getEigenschaftsArtikel($EigenschaftWert->kEigenschaft);
+			$kArtikel = getEigenschaftsArtikel($eigenschaft_wert['kEigenschaft']);
 			if ($kArtikel>0)
 			{
 				$products_id = getFremdArtikel($kArtikel);
@@ -101,13 +101,13 @@
                                   $productstable = $oostable['products'];
 					$cur_query = xtc_db_query("SELECT products_tax_class_id FROM $productstable WHERE products_id=".$products_id);
 					$cur_tax = mysql_fetch_object($cur_query);
-					$Aufpreis = ($EigenschaftWert->fAufpreis/(100+get_tax($cur_tax->products_tax_class_id)))*100;
+					$Aufpreis = ($eigenschaft_wert['fAufpreis']/(100+get_tax($cur_tax->products_tax_class_id)))*100;
 
                                   $products_attributestable = $oostable['products_attributes'];
 					xtc_db_query("INSERT INTO $products_attributestable (products_id,options_id,options_values_id,options_values_price,price_prefix) values($products_id,$products_options_id,$options_values->products_options_values_id,$Aufpreis,\"+\")");
 					$query = xtc_db_query("SELECT LAST_INSERT_ID()");
-					$last_attribute_id_arr = mysql_fetch_row($query);					
-					setMappingEigenschaftsWert($EigenschaftWert->kEigenschaftWert, $last_attribute_id_arr[0], $kArtikel);
+					$last_attribute_id_arr = mysql_fetch_row($query)
+					setMappingEigenschaftsWert($eigenschaft_wert['kEigenschaftWert'], $last_attribute_id_arr[0], $kArtikel);
 				}
 			}
 		}
