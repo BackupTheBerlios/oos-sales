@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetHaendlerKunden.php,v 1.7 2006/07/13 03:41:08 r23 Exp $
+   $Id: SetHaendlerKunden.php,v 1.8 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -51,5 +51,5 @@
   }
 
   echo($return);
-  //logge($return);
+  logge($return);
 ?>

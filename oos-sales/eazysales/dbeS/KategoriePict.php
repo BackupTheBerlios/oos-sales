@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategoriePict.php,v 1.11 2006/07/13 03:41:08 r23 Exp $
+   $Id: KategoriePict.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,11 +39,10 @@
 
   $return = 3;
 
-logExtra(Dump($_POST));
+  logExtra(Dump($_POST));
 
-if (auth())
-{
-	$return=0;
+  if (auth()) {
+	$return = 0;
 	/*
 	$KategoriePict = new KategoriePict();
 	if (intval($_POST["action"]) == 1 && $KategoriePict->setzePostDaten() && intval($_POST['KeyKategoriePict']))
@@ -97,6 +96,6 @@ if (auth())
 	}
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

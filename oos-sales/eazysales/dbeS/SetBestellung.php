@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.14 2006/07/13 03:41:08 r23 Exp $
+   $Id: SetBestellung.php,v 1.15 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -38,9 +38,8 @@
 
   require 'syncinclude.php';
 
-$return = 3;
-if (auth())
-{
+  $return = 3;
+  if (auth()) {
 	$return = 5;
 	//Bestellung versandt
 	if (intval($_POST["action"]) == 6 && intval($_POST['KeyBestellung']))
@@ -97,6 +96,6 @@ if (auth())
 	}
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

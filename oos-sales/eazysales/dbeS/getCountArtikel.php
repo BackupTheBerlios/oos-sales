@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getCountArtikel.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
+   $Id: getCountArtikel.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -38,13 +38,11 @@
   require 'syncinclude.php';
 
   $return = 3;
+  $anzahlArt = 0;
 
-$return=3;
-$anzahlArt=0;
-//Auth
-if (auth())
-{
-	$return=0;	
+  if (auth()) {
+
+	$return = 0;
 	//hole anzahl zu versendender Artikel
         $productstable = $oostable['products'];
 	$cur_query = xtc_db_query("SELECT count(*)
@@ -61,6 +59,6 @@ if (auth())
 }
 
 
-echo($return.";".$anzahlArt);
-//logge($return);
+  echo($return.";".$anzahlArt);
+  logge($return);
 ?>

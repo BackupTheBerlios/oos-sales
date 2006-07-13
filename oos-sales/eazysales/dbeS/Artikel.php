@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.14 2006/07/13 03:52:11 r23 Exp $
+   $Id: Artikel.php,v 1.15 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,9 +37,10 @@
 
   require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
+  $return = 3;
+
+  if (auth()) {
+
 	if (intval($_POST["action"]) == 1 && intval($_POST['KeyArtikel']))
 	{
 		$return = 0;

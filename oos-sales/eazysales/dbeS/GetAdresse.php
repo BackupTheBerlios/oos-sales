@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetAdresse.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
+   $Id: GetAdresse.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,8 +39,8 @@
 
   $return = 3;
 
-if (auth())
-{
+  if (auth()) {
+
 	if (intval($_POST['KeyAdresse']))
 	{
 		//hole order
@@ -73,12 +73,12 @@ if (auth())
 		echo(CSVkonform($Order->customers_email_address).';');
 		echo("\n");
 		
-		$return=0;
+		$return = 0;
  	}
 	else
-		$return=5;
+		$return = 5;
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellung.php,v 1.10 2006/07/13 03:41:08 r23 Exp $
+   $Id: GetBestellung.php,v 1.11 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,10 +37,11 @@
 
   require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
-	$return=0;	
+  $return = 3;
+
+  if (auth()) {
+
+	$return = 0;
 	//hole alle neuen order	
         $orderstable = $oostable['orders'];
         $eazysales_sentorderstable = $oostable['eazysales_sentorders'];
@@ -94,5 +95,5 @@ if (auth())
 	}
 }
 
-logge($return);
+  logge($return);
 ?>

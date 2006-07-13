@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.11 2006/07/13 03:52:11 r23 Exp $
+   $Id: getArtikel.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,8 +40,8 @@
   $Response = '';
   $return = 3;
 
-  //Auth
   if (auth()) {
+
     $return = 0;
 
     //hole einstellungen

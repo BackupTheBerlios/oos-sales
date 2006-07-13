@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellungPos.php,v 1.10 2006/07/13 03:41:08 r23 Exp $
+   $Id: GetBestellungPos.php,v 1.11 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,13 +37,14 @@
 
   require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
-	$return=5;
+  $return = 3;
+
+  if (auth()) {
+
+	$return = 5;
 	if (intval($_POST['KeyBestellung']))
 	{
-		$return = 0;		
+		$return = 0;
 		//hole orderposes
                 $orders_productstable = $oostable['orders_products'];
 		$cur_query = xtc_db_query("SELECT *
@@ -104,6 +105,6 @@ if (auth())
 }
 
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

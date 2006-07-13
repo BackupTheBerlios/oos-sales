@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetZahlungsInfo.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
+   $Id: GetZahlungsInfo.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,10 +40,11 @@
 if (file_exists(DOCROOT_XTC_PATH."inc/changedataout.inc.php"))
 	require_once(DOCROOT_XTC_PATH."inc/changedataout.inc.php");
 
-$return=3;
-if (auth())
-{
-	$return=5;
+  $return = 3;
+
+  if (auth()) {
+
+	$return = 5;
 	if (intval($_POST['KeyBestellung']))
 	{
 		$return = 0;
@@ -107,6 +108,6 @@ if (auth())
 	}
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.11 2006/07/13 03:41:08 r23 Exp $
+   $Id: Variation.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -38,9 +38,10 @@
 
   require 'syncinclude.php';
 
-$return = 3;
-if (auth())
-{
+  $return = 3;
+
+  if (auth()) {
+
 	if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaft']))
 	{		
 		$Eigenschaft->kEigenschaft = intval($_POST["KeyEigenschaft"]);
@@ -84,6 +85,6 @@ if (auth())
 		$return = 5;
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

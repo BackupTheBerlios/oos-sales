@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: ArtikelPict.php,v 1.11 2006/07/13 03:41:08 r23 Exp $
+   $Id: ArtikelPict.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,10 +39,11 @@
   require 'syncinclude.php';
 
 $picpath = "../produktbilder/";
-$return=3;
-if (auth())
-{
-	$return=0;
+  $return = 3;
+
+  if (auth()) {
+
+	$return = 0;
 /*	$ArtikelPict = new ArtikelPict();
 	if (intval($_POST["action"]) == 1 && $ArtikelPict->setzePostDaten())
 	{
@@ -201,7 +202,7 @@ if (auth())
 	*/
 	if (intval($_POST["action"]) == 3 && intval($_POST['KeyArtikel'])>0)
 	{
-		$return =0;
+		$return = 0;
 		//hol products_id
 		$products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
 

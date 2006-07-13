@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: setArtikelBild.php,v 1.11 2006/07/13 03:41:08 r23 Exp $
+   $Id: setArtikelBild.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -44,7 +44,7 @@ $_POST['userID'] = $_POST['euser'];
 $_POST['userPWD'] = $_POST['epass'];
 if (auth())
 {
-	$return=0;
+	$return = 0;
 	//nur BildNr 1 wird bercksichtigt
 	if (intval($_POST['kArtikelBild'])>0 && intval($_POST['nNr'])==1 && $_FILES['bild'])
 	{
@@ -111,7 +111,6 @@ if (auth())
 }
 
 
-echo($return);
-logge($return);
-
+  echo($return);
+  logge($return);
 ?>

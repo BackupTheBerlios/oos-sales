@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.14 2006/07/13 03:52:11 r23 Exp $
+   $Id: Kategorie.php,v 1.15 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -115,6 +115,6 @@
 }
 
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

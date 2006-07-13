@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetKundeZuBestellung.php,v 1.10 2006/07/13 03:41:08 r23 Exp $
+   $Id: GetKundeZuBestellung.php,v 1.11 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,12 +37,13 @@
 
   require 'syncinclude.php';
 
-$return=3;
-if (auth())
-{
+  $return = 3;
+
+  if (auth()) {
+
 	if (intval($_POST['KeyBestellung']))
 	{
-		$return=0;
+		$return = 0;
 		
 		//hole einstellungen 
                 $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
@@ -116,9 +117,9 @@ if (auth())
 		echo("\n");
  	}
 	else
-		$return=5;
+		$return = 5;
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>

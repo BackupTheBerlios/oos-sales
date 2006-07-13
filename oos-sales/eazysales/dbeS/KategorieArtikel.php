@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategorieArtikel.php,v 1.9 2006/07/13 03:41:08 r23 Exp $
+   $Id: KategorieArtikel.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,8 +39,7 @@
 
   $return = 3;
 
-if (auth())
-{
+  if (auth()) {
 	if (intval($_POST["action"]) == 1 && intval($_POST['KeyKategorieArtikel']))
 	{
 		$return = 0;
@@ -54,7 +53,7 @@ if (auth())
 			xtc_db_query("INSERT INTO $products_to_categoriestable (products_id, categories_id) VALUES ($products_id, $categories_id)");
  	}
 	else
-		$return=5;
+		$return = 5;
 
 	if (intval($_POST["action"]) == 3 && intval($_POST['KeyKategorieArtikel']))
 	{
@@ -62,6 +61,6 @@ if (auth())
 	}
 }
 
-echo($return);
-logge($return);
+  echo($return);
+  logge($return);
 ?>
