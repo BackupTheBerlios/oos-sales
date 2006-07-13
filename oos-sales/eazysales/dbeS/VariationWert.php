@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.8 2006/07/09 16:38:39 r23 Exp $
+   $Id: VariationWert.php,v 1.9 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -80,7 +80,7 @@ if (auth())
 				$options_values->products_options_values_id = $max_id_arr[0]+1;
 
                           $products_options_valuestable = $oostable['products_options_values'];
-				xtc_db_query("INSERT INTO $products_options_valuestable (products_options_values_id,language_id,products_options_values_name) values ($options_values->products_options_values_id,$einstellungen->languages_id,\"$EigenschaftWert->cName\")");			
+				xtc_db_query("INSERT INTO $products_options_valuestable (products_options_values_id,language_id,products_options_values_name) VALUES ($options_values->products_options_values_id,$einstellungen->languages_id,\"$EigenschaftWert->cName\")");			
 				
 				//erstelle verknpfung zwischen wert und eig
                           $products_options_values_to_products_optionstable = $oostable['products_options_values_to_products_options'];

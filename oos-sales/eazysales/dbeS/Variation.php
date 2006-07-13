@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.8 2006/07/09 16:38:39 r23 Exp $
+   $Id: Variation.php,v 1.9 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -70,7 +70,7 @@ if (auth())
 				$options_id->products_options_id = $max_id_arr[0]+1;
 
                           $products_optionstable = $oostable['products_options'];
-				xtc_db_query("INSERT INTO $products_optionstable (products_options_id,language_id,products_options_name) values ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
+				xtc_db_query("INSERT INTO $products_optionstable (products_options_id,language_id,products_options_name) VALUES ($options_id->products_options_id,$einstellungen->languages_id,\"$Eigenschaft->cName\")");
 			}
 			//mapping zu variation 
 			setMappingEigenschaft($Eigenschaft->kEigenschaft,$options_id->products_options_id,$Eigenschaft->kArtikel);

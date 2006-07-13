@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.10 2006/07/09 16:38:39 r23 Exp $
+   $Id: SetBestellung.php,v 1.11 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -88,7 +88,7 @@ if (auth())
 		}
 		
 		//setze bestellung auf abgeholt
-		xtc_db_query("INSERT INTO eazysales_sentorders (orders_id, dGesendet) values (".intval($_POST['KeyBestellung']).",now())");
+		xtc_db_query("INSERT INTO eazysales_sentorders (orders_id, dGesendet) VALUES (".intval($_POST['KeyBestellung']).",now())");
 	}
 }
 

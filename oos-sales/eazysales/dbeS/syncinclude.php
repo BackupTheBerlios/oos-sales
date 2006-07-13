@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.9 2006/07/12 17:19:42 r23 Exp $
+   $Id: syncinclude.php,v 1.10 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -126,10 +126,10 @@
 
 
   /**
-   * FÜgt Anführungszeichen vorne und am Ende an, sobald die Variable nicht leer.
+   * Fï¿½t Anfhrungszeichen vorne und am Ende an, sobald die Variable nicht leer.
    *
    * @param mixed $value
-   * @return $value mit Anführungszeichen vorne und hinten. Falls $value leer, werden diese Zeichen nicht hinzugefügt.
+   * @return $value mit Anfhrungszeichen vorne und hinten. Falls $value leer, werden diese Zeichen nicht hinzugefgt.
    */
   function CSVkonform($value) {
      if (strlen($value)>0)
@@ -169,44 +169,54 @@
 
     if ($mein_key && $eS_key) {
       $eazysales_martikeltable = $oostable['eazysales_martikel'];
-		$cur_query = xtc_db_query("SELECT products_id 
-                                           FROM $eazysales_martikeltable
-                                           WHERE products_id=".$mein_key);
-		$prod = mysql_fetch_object($cur_query);
-		if ($prod->products_id>0)
-			return "";
-		else 
-		{
-      $eazysales_martikeltable = $oostable['eazysales_martikel'];
-			xtc_db_query("INSERT INTO $eazysales_martikeltable (products_id, kArtikel) values ($mein_key,$eS_key)");
-		}
+      $query = "SELECT products_id
+                FROM $eazysales_martikeltable
+                WHERE products_id = '" . intval($mein_key) . "'";
+      $result = $dbconn->Execute($query);
+      if ($result->RecordCount() > 0) {
+        return true;
+      } else {
+        $eazysales_martikeltable = $oostable['eazysales_martikel'];
+        $query = "INSERT INTO $eazysales_martikeltable
+                 (products_id,
+                  kArtikel)
+                  VALUES (" . $dbconn->qstr($mein_key) . ','
+                            . $dbconn->qstr($eS_key) . ")";
+        $result = $dbconn->Execute($query);
+      }
     }
+    return true;
   }
 
   function setMappingKategorie ($eS_key, $mein_key) {
+
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	$eS_key = intval($eS_key);
-	$mein_key = intval($mein_key);
-	if ($mein_key && $eS_key)
-	{
-    $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
-		$cur_query = xtc_db_query("SELECT categories_id 
-                                           FROM $eazysales_mkategorietable
-                                           WHERE categories_id=".$mein_key);
-		$prod = mysql_fetch_object($cur_query);
-		if ($prod->categories_id>0)
-			return "";
-		else 
-		{
-    $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
+    $eS_key = intval($eS_key);
+    $mein_key = intval($mein_key);
 
-			xtc_db_query("INSERT INTO $eazysales_mkategorietable (categories_id, kKategorie) values ($mein_key,$eS_key)");
-		}
-	}
-}
+    if ($mein_key && $eS_key) {
+      $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
+      $query = "SELECT categories_id
+                FROM $eazysales_mkategorietable
+                WHERE categories_id = '" . intval($mein_key) . "'";
+      $result = $dbconn->Execute($query);
+      if ($result->RecordCount() > 0) {
+        return true;
+      } else {
+        $eazysales_mkategorietable = $oostable['eazysales_mkategorie'];
+        $query = "INSERT INTO $eazysales_mkategorietable
+                  (categories_id,
+                   kKategorie)
+                   VALUES (" . $dbconn->qstr($mein_key) . ','
+                             . $dbconn->qstr($eS_key) . ")";
+        $result = $dbconn->Execute($query);
+      }
+    }
+    return true;
+  }
 
   function setMappingEigenschaft ($eS_key, $mein_key, $kArtikel) {
 
@@ -219,27 +229,40 @@
 
     if ($mein_key && $eS_key && $kArtikel) {
       $eazysales_mvariationtable = $oostable['eazysales_mvariation'];
-		xtc_db_query("DELETE FROM $eazysales_mvariationtable WHERE kEigenschaft=".$eS_key);
-		xtc_db_query("INSERT INTO $eazysales_mvariationtable (kEigenschaft,products_options_id,kArtikel) values ($eS_key, $mein_key, $kArtikel)");
+      $dbconn->Execute("DELETE FROM $eazysales_mvariationtable WHERE kEigenschaft = '" . intval($eS_key) . "'");
+
+      $query = "INSERT INTO $eazysales_mvariationtable
+               (kEigenschaft,
+                products_options_id,
+                kArtikel)
+                VALUES (" . $dbconn->qstr($eS_key) . ','
+                          . $dbconn->qstr($mein_key) . ','
+                          . $dbconn->qstr($kArtikel) . ")";
+      $result = $dbconn->Execute($query);
+
     }
   }
 
   function setMappingBestellPos ($mein_key) {
+
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
     $mein_key = intval($mein_key);
-    $eazysales_mbestellpostable = $oostable['eazysales_mbestellpos'];
 
-	xtc_db_query("DELETE FROM $eazysales_mbestellpostable WHERE orders_products_id=".$mein_key);
-	xtc_db_query("INSERT INTO $eazysales_mbestellpostable (orders_products_id) values ($mein_key)");
+    $eazysales_mbestellpostable = $oostable['eazysales_mbestellpos'];
+    $dbconn->Execute("DELETE FROM $eazysales_mbestellpostable WHERE orders_products_id= '" . intval($mein_key) . "'");
+
+    $query = "INSERT INTO $eazysales_mbestellpostable (orders_products_id) VALUES (" . $dbconn->qstr($mein_key) . ")";
+    $result = $dbconn->Execute($query);
 
     $insert_id = $dbconn->Insert_ID();
     return $insert_id;
   }
 
   function setMappingEigenschaftsWert ($eS_key, $mein_key, $kArtikel) {
+
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
@@ -261,8 +284,8 @@
 			return "";
 		} else {
          $eazysales_mvariationswerttable = $oostable['eazysales_mvariationswert'];
-			logExtra("INSERT INTO $eazysales_mvariationswerttable (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
-			xtc_db_query("INSERT INTO $eazysales_mvariationswerttable (products_attributes_id, kEigenschaftsWert, kArtikel) values ($mein_key,$eS_key,$kArtikel)");
+			logExtra("INSERT INTO $eazysales_mvariationswerttable (products_attributes_id, kEigenschaftsWert, kArtikel) VALUES ($mein_key,$eS_key,$kArtikel)");
+			xtc_db_query("INSERT INTO $eazysales_mvariationswerttable (products_attributes_id, kEigenschaftsWert, kArtikel) VALUES ($mein_key,$eS_key,$kArtikel)");
 		}
       }
     }

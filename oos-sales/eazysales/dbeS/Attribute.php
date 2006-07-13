@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Attribute.php,v 1.9 2006/07/09 16:38:38 r23 Exp $
+   $Id: Attribute.php,v 1.10 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -102,7 +102,7 @@ function attributBearbeiten ($Attribut)
 					$cur_query = xtc_db_query("SELECT max(shipping_status_id) FROM shipping_status");
 					$max_shipping_status_id_arr = mysql_fetch_row($cur_query);
 					$shipping_id = $max_shipping_status_id_arr[0]+1;
-					xtc_db_query("INSERT INTO shipping_status (shipping_status_id, language_id, shipping_status_name) values ($shipping_id, $einstellungen->languages_id, \"$Attribut->content\")");
+					xtc_db_query("INSERT INTO shipping_status (shipping_status_id, language_id, shipping_status_name) VALUES ($shipping_id, $einstellungen->languages_id, \"$Attribut->content\")");
 				}
 				xtc_db_query("UPDATE products SET products_shippingtime=".$shipping_id." WHERE products_id=".$Attribut->products_id);
 				break;

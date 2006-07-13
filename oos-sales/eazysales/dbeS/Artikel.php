@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.10 2006/07/09 16:38:38 r23 Exp $
+   $Id: Artikel.php,v 1.11 2006/07/13 03:05:50 r23 Exp $
 
    wawi - osis online shop
 
@@ -104,7 +104,7 @@ if (auth())
 			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
 
                   $productstable = $oostable['products'];
-			xtc_db_query("INSERT INTO $productstable (products_shippingtime, products_startpage, products_model, products_price, products_tax_class_id, products_quantity, products_ean, products_weight, manufacturers_id, product_template, options_template, products_status) values ($shipping_status,$startseite,\"".$artikel->cArtNr."\",$artikel->fVKNetto,$products_tax_class_id,$artikel->nLagerbestand,\"".$artikel->cBarcode."\",$artikel->fGewicht,$manufacturers_id,\"".$einstellungen->prod_product_template."\",\"".$einstellungen->prod_options_template."\",1)");
+			xtc_db_query("INSERT INTO $productstable (products_shippingtime, products_startpage, products_model, products_price, products_tax_class_id, products_quantity, products_ean, products_weight, manufacturers_id, product_template, options_template, products_status) VALUES ($shipping_status,$startseite,\"".$artikel->cArtNr."\",$artikel->fVKNetto,$products_tax_class_id,$artikel->nLagerbestand,\"".$artikel->cBarcode."\",$artikel->fGewicht,$manufacturers_id,\"".$einstellungen->prod_product_template."\",\"".$einstellungen->prod_options_template."\",1)");
 			//hole id
 			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 			$products_id_arr = mysql_fetch_row($query);
@@ -116,7 +116,7 @@ if (auth())
 
                   $products_descriptiontable = $oostable['products_description'];
 
-				xtc_db_query("INSERT INTO $products_descriptiontable (products_id, products_name, products_description, products_short_description, language_id) values (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
+				xtc_db_query("INSERT INTO $products_descriptiontable (products_id, products_name, products_description, products_short_description, language_id) VALUES (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
 				setMappingArtikel($artikel->kArtikel,$products_id_arr[0]);
 			}
 			else 
@@ -142,7 +142,7 @@ if (auth())
 				$cur_query = xtc_db_query("SELECT max(products_vpe_id) FROM products_vpe");
 				$max_shipping_products_vpe_arr = mysql_fetch_row($cur_query);
 				$products_vpe_id = $max_shipping_products_vpe_arr[0]+1;
-				xtc_db_query("INSERT INTO products_vpe (products_vpe_id, language_id, products_vpe_name) values ($products_vpe_id, $einstellungen->languages_id, \"$artikel->cEinheit\")");
+				xtc_db_query("INSERT INTO products_vpe (products_vpe_id, language_id, products_vpe_name) VALUES ($products_vpe_id, $einstellungen->languages_id, \"$artikel->cEinheit\")");
 			}
                   $productstable = $oostable['products'];
 			xtc_db_query("UPDATE $productstable SET products_vpe=".$products_vpe_id." WHERE products_id=".$products_id);
@@ -179,17 +179,17 @@ function insertPreise($products_id)
 		{
 			$table = $personalOfferTable.$customers_status_id;
 			xtc_db_query("DELETE FROM $table WHERE products_id=".$products_id);
-			xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,1,".floatval($_POST["ArtikelVKNetto"]).")");
+			xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,1,".floatval($_POST["ArtikelVKNetto"]).")");
 			if (intval($_POST["PAnz1"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["PAnz1"]).",".floatval($_POST["PPreis1"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["PAnz1"]).",".floatval($_POST["PPreis1"]).")");
 			if (intval($_POST["PAnz2"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["PAnz2"]).",".floatval($_POST["PPreis2"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["PAnz2"]).",".floatval($_POST["PPreis2"]).")");
 			if (intval($_POST["PAnz3"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["PAnz3"]).",".floatval($_POST["PPreis3"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["PAnz3"]).",".floatval($_POST["PPreis3"]).")");
 			if (intval($_POST["PAnz4"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["PAnz4"]).",".floatval($_POST["PPreis4"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["PAnz4"]).",".floatval($_POST["PPreis4"]).")");
 			if (intval($_POST["PAnz5"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["PAnz5"]).",".floatval($_POST["PPreis5"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["PAnz5"]).",".floatval($_POST["PPreis5"]).")");
 		}
 	}
 	$haendlerKunden_arr = explode(";",$GLOBALS['einstellungen']->mappingHaendlerkunde);
@@ -199,17 +199,17 @@ function insertPreise($products_id)
 		{
 			$table = $personalOfferTable.$customers_status_id;
 			xtc_db_query("DELETE FROM $table WHERE products_id=".$products_id);
-			xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,1,".floatval($_POST["ArtikelVKHaendlerNetto"]).")");
+			xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,1,".floatval($_POST["ArtikelVKHaendlerNetto"]).")");
 			if (intval($_POST["HAnz1"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["HAnz1"]).",".floatval($_POST["HPreis1"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["HAnz1"]).",".floatval($_POST["HPreis1"]).")");
 			if (intval($_POST["HAnz2"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["HAnz2"]).",".floatval($_POST["HPreis2"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["HAnz2"]).",".floatval($_POST["HPreis2"]).")");
 			if (intval($_POST["HAnz3"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["HAnz3"]).",".floatval($_POST["HPreis3"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["HAnz3"]).",".floatval($_POST["HPreis3"]).")");
 			if (intval($_POST["HAnz4"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["HAnz4"]).",".floatval($_POST["HPreis4"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["HAnz4"]).",".floatval($_POST["HPreis4"]).")");
 			if (intval($_POST["HAnz5"])>0)
-				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) values ($products_id,".intval($_POST["HAnz5"]).",".floatval($_POST["HPreis5"]).")");
+				xtc_db_query("INSERT INTO $table (products_id, quantity, personal_offer) VALUES ($products_id,".intval($_POST["HAnz5"]).",".floatval($_POST["HPreis5"]).")");
 		}
 	}
 }
@@ -231,12 +231,12 @@ function holeHerstellerId($cHersteller)
 		else 
 		{
        $manufacturerstable = $oostable['manufacturers'];
-			xtc_db_query("INSERT INTO $manufacturerstable (manufacturers_name, date_added) values (\"".$cHersteller."\", now())");
+			xtc_db_query("INSERT INTO $manufacturerstable (manufacturers_name, date_added) VALUES (\"".$cHersteller."\", now())");
 			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 			$manu_id_arr = mysql_fetch_row($query);
 
        $manufacturers_infotable = $oostable['manufacturers_info'];
-			xtc_db_query("INSERT INTO $manufacturers_infotable (manufacturers_id, languages_id) values (".$manu_id_arr[0].", ".$GLOBALS['einstellungen']->languages_id.")");
+			xtc_db_query("INSERT INTO $manufacturers_infotable (manufacturers_id, languages_id) VALUES (".$manu_id_arr[0].", ".$GLOBALS['einstellungen']->languages_id.")");
 			return $manu_id_arr[0];
 		}
 	}
@@ -262,12 +262,12 @@ function holeSteuerId($MwSt)
 	else 
 	{
        $tax_classtable = $oostable['tax_class'];
-		xtc_db_query("INSERT INTO $tax_classtable (tax_class_title, date_added) values (\"eazySales Steuerklasse ".$MwSt."%\", now())");
+		xtc_db_query("INSERT INTO $tax_classtable (tax_class_title, date_added) VALUES (\"eazySales Steuerklasse ".$MwSt."%\", now())");
 		$query = xtc_db_query("SELECT LAST_INSERT_ID()");
 		$tax_class_id_arr = mysql_fetch_row($query);
 
        $tax_ratestable = $oostable['tax_rates'];
-		xtc_db_query("INSERT INTO $tax_ratestable (tax_zone_id, tax_class_id, tax_priority, tax_rate, date_added) values (".$GLOBALS['einstellungen']->tax_zone_id.",".$tax_class_id_arr[0].", ".$GLOBALS['einstellungen']->tax_priority.", ".$MwSt.", now())");
+		xtc_db_query("INSERT INTO $tax_ratestable (tax_zone_id, tax_class_id, tax_priority, tax_rate, date_added) VALUES (".$GLOBALS['einstellungen']->tax_zone_id.",".$tax_class_id_arr[0].", ".$GLOBALS['einstellungen']->tax_priority.", ".$MwSt.", now())");
 		return $tax_class_id_arr[0];
 	}
 }
