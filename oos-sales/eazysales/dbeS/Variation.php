@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.9 2006/07/13 03:05:50 r23 Exp $
+   $Id: Variation.php,v 1.10 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -50,7 +50,8 @@ if (auth())
 		if ($products_id>0)
 		{
 			//hole einstellungen
-			$cur_query = xtc_db_query("SELECT languages_id FROM eazysales_einstellungen");
+                        $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+			$cur_query = xtc_db_query("SELECT languages_id FROM $eazysales_einstellungenstable");
 			$einstellungen = mysql_fetch_object($cur_query);
 			
 			//hol products_options_id

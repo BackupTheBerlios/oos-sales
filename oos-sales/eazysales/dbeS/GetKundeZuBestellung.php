@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetKundeZuBestellung.php,v 1.8 2006/07/09 16:38:38 r23 Exp $
+   $Id: GetKundeZuBestellung.php,v 1.9 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,7 +43,8 @@ if (auth())
 		$return=0;
 		
 		//hole einstellungen 
-		$cur_query = xtc_db_query("SELECT mappingHaendlerkunde FROM eazysales_einstellungen");
+                $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+		$cur_query = xtc_db_query("SELECT mappingHaendlerkunde FROM $eazysales_einstellungenstable");
 		$einstellungen = mysql_fetch_object($cur_query);
 		$haendler_arr = explode(";",$einstellungen->mappingHaendlerkunde);
 		

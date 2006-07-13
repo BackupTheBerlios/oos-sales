@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetBestellungPos.php,v 1.8 2006/07/09 16:38:38 r23 Exp $
+   $Id: GetBestellungPos.php,v 1.9 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -85,7 +85,8 @@ if (auth())
 			$kBestellPos = setMappingBestellPos(0);
 
 			//hole versand mwst aus einstellungen 
-			$cur_query = xtc_db_query("SELECT versandMwst FROM eazysales_einstellungen");
+                        $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+			$cur_query = xtc_db_query("SELECT versandMwst FROM $eazysales_einstellungenstable");
 			$einstellungen = mysql_fetch_object($cur_query);
 			
 			echo(CSVkonform($kBestellPos).';');

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.12 2006/07/13 03:21:10 r23 Exp $
+   $Id: SetBestellung.php,v 1.13 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,7 +45,8 @@ if (auth())
 		$return = 0;
 		//setze orders_status auf gew�lte Option bei eS Versadnt
 		//hole einstellungen
-		$cur_query = xtc_db_query("SELECT StatusVersendet FROM eazysales_einstellungen");
+                $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+		$cur_query = xtc_db_query("SELECT StatusVersendet FROM $eazysales_einstellungenstable");
 		$einstellungen = mysql_fetch_object($cur_query);
 		
 		//setze status der Bestellung

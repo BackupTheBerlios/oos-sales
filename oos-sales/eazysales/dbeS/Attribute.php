@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Attribute.php,v 1.10 2006/07/13 03:05:50 r23 Exp $
+   $Id: Attribute.php,v 1.11 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -61,7 +61,8 @@ function attributBearbeiten ($Attribut)
 	if ($Attribut->content && $Attribut->products_id>0)
 	{
 		//hole einstellungen
-		$cur_query = xtc_db_query("SELECT * FROM eazysales_einstellungen");
+                $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+		$cur_query = xtc_db_query("SELECT * FROM $eazysales_einstellungenstable");
 		$einstellungen = mysql_fetch_object($cur_query);
 		
 		switch (strtolower($Attribut->name))

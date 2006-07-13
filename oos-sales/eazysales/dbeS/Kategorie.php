@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Kategorie.php,v 1.11 2006/07/13 03:05:50 r23 Exp $
+   $Id: Kategorie.php,v 1.12 2006/07/13 03:32:11 r23 Exp $
 
    wawi - osis online shop
 
@@ -39,7 +39,8 @@ $return=3;
 if (auth())
 {
 	//hole einstellungen
-	$cur_query = xtc_db_query("SELECT * FROM eazysales_einstellungen");
+        $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+	$cur_query = xtc_db_query("SELECT * FROM $eazysales_einstellungenstable");
 	$einstellungen = mysql_fetch_object($cur_query);
 
 	if ((intval($_POST["action"]) == 1 || intval($_POST["action"]) == 3) && intval($_POST['KeyKategorie'])>0)
