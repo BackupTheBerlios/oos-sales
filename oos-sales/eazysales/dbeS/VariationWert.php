@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.12 2006/07/13 07:47:40 r23 Exp $
+   $Id: VariationWert.php,v 1.13 2006/08/14 23:21:41 r23 Exp $
 
    wawi - osis online shop
 
@@ -58,18 +58,17 @@
       $einstellungen = $dbconn->GetRow($query);
 
       $products_options_id = getFremdEigenschaft($eigenschaft_wert['kEigenschaft']);
-		if ($products_options_id>0)
-		{
-			//schaue, ob dieser EigenschaftsWert bereits global existiert fr diese Eigenschaft!!
-                  $products_options_values_to_products_optionstable = $oostable['products_options_values_to_products_options'];
-                  $products_options_valuestable = $oostable['products_options_values'];
-			$cur_query = xtc_db_query("SELECT products_options_values.products_options_values_id
-                                                   FROM $products_options_valuestable,
-                                                        $products_options_values_to_products_optionstable
-                                                   WHERE products_options_values_to_products_options.products_options_id=$products_options_id 
-                                                     AND products_options_values_to_products_options.products_options_values_id=products_options_values.products_options_values_id 
-                                                     AND products_options_values.language_id=$einstellungen->languages_id 
-                                                     AND products_options_values.products_options_values_name=\"$eigenschaft_wert['cName']\"");
+      if ($products_options_id > 0) {
+        //schaue, ob dieser EigenschaftsWert bereits global existiert für diese Eigenschaft!!
+        $products_options_values_to_products_optionstable = $oostable['products_options_values_to_products_options'];
+        $products_options_valuestable = $oostable['products_options_values'];
+        $query = "SELECT pov.products_options_values_id
+                  FROM $products_options_valuestable pov,
+                       $products_options_values_to_products_optionstable povtpo
+                  WHERE povtpo.products_options_id = '" . intval($products_options_id) . "'
+                    AND povtpo.products_options_values_id = pov.products_options_values_id
+                    AND pov.products_options_values_languages_id = '" . $einstellungen['languages_id'] . "'
+                    AND pov.products_options_values_name = '" . $eigenschaft_wert['cName'] . "'";
 			$options_values = mysql_fetch_object($cur_query);
 			
 			if (!$options_values->products_options_values_id)

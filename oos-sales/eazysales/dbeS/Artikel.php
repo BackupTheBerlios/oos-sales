@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.15 2006/07/13 04:05:01 r23 Exp $
+   $Id: Artikel.php,v 1.16 2006/08/14 23:21:41 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,17 +41,16 @@
 
   if (auth()) {
 
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyArtikel']))
-	{
-		$return = 0;
-		//hole einstellungen
-    $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
-    $query = "SELECT currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL,
-                     tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,
-                     cat_listing_template, cat_category_template, cat_sorting, cat_sorting2,
-                     prod_product_template, prod_options_template, StatusAbgeholt, StatusVersendet
-              FROM $eazysales_einstellungenstable";
-    $einstellungen = $dbconn->Execute($query);
+    if (intval($_POST["action"]) == 1 && intval($_POST['KeyArtikel'])) {
+      $return = 0;
+      //hole einstellungen
+      $eazysales_einstellungenstable = $oostable['eazysales_einstellungen'];
+      $query = "SELECT currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL,
+                       tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,
+                       cat_listing_template, cat_category_template, cat_sorting, cat_sorting2,
+                       prod_product_template, prod_options_template, StatusAbgeholt, StatusVersendet
+                FROM $eazysales_einstellungenstable";
+      $einstellungen = $dbconn->Execute($query);
 
 
 		$artikel->kArtikel = realEscape($_POST["KeyArtikel"]);
@@ -76,67 +75,96 @@
 		$artikel->cHersteller = realEscape(htmlentities($_POST["Hersteller"]));
 		$startseite=0;
 		if ($artikel->cTopArtikel=="Y")
-			$startseite=1;
+                  $startseite = 1;
 		$shipping_status=0;
 		if ($GLOBALS['einstellungen']->shipping_status_id>0)
 			$shipping_status=$GLOBALS['einstellungen']->shipping_status_id;
 		//update oder insert?
 		$products_id = getFremdArtikel($artikel->kArtikel);
-		if ($products_id>0)
-		{
-			//update
+      if ($products_id > 0){
+        //update
+        $products_attributestable = $oostable['products_attributes'];
+        $dbconn->Execute("DELETE FROM $products_attributestable WHERE products_id=".$products_id);
 
-                  $products_attributestable = $oostable['products_attributes'];
-			xtc_db_query("DELETE FROM $products_attributestable WHERE products_id=".$products_id);
-                  $products_to_categoriestable = $oostable['products_to_categories'];
-			xtc_db_query("DELETE FROM $products_to_categoriestable WHERE products_id=".$products_id);
-			
-			//evtl. andere MwSt?
-			$products_tax_class_id = holeSteuerId($artikel->fMwSt);
-			//evtl. neuer Hersteller?
-			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
+        $products_to_categoriestable = $oostable['products_to_categories'];
+        $dbconn->Execute("DELETE FROM $products_to_categoriestable WHERE products_id=".$products_id);
 
-                  $productstable = $oostable['products'];
-			xtc_db_query("UPDATE $productstable SET products_fsk18=0, products_shippingtime=$shipping_status, products_startpage=$startseite, products_model=\"$artikel->cArtNr\", products_price=\"$artikel->fVKNetto\", products_tax_class_id=\"$products_tax_class_id\", products_quantity=\"$artikel->nLagerbestand\", products_ean=\"$artikel->cBarcode\", products_weight=\"$artikel->fGewicht\", manufacturers_id=\"$manufacturers_id\", products_status=1 WHERE products_id=".$products_id);
+        //evtl. andere MwSt?
+        $products_tax_class_id = holeSteuerId($artikel->fMwSt);
+        //evtl. neuer Hersteller?
+        $manufacturers_id = holeHerstellerId($artikel->cHersteller);
 
-                  $products_descriptiontable = $oostable['products_description'];
-			xtc_db_query("UPDATE $products_descriptiontable SET products_name=\"$artikel->cName\", products_description=\"$artikel->cBeschreibung\", products_short_description=\"$artikel->cKurzBeschreibung\", products_keywords=\"\", products_meta_title=\"\", products_meta_description=\"\", products_meta_keywords=\"\", products_url=\"\" WHERE products_id=".$products_id." AND language_id=".$einstellungen->languages_id);
+        $productstable = $oostable['products'];
+        $dbconn->Execute("UPDATE $productstable
+                          SET products_model=\"$artikel->cArtNr\",
+                              products_price=\"$artikel->fVKNetto\",
+                              products_tax_class_id=\"$products_tax_class_id\",
+                              products_quantity=\"$artikel->nLagerbestand\",
+                              products_ean=\"$artikel->cBarcode\",
+                              products_weight=\"$artikel->fGewicht\",
+                              manufacturers_id=\"$manufacturers_id\",
+                              products_status=1
+                          WHERE products_id=".$products_id);
+
+        $products_descriptiontable = $oostable['products_description'];
+        $dbconn->Execute("UPDATE $products_descriptiontable
+                          SET products_name=\"$artikel->cName\",
+                              products_description=\"$artikel->cBeschreibung\",
+                              products_short_description=\"$artikel->cKurzBeschreibung\",
+                              products_keywords=\"\", products_meta_title=\"\",
+                              products_meta_description=\"\", products_meta_keywords=\"\",
+                              products_url=\"\"
+                          WHERE products_id=".$products_id." AND
+                                language_id=".$einstellungen->languages_id);
 			//kundengrp preise
 			insertPreise($products_id);
-		}
-		else 
-		{
-			//insert
-			//hole Mwst classId
-			$products_tax_class_id = holeSteuerId($artikel->fMwSt);
-			//setze Hersteller, falls es ihn noch nicht gibt
-			$manufacturers_id = holeHerstellerId($artikel->cHersteller);
+      } else {
+        //insert
+        //hole Mwst classId
+        $products_tax_class_id = holeSteuerId($artikel->fMwSt);
+        //setze Hersteller, falls es ihn noch nicht gibt
+        $manufacturers_id = holeHerstellerId($artikel->cHersteller);
 
-                  $productstable = $oostable['products'];
-			xtc_db_query("INSERT INTO $productstable (products_shippingtime, products_startpage, products_model, products_price, products_tax_class_id, products_quantity, products_ean, products_weight, manufacturers_id, product_template, options_template, products_status) VALUES ($shipping_status,$startseite,\"".$artikel->cArtNr."\",$artikel->fVKNetto,$products_tax_class_id,$artikel->nLagerbestand,\"".$artikel->cBarcode."\",$artikel->fGewicht,$manufacturers_id,\"".$einstellungen->prod_product_template."\",\"".$einstellungen->prod_options_template."\",1)");
-			//hole id
-			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
-			$products_id_arr = mysql_fetch_row($query);
-			if ($products_id_arr[0]>0)
-			{
+        $productstable = $oostable['products'];
+        $dbconn->Execute("INSERT INTO $productstable 
+                         (products_model,
+                          products_price,
+                          products_tax_class_id,
+                          products_quantity,
+                          products_ean,
+                          products_weight,
+                          manufacturers_id,
+                          products_status) VALUES (\"".$artikel->cArtNr."\",
+                                                       $artikel->fVKNetto,
+                                                       $products_tax_class_id,
+                                                       $artikel->nLagerbestand,
+                                                   \"".$artikel->cBarcode."\",
+                                                       $artikel->fGewicht,
+                                                       $manufacturers_id,
+                                                    1)");
+        //hole id
+        $products_id = $dbconn->Insert_ID();
+
 				//mssen Preise in spezielle tabellen?
 				$products_id=$products_id_arr[0];
 				insertPreise($products_id_arr[0]);
 
-                  $products_descriptiontable = $oostable['products_description'];
+        $products_descriptiontable = $oostable['products_description'];
+        $dbconn->Execute("INSERT INTO $products_descriptiontable 
+                          (products_id,
+                          products_name,
+                          products_description,
+                          products_short_description,
+                           language_id) VALUES (".$products_id.",
+                                                 \"".$artikel->cName."\",
+                                                 \"".$artikel->cBeschreibung."\",
+                                                  \"".$artikel->cKurzBeschreibung."\",
+                                                  $einstellungen->languages_id)");
+				setMappingArtikel($artikel->kArtikel,$products_id);
 
-				xtc_db_query("INSERT INTO $products_descriptiontable (products_id, products_name, products_description, products_short_description, language_id) VALUES (".$products_id_arr[0].",\"".$artikel->cName."\", \"".$artikel->cBeschreibung."\", \"".$artikel->cKurzBeschreibung."\", $einstellungen->languages_id)");
-				setMappingArtikel($artikel->kArtikel,$products_id_arr[0]);
-			}
-			else 
-			{
-				//Fehler aufgetreten
-				$return=1;
-			}
-		}
-		//VPE
-		if ($products_id>0)
-		{
+      }
+      //VPE
+      if ($products_id>0) {
 			$products_vpe_id=0;
 			//gibt es schon so einen products_vpe?
 			$cur_query = xtc_db_query("SELECT products_vpe_id FROM products_vpe WHERE language_id=".$einstellungen->languages_id." AND  products_vpe_name=\"".$artikel->cEinheit."\"");
