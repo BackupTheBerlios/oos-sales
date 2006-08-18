@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.16 2006/08/14 23:21:41 r23 Exp $
+   $Id: Artikel.php,v 1.17 2006/08/18 23:12:51 r23 Exp $
 
    wawi - osis online shop
 
@@ -251,34 +251,40 @@ function insertPreise($products_id)
 	}
 }
 
-function holeHerstellerId($cHersteller)
-{
+
+  function holeHerstellerId($cHersteller) {
 
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	if (strlen($cHersteller)>0)
-	{
-       $manufacturerstable = $oostable['manufacturers'];
-		$cur_query = xtc_db_query("SELECT $manufacturerstable FROM manufacturers WHERE manufacturers_name=\"".$cHersteller."\"");
-		$manu = mysql_fetch_object($cur_query);
-		if ($manu->manufacturers_id>0)
-			return $manu->manufacturers_id;
-		else 
-		{
-       $manufacturerstable = $oostable['manufacturers'];
-			xtc_db_query("INSERT INTO $manufacturerstable (manufacturers_name, date_added) VALUES (\"".$cHersteller."\", now())");
-			$query = xtc_db_query("SELECT LAST_INSERT_ID()");
-			$manu_id_arr = mysql_fetch_row($query);
+    if (strlen($cHersteller) >0 ) {
+      $manufacturerstable = $oostable['manufacturers'];
+      $query = "SELECT manufacturers_id
+                FROM $manufacturerstable
+                WHERE manufacturers_name = '" . $cHersteller . "'";
+      $result =& $dbconn->Execute($query);
+      if ($result->RecordCount()) {
+        return $result->fields['manufacturers_id'];
+      } else {
+        $manufacturerstable = $oostable['manufacturers'];
+        $dbconn->Execute("INSERT INTO $manufacturerstable
+                          (manufacturers_name,
+                           date_added) VALUES ('" . $cHersteller . "',
+                                               now())");
 
-       $manufacturers_infotable = $oostable['manufacturers_info'];
-			xtc_db_query("INSERT INTO $manufacturers_infotable (manufacturers_id, languages_id) VALUES (".$manu_id_arr[0].", ".$GLOBALS['einstellungen']->languages_id.")");
-			return $manu_id_arr[0];
-		}
-	}
-	return 0;
-}
+        $id = $dbconn->Insert_ID();
+        $manufacturers_infotable = $oostable['manufacturers_info'];
+        $dbconn->Execute("INSERT INTO $manufacturers_infotable 
+                          (manufacturers_id,
+                           manufacturers_languages_id) VALUES ('" . $id . "',
+                                                                ".$GLOBALS['einstellungen']->languages_id.")");
+         return $id;
+      }
+    }
+    return 0;
+  }
+
 
 function holeSteuerId($MwSt)
 {
