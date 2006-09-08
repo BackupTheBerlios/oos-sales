@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getCountArtikel.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
+   $Id: getCountArtikel.php,v 1.11 2006/09/08 15:28:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -24,9 +24,9 @@
 /**
  * eazySales_Connector/dbeS/getCountArtikel.php
  * Synchronisationsscript
- * 
+ *
  * Es gelten die Nutzungs- und Lizenzhinweise unter http://www.jtl-software.de/eazysales.php
- * 
+ *
  * @author JTL-Software <thomas@jtl-software.de>
  * @copyright 2006, JTL-Software
  * @link http://jtl-software.de/eazysales.php
@@ -42,14 +42,15 @@
 
   if (auth()) {
 
-	$return = 0;
-	//hole anzahl zu versendender Artikel
-        $productstable = $oostable['products'];
-	$cur_query = xtc_db_query("SELECT count(*)
-                                     FROM $productstable LEFT JOIN
-                                          eazysales_martikel ON products.products_id=eazysales_martikel.products_id 
-                                    WHERE eazysales_martikel.products_id is NULL");
-	if ($anzahl = mysql_fetch_row($cur_query))
+    $return = 0;
+    //hole anzahl zu versendender Artikel
+    $productstable = $oostable['products'];
+    $query = "SELECT count(*)
+              FROM $productstable LEFT JOIN
+                   eazysales_martikel ON products.products_id = eazysales_martikel.products_id
+               WHERE eazysales_martikel.products_id is NULL";
+
+    if ($anzahl = mysql_fetch_row($cur_query))
 	{
 		if ($anzahl>0)
 		{

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Artikel.php,v 1.18 2006/09/08 14:29:50 r23 Exp $
+   $Id: Artikel.php,v 1.19 2006/09/08 15:28:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -174,7 +174,7 @@
                         products_unit_name = '" . $artikel['cEinheit']. "'");
         $result =& $dbconn->Execute($query);
         if ($result->RecordCount()) {
-          $products_units_id = $result->->fields['products_units_id'];
+          $products_units_id = $result->fields['products_units_id'];
         } else {
           $products_unitstable = $oostable['products_units'];
           $next_id_result = $dbconn->Execute("SELECT max(products_units_id) as products_units_id FROM $products_unitstable");
