@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: getArtikel.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
+   $Id: getArtikel.php,v 1.13 2006/09/08 14:54:51 r23 Exp $
 
    wawi - osis online shop
 
@@ -181,7 +181,7 @@ function get_bildURL($product)
 					}
 				}
 			}
-		}		
+		}
 	}
 	return $pic;
 }
@@ -246,39 +246,39 @@ function get_attribute($product)
 	if ($product->products_fsk18>0)
 	{
 		//Attribut hinzufgen
-		$attribute.=CSVkonform("T").";".			
+		$attribute.=CSVkonform("T").";".
 			CSVkonform("FSK 18").";".
 			CSVkonform("ja").";\n";
 	}
 	
 	//Reihung
-	$attribute.=CSVkonform("T").";".			
+	$attribute.=CSVkonform("T").";".
 		CSVkonform("Reihung").";".
 		CSVkonform($product->products_sort).";\n";
 		
 	//Reihungstartseite
-	$attribute.=CSVkonform("T").";".			
+	$attribute.=CSVkonform("T").";".
 		CSVkonform("Reihung Startseite").";".
 		CSVkonform($product->products_startpage_sort).";\n";
 		
 	//suchbegriffe
-	$attribute.=CSVkonform("T").";".			
+	$attribute.=CSVkonform("T").";".
 		CSVkonform("Suchbegriffe").";".
 		CSVkonform($product->products_keywords).";\n";
 				
 	//meta title
-	$attribute.=CSVkonform("T").";".			
-		CSVkonform("Meta Title").";".
+	$attribute.=CSVkonform("T").";".
+		CSVkonform("Meta Title").";"
 		CSVkonform($product->products_meta_title).";\n";
 				
 	//meta description
-	$attribute.=CSVkonform("T").";".			
+	$attribute.=CSVkonform("T").";".
 		CSVkonform("Meta Description").";".
 		CSVkonform($product->products_meta_description).";\n";
 				
 	//meta keywords
-	$attribute.=CSVkonform("T").";".			
-		CSVkonform("Meta Keywords").";".
+	$attribute.=CSVkonform("T").";".
+		CSVkonform("Meta Keywords").";"
 		CSVkonform($product->products_meta_keywords).";\n";
 		
 	return $attribute;

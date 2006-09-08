@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: syncinclude.php,v 1.11 2006/07/13 07:47:40 r23 Exp $
+   $Id: syncinclude.php,v 1.12 2006/09/08 14:59:09 r23 Exp $
 
    wawi - osis online shop
 
@@ -448,11 +448,12 @@
  */
   function realEscape ($ausdruck) {
 
-	if (get_magic_quotes_gpc())
-		return mysql_real_escape_string(stripslashes($ausdruck));
-	else
-		return mysql_real_escape_string($ausdruck);
-}
+    if (get_magic_quotes_gpc()) {
+      return mysql_real_escape_string(stripslashes($ausdruck));
+    } else {
+      return mysql_real_escape_string($ausdruck);
+    }
+  }
 
   function logExtra($entry) {
 

@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetAdresse.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
+   $Id: GetAdresse.php,v 1.11 2006/09/08 14:54:51 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,43 +41,45 @@
 
   if (auth()) {
 
-	if (intval($_POST['KeyAdresse']))
-	{
-		//hole order
-          $orderstable = $oostable['orders'];
-		$cur_query = xtc_db_query("SELECT *
-                                           FROM $orderstable
-                                           WHERE orders_id=".intval($_POST['KeyAdresse']));
-		$Order = mysql_fetch_object($cur_query);
-		if (!$Order->delivery_firstname && !$Order->delivery_lastname)
-		{
-			list($Order->delivery_firstname, $Order->delivery_lastname) = split(" ",$Order->delivery_name);
-		}
-		
-		//falls kein kunde existiert, key muss irgendwo her!
-		if (!$Order->customers_id)
-			$Order->customers_id = 10000000-$Order->orders_id;
+    if (intval($_POST['KeyAdresse'])) {
+      //hole order
+      $orderstable = $oostable['orders'];
+      $query = "SELECT orders_id, customers_id, customers_telephone, customers_email_address,
+                       delivery_name, delivery_company, delivery_street_address, delivery_city,
+                       delivery_postcode, delivery_country
+                FROM $orderstable
+                WHERE orders_id= '" . intval($_POST['KeyAdresse']) . "'";
+      $result =& $dbconn->Execute($query);
+      $order = $result->fields;
 
-		
-		echo(CSVkonform($Order->orders_id).';');
-		echo(CSVkonform($Order->customers_id).';');
-		echo(CSVkonform($Order->delivery_firstname).';');
-		echo(CSVkonform($Order->delivery_lastname).';');
-		echo(CSVkonform($Order->delivery_company).';');
-		echo(CSVkonform($Order->delivery_street_address).';');
-		echo(CSVkonform($Order->delivery_postcode).';');
-		echo(CSVkonform($Order->delivery_city).';');
-		echo(CSVkonform($Order->delivery_country).';');
-		echo(CSVkonform($Order->customers_telephone).';');
-		echo(';'); //keine Faxangaben
-		echo(CSVkonform($Order->customers_email_address).';');
-		echo("\n");
-		
-		$return = 0;
- 	}
-	else
-		$return = 5;
-}
+      if (!$order['delivery_firstname'] && !$order['delivery_lastname']) {
+        list($order['delivery_firstname'], $order['delivery_lastname']) = split(" ",$Order->delivery_name);
+      }
+
+      //falls kein kunde existiert, key muss irgendwo her!
+      if (!$order['customers_id']) {
+        $order['customers_id'] = 10000000-$order['orders_id'];
+      }
+
+      echo(CSVkonform($order['orders_id']).';');
+      echo(CSVkonform($order['customers_id']).';');
+      echo(CSVkonform($order['delivery_firstname']).';');
+      echo(CSVkonform($order['delivery_lastname']).';');
+      echo(CSVkonform($order['delivery_company']).';');
+      echo(CSVkonform($order['delivery_street_address']).';');
+      echo(CSVkonform($order['delivery_postcode']).';');
+      echo(CSVkonform($order['delivery_city']).';');
+      echo(CSVkonform($order['delivery_country']).';');
+      echo(CSVkonform($order['customers_telephone']).';');
+      echo(';'); //keine Faxangaben
+      echo(CSVkonform($order['customers_email_address']).';');
+      echo("\n");
+
+      $return = 0;
+    } else {
+      $return = 5;
+    }
+  }
 
   echo($return);
   logge($return);
