@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetBestellung.php,v 1.16 2006/08/14 23:45:55 r23 Exp $
+   $Id: SetBestellung.php,v 1.17 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -43,7 +43,7 @@
     $return = 5;
 
     //Bestellung versandt
-    if (intval($_POST["action"]) == 6 && intval($_POST['KeyBestellung'])) {
+    if (intval($_POST['action']) == 6 && intval($_POST['KeyBestellung'])) {
       $return = 0;
 
        //hole einstellungen
@@ -74,7 +74,7 @@
     }
 
     //Bestellung erfolgreich abgeholt
-    if (intval($_POST["action"]) == 5 && intval($_POST['KeyBestellung'])) {
+    if (intval($_POST['action']) == 5 && intval($_POST['KeyBestellung'])) {
       $return = 0;
 
       //hole einstellungen

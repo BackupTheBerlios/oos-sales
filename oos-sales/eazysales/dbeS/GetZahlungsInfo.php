@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: GetZahlungsInfo.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
+   $Id: GetZahlungsInfo.php,v 1.11 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -37,32 +37,31 @@
 
   require 'syncinclude.php';
 
-if (file_exists(DOCROOT_XTC_PATH."inc/changedataout.inc.php"))
-	require_once(DOCROOT_XTC_PATH."inc/changedataout.inc.php");
-
   $return = 3;
 
   if (auth()) {
 
-	$return = 5;
-	if (intval($_POST['KeyBestellung']))
-	{
-		$return = 0;
-		//hole order
+    $return = 5;
+    if (intval($_POST['KeyBestellung'])) {
+      $return = 0;
+      //hole order
 
-                $orderstable = $oostable['orders'];
-		$cur_query = xtc_db_query("SELECT orders_id, payment_method, cc_type, cc_owner, cc_number, cc_expires, cc_start, cc_issue, cc_cvv 
-                                           FROM $orderstable
-                                           WHERE orders_id=".intval($_POST['KeyBestellung']));
-		$ZahlungsInfo = mysql_fetch_object($cur_query);
-		$ZahlungsInfo->send=0;
+      $orderstable = $oostable['orders'];
+      $query = "SELECT orders_id, payment_method, cc_type, cc_owner, cc_number, cc_expires,
+                FROM $orderstable
+                WHERE orders_id = " . intval($_POST['KeyBestellung'] ));
+      $result =& $dbconn->Execute($query);
+      $ZahlungsInfo = $result->fields;
+
+
 		//ist es Banktransfer?
 		if ($ZahlungsInfo->payment_method=="banktransfer")
 		{
 			//hole bankdaten
-                  $banktransfertable = $oostable['banktransfer'];
-			$cur_query = xtc_db_query("SELECT * FROM $banktransfertable WHERE orders_id=".intval($_POST['KeyBestellung']));
-			$Bank = mysql_fetch_object($cur_query);
+    $banktransfertable = $oostable['banktransfer'];
+    $banktransfer_result = $dbconn->Execute("SELECT banktransfer_prz, banktransfer_status, banktransfer_owner, banktransfer_number, banktransfer_bankname, banktransfer_blz, banktransfer_fax FROM $banktransfertable  WHERE orders_id = '" . oos_db_input($_GET['oID']) . "'");
+    $banktransfer = $banktransfer_result->fields;
+
 			if ($Bank->orders_id>0)
 			{
 				$ZahlungsInfo->send=1;

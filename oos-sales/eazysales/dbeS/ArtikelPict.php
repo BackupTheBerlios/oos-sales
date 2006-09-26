@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: ArtikelPict.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
+   $Id: ArtikelPict.php,v 1.13 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,7 +45,7 @@ $picpath = "../produktbilder/";
 
 	$return = 0;
 /*	$ArtikelPict = new ArtikelPict();
-	if (intval($_POST["action"]) == 1 && $ArtikelPict->setzePostDaten())
+	if (intval($_POST['action']) == 1 && $ArtikelPict->setzePostDaten())
 	{
 		$oldArtikelPict = new ArtikelPict();
 		$oldArtikelPict->loadFromDB($ArtikelPict->kArtikel);
@@ -200,7 +200,7 @@ $picpath = "../produktbilder/";
 	else
 		$return=5;
 	*/
-	if (intval($_POST["action"]) == 3 && intval($_POST['KeyArtikel'])>0)
+	if (intval($_POST['action']) == 3 && intval($_POST['KeyArtikel'])>0)
 	{
 		$return = 0;
 		//hol products_id

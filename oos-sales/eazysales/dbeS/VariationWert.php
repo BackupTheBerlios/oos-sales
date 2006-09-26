@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: VariationWert.php,v 1.13 2006/08/14 23:21:41 r23 Exp $
+   $Id: VariationWert.php,v 1.14 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,7 +41,7 @@
   $return = 3;
 
   if (auth()) {
-    if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaftWert'])) {
+    if (intval($_POST['action']) == 1 && intval($_POST['KeyEigenschaftWert'])) {
       $return = 0;
 
       $eigenschaft_wert = array();
@@ -59,7 +59,7 @@
 
       $products_options_id = getFremdEigenschaft($eigenschaft_wert['kEigenschaft']);
       if ($products_options_id > 0) {
-        //schaue, ob dieser EigenschaftsWert bereits global existiert für diese Eigenschaft!!
+        //schaue, ob dieser EigenschaftsWert bereits global existiert fr diese Eigenschaft!!
         $products_options_values_to_products_optionstable = $oostable['products_options_values_to_products_options'];
         $products_options_valuestable = $oostable['products_options_values'];
         $query = "SELECT pov.products_options_values_id

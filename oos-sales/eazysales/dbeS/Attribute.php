@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Attribute.php,v 1.14 2006/07/13 04:05:01 r23 Exp $
+   $Id: Attribute.php,v 1.15 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,11 +41,11 @@
 
   if (auth()) {
 
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyAttribut']))
+	if (intval($_POST['action']) == 1 && intval($_POST['KeyAttribut']))
 	{
 		$return = 0;
 		
-		$Attribut->products_id = getFremdArtikel(intval($_POST["KeyArtikel"]));
+		$Attribut->products_id = getFremdArtikel(intval($_POST['KeyArtikel']));
 		$Attribut->name = $_POST["Name"];
 		$Attribut->content = $_POST["StringWert"];
 		if (strlen($_POST["TextWert"])>0)

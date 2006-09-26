@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategorieArtikel.php,v 1.10 2006/07/13 04:05:01 r23 Exp $
+   $Id: KategorieArtikel.php,v 1.11 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -40,26 +40,31 @@
   $return = 3;
 
   if (auth()) {
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyKategorieArtikel']))
-	{
-		$return = 0;
-		$KategorieArtikel->kArtikel = intval($_POST["KeyArtikel"]);
-		$KategorieArtikel->kKategorie = intval($_POST["KeyKategorie"]);
-		$products_id = getFremdArtikel($KategorieArtikel->kArtikel);
-		$categories_id = getFremdKategorie($KategorieArtikel->kKategorie);
-		if ($products_id && $categories_id)
+    if (intval($_POST['action']) == 1 && intval($_POST['KeyKategorieArtikel'])) {
+      $return = 0;
 
-                  $products_to_categoriestable = $oostable['products_to_categories'];
-			xtc_db_query("INSERT INTO $products_to_categoriestable (products_id, categories_id) VALUES ($products_id, $categories_id)");
- 	}
-	else
-		$return = 5;
+      $KategorieArtikel = array();
+      $KategorieArtikel['kArtikel'] = intval($_POST['KeyArtikel']);
+      $KategorieArtikel['kKategorie'] = intval($_POST['KeyKategorie']);
 
-	if (intval($_POST["action"]) == 3 && intval($_POST['KeyKategorieArtikel']))
-	{
-		$return = 0;
-	}
-}
+      $products_id = getFremdArtikel($KategorieArtikel['kArtikel']);
+      $categories_id = getFremdKategorie($KategorieArtikel['kKategorie']);
+
+      if ($products_id && $categories_id) {
+        $products_to_categoriestable = $oostable['products_to_categories'];
+        $dbconn->Execute("INSERT INTO $products_to_categoriestable 
+                          (products_id,
+                           categories_id) VALUES ($products_id,
+                                                  $categories_id)");
+      }
+    } else
+      $return = 5;
+    }
+
+    if (intval($_POST['action']) == 3 && intval($_POST['KeyKategorieArtikel'])) {
+      $return = 0;
+    }
+  }
 
   echo($return);
   logge($return);

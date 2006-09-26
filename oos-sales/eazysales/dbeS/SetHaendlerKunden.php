@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: SetHaendlerKunden.php,v 1.8 2006/07/13 04:05:01 r23 Exp $
+   $Id: SetHaendlerKunden.php,v 1.9 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -41,11 +41,11 @@
   $return = 3;
 
   if (auth()){
-    if (intval($_POST["action"]) == 2 && intval($_POST['Key'])) {
+    if (intval($_POST['action']) == 2 && intval($_POST['Key'])) {
       $return = 0;
     }
 
-    if (intval($_POST["action"]) == 4 && intval($_POST['Key'])) {
+    if (intval($_POST['action']) == 4 && intval($_POST['Key'])) {
       $return = 0;
     }
   }

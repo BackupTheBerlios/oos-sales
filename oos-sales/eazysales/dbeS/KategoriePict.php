@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: KategoriePict.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
+   $Id: KategoriePict.php,v 1.13 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -45,7 +45,7 @@
 	$return = 0;
 	/*
 	$KategoriePict = new KategoriePict();
-	if (intval($_POST["action"]) == 1 && $KategoriePict->setzePostDaten() && intval($_POST['KeyKategoriePict']))
+	if (intval($_POST['action']) == 1 && $KategoriePict->setzePostDaten() && intval($_POST['KeyKategoriePict']))
 	{
 		$GLOBALS["DB"]->executeQuery("DELETE FROM tkategoriepict WHERE kKategoriePict=".intval($_POST['KeyKategoriePict']),4);
 
@@ -84,7 +84,7 @@
 		$return=5;
 
 	*/
-	if (intval($_POST["action"]) == 3 && intval($_POST['KeyKategorie'])>0)
+	if (intval($_POST['action']) == 3 && intval($_POST['KeyKategorie'])>0)
 	{
 		$return = 0;
 		//hol categories_id

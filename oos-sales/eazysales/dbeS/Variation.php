@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: Variation.php,v 1.12 2006/07/13 04:05:01 r23 Exp $
+   $Id: Variation.php,v 1.13 2006/09/26 00:51:20 r23 Exp $
 
    wawi - osis online shop
 
@@ -42,10 +42,10 @@
 
   if (auth()) {
 
-	if (intval($_POST["action"]) == 1 && intval($_POST['KeyEigenschaft']))
+	if (intval($_POST['action']) == 1 && intval($_POST['KeyEigenschaft']))
 	{		
 		$Eigenschaft->kEigenschaft = intval($_POST["KeyEigenschaft"]);
-		$Eigenschaft->kArtikel = intval($_POST["KeyArtikel"]);
+		$Eigenschaft->kArtikel = intval($_POST['KeyArtikel']);
 		$Eigenschaft->cName = realEscape($_POST["Name"]);
 
 		//hole products_id
