@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: konfiguration.php,v 1.15 2006/07/13 03:52:11 r23 Exp $
+   $Id: konfiguration.php,v 1.16 2006/09/26 00:12:49 r23 Exp $
 
    wawi - osis online shop
 
@@ -356,41 +356,66 @@ zeigeFuss();
        ';
  }
 
-function updateKonfig()
-{
+  function updateKonfig() {
+
     // Get database information
     $dbconn =& oosDBGetConn();
     $oostable =& oosDBGetTables();
 
-	$mappingEndkunde="";
-	$mappingHaendlerkunde="";
-	if (is_array($_POST['endkunde']))
-		$mappingEndkunde = implode(";",$_POST['endkunde']);
-	if (is_array($_POST['haendlerkunde']))
-		$mappingHaendlerkunde = implode(";",$_POST['haendlerkunde']);
-	
-	$shopurl = $_POST['shopurl']; if (!$shopurl) $shopurl="";
-	$waehrung = $_POST['waehrung']; if (!$waehrung) $waehrung=0;
-	$sprache = $_POST['sprache']; if (!$sprache) $sprache=0;
-	$liefertermin = $_POST['liefertermin']; if (!$liefertermin) $liefertermin=0;
-	$steuerzone = $_POST['steuerzone']; if (!$steuerzone) $steuerzone=0;
-	$steuerklasse = $_POST['steuerklasse']; if (!$steuerklasse) $steuerklasse=0;
-	$prioritaet = $_POST['prioritaet']; if (!$prioritaet) $prioritaet=0;
-	$versandMwst = floatval($_POST['versandMwst']); if (!$versandMwst) $versandMwst=0;
-	$cat_listing = $_POST['cat_listing']; if (!$cat_listing) $cat_listing="";
-	$cat_template = $_POST['cat_template']; if (!$cat_template) $cat_template="";
-	$cat_sorting = $_POST['cat_sorting']; if (!$cat_sorting) $cat_sorting="";
-	$cat_sorting2 = $_POST['cat_sorting2']; if (!$cat_sorting2) $cat_sorting2="";
-	$product_template = $_POST['product_template']; if (!$product_template) $product_template="";
-	$option_template = $_POST['option_template']; if (!$option_template) $option_template="";
-	$statusAbgeholt = $_POST['StatusAbgeholt']; if (!$statusAbgeholt) $statusAbgeholt=0;
-	$statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt=0;
-	
+    $mappingEndkunde = "";
+    $mappingHaendlerkunde = "";
+    $shopurl = $_POST['shopurl']; if (!$shopurl) $shopurl = "";
+    $waehrung = $_POST['waehrung']; if (!$waehrung) $waehrung = 0;
+    $sprache = $_POST['sprache']; if (!$sprache) $sprache = 0;
+    $liefertermin = $_POST['liefertermin']; if (!$liefertermin) $liefertermin = 0;
+    $steuerzone = $_POST['steuerzone']; if (!$steuerzone) $steuerzone = 0;
+    $steuerklasse = $_POST['steuerklasse']; if (!$steuerklasse) $steuerklasse = 0;
+    $prioritaet = $_POST['prioritaet']; if (!$prioritaet) $prioritaet = 0;
+    $versandMwst = floatval($_POST['versandMwst']); if (!$versandMwst) $versandMwst = 0;
+    $cat_listing = $_POST['cat_listing']; if (!$cat_listing) $cat_listing = "";
+    $cat_template = $_POST['cat_template']; if (!$cat_template) $cat_template = "";
+    $cat_sorting = $_POST['cat_sorting']; if (!$cat_sorting) $cat_sorting = "";
+    $cat_sorting2 = $_POST['cat_sorting2']; if (!$cat_sorting2) $cat_sorting2 = "";
+    $product_template = $_POST['product_template']; if (!$product_template) $product_template = "";
+    $option_template = $_POST['option_template']; if (!$option_template) $option_template = "";
+    $statusAbgeholt = $_POST['StatusAbgeholt']; if (!$statusAbgeholt) $statusAbgeholt = 0;
+    $statusVersandt = $_POST['StatusVersendet']; if (!$statusVersandt) $statusVersandt = 0;
 
-	xtc_db_query("DELETE FROM eazysales_einstellungen");
-	xtc_db_query("INSERT INTO eazysales_einstellungen (StatusAbgeholt, StatusVersendet, currencies_id, languages_id, mappingEndkunde, mappingHaendlerkunde, shopURL, tax_class_id, tax_zone_id, tax_priority, shipping_status_id, versandMwst,cat_listing_template,cat_category_template,cat_sorting,cat_sorting2,prod_product_template,prod_options_template) VALUES ($statusAbgeholt, $statusVersandt, $waehrung,$sprache,\"$mappingEndkunde\",\"$mappingHaendlerkunde\",\"$shopurl\",$steuerklasse,$steuerzone,$prioritaet,$liefertermin, ".floatval($versandMwst).",\"$cat_listing\",\"$cat_template\",\"$cat_sorting\",\"$cat_sorting2\",\"$product_template\",\"$option_template\")");
-}
-
+    $dbconn->Execute("DELETE FROM $oostable['eazysales_einstellungen']");
+    $dbconn->Execute("INSERT INTO $oostable['eazysales_einstellungen']
+                      (StatusAbgeholt,
+                       StatusVersendet,
+                       currencies_id,
+                       languages_id,
+                       shopURL,
+                       tax_class_id,
+                       tax_zone_id,
+                       tax_priority,
+                       shipping_status_id,
+                       versandMwst,
+                       cat_listing_template,
+                       cat_category_template,
+                       cat_sorting,cat_sorting2,
+                       prod_product_template,
+                       prod_options_template) 
+                       VALUES ('" . $product['products_reorder_level'] . "',
+                               '" . $statusAbgeholt . "',
+                               '" . $statusVersandt . "',
+                               '" . $waehrung . "',
+                               '" . $sprache . "',
+                               '" . $shopurl . "',
+                               '" . $steuerklasse . "',
+                               '" . $steuerzone . "',
+                               '" . $prioritaet . "',
+                               '" . $liefertermin . "',
+                               '" . $versandMwst . "',
+                               '" . $cat_listing . "',
+                               '" . $cat_template . "',
+                               '" . $cat_sorting . "',
+                               '" . $cat_sorting2 . "',
+                               '" . $product_template . "',
+                               '" . $option_template . "')");
+  }
 
 ?>
 

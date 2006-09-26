@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------
-   $Id: index.php,v 1.8 2006/07/11 07:34:15 r23 Exp $
+   $Id: index.php,v 1.9 2006/09/26 00:12:49 r23 Exp $
 
    wawi - osis online shop
 
@@ -35,30 +35,42 @@
 
   define('OOS_VALID_MOD', 'yes');
 
-require 'admininclude.php';
-require 'adminTemplates.php';
+  require 'admininclude.php';
+  require 'adminTemplates.php';
+
+  //adminlogin
+  if (intval($_POST["adminlogin"])==1) {
+    $user_query = xtc_db_query("SELECT * FROM customers WHERE customers_email_address=\"".realEscape($_POST["benutzer"])."\" AND customers_password=\"".md5($_POST["passwort"])."\"");
 
 
-//adminlogin
-if (intval($_POST["adminlogin"])==1)
-{
-	$user_query = xtc_db_query("SELECT * FROM customers WHERE customers_email_address=\"".realEscape($_POST["benutzer"])."\" AND customers_password=\"".md5($_POST["passwort"])."\"");
-	$user = mysql_fetch_object($user_query);
-	//hole DEFAULT_CUSTOMERS_STATUS_ID_ADMIN
-	$cur_query = xtc_db_query("SELECT configuration_value FROM configuration WHERE configuration_key=\"DEFAULT_CUSTOMERS_STATUS_ID_ADMIN\"");
-	$def_adminstatus = mysql_fetch_object($cur_query);
-	if ($user->customers_id>0 && $def_adminstatus->configuration_value==0)
-	{
-		$_SESSION["loggedIn"] = 1;
-	}
-}
+    $user_query = "SELECT admin_id, admin_groups_id, admin_firstname, admin_email_address, admin_password, 
+                          admin_modified, admin_logdate, admin_lognum
+                   FROM " . $oostable['admin'] . "
+                   WHERE admin_email_address = '" . oos_db_input($_POST['benutzer']) . "'");
+    $check_admin_result = $dbconn->Execute(
 
-zeigeKopf();
-zeigeLinks($_SESSION["loggedIn"]);
-if ($_SESSION["loggedIn"]!=1)
-	zeigeLogin();
-else
-	zeigeLoginBereich();
-zeigeFuss();
+    if (!$check_admin_result->RecordCount()) {
+      $_SESSION['loggedIn'] = 'fail';
+    } else {
+      $check_admin = $check_admin_result->fields;
+      // Check that password is good
+      if (!oos_validate_password($_POST['passwort'], $check_admin['login_password'])) {
+        $_SESSION['loggedIn'] = 'fail';
+      } else {
+        $_SESSION['loggedIn'] = '1';
+      }
+    }
+
+    zeigeKopf();
+    zeigeLinks($_SESSION["loggedIn"]);
+
+    if ($_SESSION["loggedIn"] != '1') {
+      zeigeLogin();
+    } else {
+      zeigeLoginBereich();
+    }
+
+    zeigeFuss();
+  }
 
 ?>
